@@ -1,6 +1,6 @@
-# VCenter(Velocity Template API)
+# Avalon-node(VCenter Client for NodeJs)
 
-普通velocity只能实例化一次，在应用中使用都只能针对一个应用进行处理模版，所以每当不同应用进行调试的时候都需要重启以保证模版渲染正确，VCenter可以接受一些参数，用来直接渲染模版，同时支持多个应用，每个应用互相独立。
+阿瓦隆的名字来自凯尔特语 abal，意思是“苹果”（apple）。在不列颠传说中，该岛以漂亮的苹果而闻名。就像虽然我们无法控制webx使用velocity，但是我们可以创造各种各样的方式去写demo，希望使用avalon的前端们开创一个新的demo时代。
 
 ## 使用
 
@@ -20,4 +20,4 @@
 
 
 ## License
-VCenter 遵守 "MIT"：https://github.com/czy88840616/vcenter/blob/master/LICENSE.md 协议
+VCenter 遵守 "MIT"：https://github.com/czy88840616/avalon-node/blob/master/LICENSE.md 协议
