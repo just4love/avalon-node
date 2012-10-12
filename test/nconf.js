@@ -1,0 +1,18 @@
+{
+    "apps":{
+        "tradeface":{
+            "root":"/home/tradeface",
+            "webRoot":"/home/tradeface/tf-web/main/webapp"
+            "module":{
+                "auction":{
+                    "screen":"/home/tradeface/tf-web/main/webapp/auction/templates/screen",
+                    "layout":"/home/tradeface/tf-web/main/webapp/auction/templates/layout",
+                    "control":"/home/tradeface/tf-web/main/webapp/auction/templates/control"
+                },
+                "trade":[]
+            }
+        },
+        "cart":{}
+    },
+    "use":"tradeface"
+}

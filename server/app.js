@@ -9,7 +9,8 @@ var express = require('express')
     , user = require('./routes/user')
     , http = require('http')
     , path = require('path')
-    , render = require('../lib/render');
+    , render = require('../lib/render')
+    , _ = require('underscore');
 
 function init(cfg) {
 
@@ -40,17 +41,20 @@ function init(cfg) {
     app.get('/users', user.list);
 
     var apps = nconf.get('apps');
-    for (var key in apps) {
-        app.all('/' + key +'/*.*htm*', function(req, res){
-            var template = render.parse({
-                app: key,
-                path: req.params[0],
-                parameters: require('url').parse(req.url).query
-            }, apps[key]);
+    if(_.isEmpty(apps)) {
 
-            template.render(req, res);
-        });
     }
+
+    var useApp = nconf.get('use');
+    app.all('/*.*htm*', function(req, res){
+        var template = render.parse({
+            app: useApp,
+            path: req.params[0],
+            parameters: require('url').parse(req.url).query
+        }, apps[useApp]);
+
+        template.render(req, res);
+    });
 
     http.createServer(app).listen(app.get('port'), function () {
         console.log("Express server listening on port " + app.get('port'));
