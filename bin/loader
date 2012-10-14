@@ -1,0 +1,51 @@
+#!/usr/bin/env node
+var argv = require('optimist')
+    .default('port', '3000')
+    .alias('p', 'port')
+    .alias('c', 'cfg')
+	.argv;
+
+console.log('current mode:' + (process.env.NODE_ENV || 'development'));
+
+var util = require('util');
+var ErrorHelper = require('../lib/error-helper')
+
+function done(err, message) {
+	if(err) {
+		if (typeof err === 'string') {
+			util.debug('Error: %s', err.message);
+		} else if (err.message) {
+			ErrorHelper.printError(err);
+		}
+
+		console.log('fail');
+		process.exit(1);
+		return;
+	}
+
+	if (message) {
+		console.log(message);
+	}
+
+	process.exit(0);
+}
+
+var commands = require('../lib/cmd');
+
+var command = 'web';
+if (argv._[0]) {
+	switch(argv._[0]) {
+		case 'help':
+			command = 'help';
+			break;
+        defualt:
+            command = 'web';
+            break;
+    };
+}
+
+if (commands && commands[command]) {
+	commands[command]({
+		argv: argv
+	}, done);
+}
