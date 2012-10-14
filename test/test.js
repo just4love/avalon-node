@@ -51,6 +51,13 @@ describe('nconf', function() {
             });
         });
     });
+
+    it.only('get user home', function() {
+        nconf.env();
+        nconf.file({ file: nconf.get('USERPROFILE') + '/.avalon' });
+        console.log(nconf);
+        nconf.save();
+    });
 });
 
 describe('html5', function() {
@@ -69,7 +76,7 @@ describe('html5', function() {
 });
 
 describe('request', function() {
-    it.only('request test', function(done) {
+    it('request test', function(done) {
         request.post('http://vcenter.taobao.net:9000/render.do', {
             encoding:'utf-8',
             form:{

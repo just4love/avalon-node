@@ -2,7 +2,7 @@
     "apps":{
         "tradeface":{
             "root":"/home/tradeface",
-            "webRoot":"/home/tradeface/tf-web/main/webapp"
+            "webRoot":"/home/tradeface/tf-web/main/webapp",
             "module":{
                 "auction":{
                     "screen":"/home/tradeface/tf-web/main/webapp/auction/templates/screen",

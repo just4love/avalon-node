@@ -10,56 +10,56 @@ var express = require('express')
     , http = require('http')
     , path = require('path')
     , render = require('../lib/render')
+    , userCfg = require('../lib/userConfig')
+    , argv = require('optimist').argv
     , _ = require('underscore');
 
-function init(cfg) {
+userCfg.load(argv.cfg);
 
-    var app = express(),
-        nconf = cfg.nconf;
-
-    app.configure(function () {
-        app.set('port', cfg.port || 3000);
-        app.set('views', __dirname + '/views');
-        app.set('view engine', 'jade');
-        app.use(express.favicon());
-        app.use(express.logger('dev'));
-        app.use(express.bodyParser());
-        app.use(express.methodOverride());
-        app.use(app.router);
-        app.use(express.static(path.join(__dirname, 'public')));
-    });
-
-    app.configure('development', function () {
-        app.use(express.errorHandler({ dumpExceptions:true, showStack:true }));
-    });
-
-    app.configure('production', function(){
-        app.use(express.errorHandler());
-    });
-
-    app.get('/', routes.index);
-    app.get('/users', user.list);
-
-    var apps = nconf.get('apps');
-    if(_.isEmpty(apps)) {
-
+var checkConfig = function(req, res, next){
+    var apps = userCfg.get('apps');
+    console.log(apps);
+    if(apps && !_.isEmpty(apps)) {
+        next();
     }
+    res.redirect('/');
+};
 
-    var useApp = nconf.get('use');
-    app.all('/*.*htm*', function(req, res){
-        var template = render.parse({
-            app: useApp,
-            path: req.params[0],
-            parameters: require('url').parse(req.url).query
-        }, apps[useApp]);
+var app = express();
 
-        template.render(req, res);
-    });
+app.configure(function () {
+    app.set('port', argv.port || 3000);
+    app.set('views', __dirname + '/views');
+    app.set('view engine', 'jade');
+    app.use(express.favicon());
+    app.use(express.logger('dev'));
+    app.use(express.bodyParser());
+    app.use(express.methodOverride());
+    app.use(app.router);
+    app.use(express.static(path.join(__dirname, 'public')));
+});
 
-    http.createServer(app).listen(app.get('port'), function () {
-        console.log("Express server listening on port " + app.get('port'));
-    });
+app.configure('development', function () {
+    app.use(express.errorHandler({ dumpExceptions:true, showStack:true }));
+});
 
-}
+app.configure('production', function(){
+    app.use(express.errorHandler());
+});
 
-module.exports.init = init;
+app.get('/', routes.index);
+
+var useApp = userCfg.get('use');
+app.all('/*.*htm*', checkConfig, function(req, res){
+    var template = render.parse({
+        app: useApp,
+        path: req.params[0],
+        parameters: req.method == 'get' ? req.query : req.body
+    }, apps[useApp]);
+
+    template.render(req, res);
+});
+
+http.createServer(app).listen(app.get('port'), function () {
+    console.log("Express server listening on port " + app.get('port'));
+});

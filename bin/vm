@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 var argv = require('optimist')
     .default('port', '3000')
+    .default('host', '127.0.0.1')
+    .default('open', 'false')
     .alias('p', 'port')
+    .alias('h', 'host')
     .alias('c', 'cfg')
+    .alias('o', 'open')
 	.argv;
-
-console.log('current mode:' + (process.env.NODE_ENV || 'development'));
 
 var util = require('util');
 var ErrorHelper = require('../lib/error-helper')

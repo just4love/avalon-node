@@ -4,7 +4,7 @@
  *
  */
 var assert = require("assert"),
-    fileUtil = require('../../lib/file/fileUtil.js'),
+    fileUtil = require('../../lib/util/fileUtil.js'),
     walk = require('walkdir'),
     path = require('path'),
     async = require('async');
