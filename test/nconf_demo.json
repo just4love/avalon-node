@@ -3,13 +3,15 @@
         "tradeface":{
             "root":"/home/tradeface",
             "webRoot":"/home/tradeface/tf-web/main/webapp",
-            "module":{
+            "subModule":{
                 "auction":{
                     "screen":"/home/tradeface/tf-web/main/webapp/auction/templates/screen",
                     "layout":"/home/tradeface/tf-web/main/webapp/auction/templates/layout",
                     "control":"/home/tradeface/tf-web/main/webapp/auction/templates/control"
                 },
-                "trade":[]
+                "trade":{
+
+                }
             }
         },
         "cart":{}

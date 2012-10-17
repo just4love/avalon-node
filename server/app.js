@@ -18,7 +18,6 @@ userCfg.load(argv.cfg);
 
 var checkConfig = function(req, res, next){
     var apps = userCfg.get('apps');
-    console.log(apps);
     if(apps && !_.isEmpty(apps)) {
         next();
     }
@@ -48,6 +47,8 @@ app.configure('production', function(){
 });
 
 app.get('/', routes.index);
+app.get('/user', routes.list);
+app.all('/find', routes.find);
 
 var useApp = userCfg.get('use');
 app.all('/*.*htm*', checkConfig, function(req, res){

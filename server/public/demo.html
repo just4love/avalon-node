@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="bootstrap/css/bootstrap-responsive.min.css"/>
     <link rel="stylesheet" href="bootstrap/css/docs.css"/>
+    <link rel="stylesheet" href="http://www.ztree.me/v3/css/zTreeStyle/zTreeStyle.css"/>
 </head>
 <body>
 <div class="container">
@@ -38,20 +39,18 @@
     <div class="control-group">
     <label class="control-label" for="approot">应用根目录：</label>
     <div class="controls">
-        <input type="text" id="approot" placeholder="D:\\project\\tradeface" class="input-xxlarge">
+        <input type="text" id="approot" placeholder="Windows (d:\project\tradeface) || Mac (Users/harry/projects/tradeface)" class="input-xxlarge">
     </div>
 </div>
     <div class="control-group">
-        <label class="control-label" for="webroot">WEB根目录：</label>
         <div class="controls">
-            <input type="text" id="webroot" placeholder="" class="input-xxlarge">
+            <ul id="treeDemo" class="ztree"></ul>
         </div>
     </div>
-
     <div class="control-group">
         <div class="controls">
-            <button class="btn btn-primary" type="button">Default button</button>
-            <button class="btn" type="button">Default button</button>
+            <button class="btn btn-primary" type="button">保存</button>
+            <button class="btn" type="button">取消</button>
         </div>
     </div>
 </form>
@@ -67,7 +66,66 @@
 <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="http://www.ztree.me/v3/js/jquery.ztree.core-3.4.js"></script>
 <script>
-    //你的代码
+    var setting = {
+        showLine: true,
+        checkable: true
+    };
+
+    var zNodes =[
+        { name:"父节点1 - 展开", open:true,
+            children: [
+                { name:"父节点11 - 折叠",open:true,
+                    children: [
+                        { name:"叶子节点111"},
+                        { name:"叶子节点112"},
+                        { name:"叶子节点113"},
+                        { name:"叶子节点114", open:true,
+                            children:[
+                            { name:"叶子节点111"},
+                            { name:"叶子节点112"},
+                            { name:"叶子节点113"},
+                            { name:"叶子节点114"}
+                        ]}
+                    ]},
+                { name:"父节点12 - 折叠",open:true,
+                    children: [
+                        { name:"叶子节点121"},
+                        { name:"叶子节点122"},
+                        { name:"叶子节点123"},
+                        { name:"叶子节点124"}
+                    ]},
+                { name:"父节点13 - 没有子节点", isParent:true}
+            ]},
+        { name:"父节点2 - 折叠",open:true,
+            children: [
+                { name:"父节点21 - 展开", open:true,
+                    children: [
+                        { name:"叶子节点211"},
+                        { name:"叶子节点212"},
+                        { name:"叶子节点213"},
+                        { name:"叶子节点214"}
+                    ]},
+                { name:"父节点22 - 折叠",open:true,
+                    children: [
+                        { name:"叶子节点221"},
+                        { name:"叶子节点222"},
+                        { name:"叶子节点223"},
+                        { name:"叶子节点224"}
+                    ]},
+                { name:"父节点23 - 折叠",open:true,
+                    children: [
+                        { name:"叶子节点231"},
+                        { name:"叶子节点232"},
+                        { name:"叶子节点233"},
+                        { name:"叶子节点234"}
+                    ]}
+            ]},
+        { name:"父节点3 - 没有子节点", isParent:true}
+    ];
+
+    $(function() {
+        $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+    });
 </script>
 </body>
 </html>
