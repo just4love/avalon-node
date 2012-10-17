@@ -546,7 +546,7 @@ h2 + .row {
 -------------------------------------------------- */
 
 /* Base class */
-.bs-docs-example {
+.bs-docs-example, .bs-docs {
   position: relative;
   margin: 15px 0;
   padding: 39px 19px 14px;
