@@ -17,6 +17,17 @@ describe('fileUtil test', function() {
         });
     });
 
+    it.only('find macros', function(done) {
+        fileUtil.findInDir('D:\\project\\tradeface\\', function(filename){
+            if(/.vm$/.test(filename) && !/.xml.vm$/.test(filename) && !/(\\|\/)(screen|layout|control)(\\|\/)/.test(filename)) {
+                return true;
+            }
+            return false;
+        }, function(err, result){
+            console.log(result);
+            done();
+        });
+    });
 
     it('test walkdir', function (done) {
 
@@ -36,7 +47,7 @@ describe('fileUtil test', function() {
     it('find walk use util', function (done) {
         var roots = ['/Users/harry/projects/tradeface', '/Users/harry/projects/vmcommon'];
 
-        async.forEach(roots, 
+        async.forEach(roots,
             function(root, callback) {
 
                 fileUtil.findDirectory(root, /WEB-INF$/, function(result) {
@@ -50,7 +61,7 @@ describe('fileUtil test', function() {
                         console.log('catched');
                         callback(err);
                     }
-                    
+
                 });
             },
             function (err) {
@@ -61,13 +72,13 @@ describe('fileUtil test', function() {
         console.log('execute end');
 
         done();
-        
+
     });
 
-    it.only('map each webroot', function (done) {
+    it('map each webroot', function (done) {
         var roots = ['/Users/harry/projects/tradeface', '/Users/harry/projects/vcenter'];
 
-        async.map(roots, 
+        async.map(roots,
             function(root, callback) {
 
                 fileUtil.findDirectory(root, /WEB-INF$/, function(result) {
@@ -81,7 +92,7 @@ describe('fileUtil test', function() {
                         console.log('catched');
                         callback(err);
                     }
-                    
+
                 });
             },
             function (err, results) {
