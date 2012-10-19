@@ -4,6 +4,7 @@
     "description":"The nodejs client for VMarket",
     "version":"0.1.0",
     "keywords":[
+        "vmarket",
         "vcenter",
         "velocity",
         "demo",
@@ -43,6 +44,7 @@
         "optimist":">=0.3.4",
         "nconf":">=0.6.4",
         "request":">=2.11.4",
-        "walkdir":">=0.0.5"
+        "walkdir":">=0.0.5",
+        "xml2js":">=0.2.0"
     }
 }

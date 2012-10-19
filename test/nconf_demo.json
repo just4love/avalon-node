@@ -3,6 +3,7 @@
         "tradeface":{
             "root":"/home/tradeface",
             "webRoot":"/home/tradeface/tf-web/main/webapp",
+            "macros":[],
             "subModule":{
                 "auction":{
                     "screen":"/home/tradeface/tf-web/main/webapp/auction/templates/screen",
@@ -12,6 +13,9 @@
                 "trade":{
 
                 }
+            },
+            "tools":{
+
             }
         },
         "cart":{}

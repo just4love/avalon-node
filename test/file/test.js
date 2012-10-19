@@ -7,7 +7,9 @@ var assert = require("assert"),
     fileUtil = require('../../lib/util/fileUtil.js'),
     walk = require('walkdir'),
     path = require('path'),
-    async = require('async');
+    fs = require('fs'),
+    async = require('async'),
+    xml2js = require('xml2js');
 
 describe('fileUtil test', function() {
     it('find in dir', function(done) {
@@ -17,8 +19,8 @@ describe('fileUtil test', function() {
         });
     });
 
-    it.only('find macros', function(done) {
-        fileUtil.findInDir('D:\\project\\tradeface\\', function(filename){
+    it('find macros', function(done) {
+        fileUtil.findInDir('D:\\project\\tradeface', function(filename){
             if(/.vm$/.test(filename) && !/.xml.vm$/.test(filename) && !/(\\|\/)(screen|layout|control)(\\|\/)/.test(filename)) {
                 return true;
             }
@@ -102,5 +104,15 @@ describe('fileUtil test', function() {
         );
 
         done();
+    });
+
+    it.only('parse xml2js', function(done){
+        var parser = new xml2js.Parser();
+        fs.readFile('D:\\project\\tradeface\\tf-web\\src\\main\\webapp\\META-INF\\autoconf\\webx.xml', function(err, data) {
+            parser.parseString(data, function (err, result) {
+                console.log(JSON.stringify(result['beans:beans']['services:pull']));
+                done();
+            });
+        });
     });
 });
