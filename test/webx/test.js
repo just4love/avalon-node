@@ -45,8 +45,8 @@ describe('analyze', function () {
         });
     });
 
-    describe('test webx', function(done) {
-        it.only('test get config', function() {
+    describe('test webx', function() {
+        it.only('test get config', function(done) {
             webx.getConfig('D:\\project\\tradeface', function(err, result){
                 console.log(result);
                 done();
