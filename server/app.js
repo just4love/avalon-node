@@ -12,6 +12,7 @@ var express = require('express')
     , render = require('../lib/render')
     , userCfg = require('../lib/userConfig')
     , argv = require('optimist').argv
+    , util = require('../lib/util/util')
     , _ = require('underscore');
 
 userCfg.load(argv.cfg);
@@ -50,13 +51,17 @@ app.get('/', routes.index);
 app.get('/user', routes.list);
 app.all('/find', routes.find);
 
-var useApp = userCfg.get('use');
 app.all('/*.*htm*', checkConfig, function(req, res){
+    var useApp = userCfg.get('use');
+    var config = util.merge({}, userCfg.get('apps')[useApp]);
+    config.vmcommon = userCfg.get('vmcommon');
+
     var template = render.parse({
         app: useApp,
+        config: config,
         path: req.params[0],
         parameters: req.method == 'get' ? req.query : req.body
-    }, apps[useApp]);
+    });
 
     template.render(req, res);
 });

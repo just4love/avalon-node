@@ -1,4 +1,4 @@
-# Avalon-node(VCenter Client for NodeJs)
+# Avalon-node(VMarket Client for NodeJs)
 
 阿瓦隆的名字来自凯尔特语 abal，意思是“苹果”（apple）。在不列颠传说中，该岛以漂亮的苹果而闻名。就像虽然我们无法控制webx使用velocity，但是我们可以创造各种各样的方式去写demo，希望使用avalon的前端们开创一个新的demo时代。
 

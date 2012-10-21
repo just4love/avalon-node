@@ -1,4 +1,5 @@
 {
+    "vmcommon":"/home/vmcommon",
     "apps":{
         "tradeface":{
             "root":"/home/tradeface",
@@ -14,6 +15,7 @@
 
                 }
             },
+            "data": "/home",
             "tools":{
 
             }

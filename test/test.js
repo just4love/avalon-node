@@ -5,6 +5,7 @@
  */
 var assert = require("assert"),
     fs = require('fs'),
+    path = require('path'),
     nconf = require('nconf'),
     request = require('request');
 
@@ -52,7 +53,7 @@ describe('nconf', function() {
         });
     });
 
-    it.only('get user home', function() {
+    it('get user home', function() {
         nconf.env();
         nconf.file({ file: nconf.get('USERPROFILE') + '/.avalon' });
         console.log(nconf);
@@ -96,5 +97,32 @@ describe('request', function() {
                 done();
             }
         });
+    });
+});
+
+describe('get template', function() {
+    it('get tempalte', function() {
+        var content = 'fdsafdsafdsafds#parse("control/order/address/cartAddressSelect.vm")#parse("control/order/progressBar/progressBar.vm")$control.setTemplate("order/progressBar/progressBar.vm");';
+
+        var result = content.match(/(#parse|\$control.setTemplate).*?\.vm('|")\)/g);
+
+        console.log(result);
+    });
+
+    it('test replace', function() {
+        var v = '#parse("control/order/progressBar/progressBar.vm " )';
+
+        v = v.replace(/#parse\(('|")\s*/, '');
+
+        v = v.replace(/('|")\s*\)/, '');
+
+        console.log(path.resolve(v));
+    });
+});
+
+describe('js', function() {
+    it.only('eval test', function() {
+        eval('var json = {a:1,B:2}');
+        console.log(json);
     });
 });

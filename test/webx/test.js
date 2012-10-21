@@ -6,6 +6,7 @@
 var assert = require("assert"),
     finder = require('../../lib/webx/finder'),
     webx = require('../../lib/webx/webx'),
+    _ = require('underscore'),
     path = require('path');
 
 describe('analyze', function () {
@@ -46,9 +47,39 @@ describe('analyze', function () {
     });
 
     describe('test webx', function() {
-        it.only('test get config', function(done) {
+        it('test get config', function(done) {
             webx.getConfig('D:\\project\\tradeface', function(err, result){
                 console.log(result);
+                done();
+            });
+        });
+
+        it('test get content', function(done) {
+            webx.getConfig('D:\\project\\tradeface', function(err, result){
+                webx.getContent('auction/order/unityOrderConfirm.vm', result, function(err, result){
+                    console.log(result);
+                    done();
+                });
+            });
+        });
+
+        it('test get content sync', function(done) {
+            webx.getConfig('D:\\project\\tradeface', function(err, result){
+                result.vmcommon = 'D:\\project\\vmcommon';
+
+                var content = webx.getContentSync('auction/order/unityOrderConfirm.vm', result);
+                console.log(_.keys(content));
+                done();
+            });
+        });
+
+        it.only('test get data sync', function(done) {
+            webx.getConfig('D:\\project\\tradeface', function(err, result){
+                result.vmcommon = 'D:\\project\\vmcommon';
+
+                var content = webx.getContentSync('auction/order/unityOrderConfirm.vm', result);
+                var data = webx.getDataSync('auction',_.keys(content), result);
+                console.log(JSON.stringify(data));
                 done();
             });
         });

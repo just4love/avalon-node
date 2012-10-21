@@ -14,3 +14,7 @@ exports.find = function(req, res){
         res.send(result);
     });
 };
+
+exports.save = function(req, res){
+
+};
