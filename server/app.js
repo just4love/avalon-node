@@ -15,7 +15,7 @@ var express = require('express')
     , util = require('../lib/util/util')
     , _ = require('underscore');
 
-userCfg.load(argv.cfg);
+userCfg.init(argv.cfg);
 
 var checkConfig = function(req, res, next){
     var apps = userCfg.get('apps');
@@ -49,7 +49,7 @@ app.configure('production', function(){
 
 app.get('/', routes.index);
 app.get('/user', routes.list);
-app.all('/find', routes.find);
+app.all('/app/:operate', routes.operate);
 
 app.all('/*.*htm*', checkConfig, function(req, res){
     var useApp = userCfg.get('use');

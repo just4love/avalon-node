@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="gbk"/>
-    <title>Config Your VMarket</title>
+    <title>配置你的VMarket</title>
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="bootstrap/css/bootstrap-responsive.min.css"/>
     <link rel="stylesheet" href="bootstrap/css/docs.css"/>
@@ -10,122 +10,87 @@
 </head>
 <body>
 <div class="container">
-<section id="forms">
-<div class="page-header">
-    <h1>配置你的VMarket</h1>
-</div>
-
-<h2>您的应用</h2>
-<p>VMarket基于您的<code>应用</code>目录来管理模板，您需要给每个应用取一个名字，默认以目录名作为应用名。</p>
-<form class="form-horizontal">
-    <div class="control-group">
-        <label class="control-label" for="inputEmail">当前应用：</label>
-        <div class="controls">
-            <select class="pull-left">
-                <option>添加一个应用试试---></option>
-            </select>
+    <section id="forms">
+        <div class="page-header">
+            <h1>配置你的VMarket</h1>
         </div>
-        <div class="btn-group pull-left">
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
-            <ul class="dropdown-menu">
-                <li><a href="#"><i class="icon-pencil"></i> Edit</a></li>
-                <li><a href="#"><i class="icon-trash"></i> Delete</a></li>
-            </ul>
-        </div>
-    </div>
-</form>
-<form class="form-horizontal bs-docs">
-    <legend>app</legend>
-    <div class="control-group">
-    <label class="control-label" for="approot">应用根目录：</label>
-    <div class="controls">
-        <input type="text" id="approot" placeholder="Windows (d:\project\tradeface) || Mac (Users/harry/projects/tradeface)" class="input-xxlarge">
-    </div>
-</div>
-    <div class="control-group">
-        <div class="controls">
-            <ul id="treeDemo" class="ztree"></ul>
-        </div>
-    </div>
-    <div class="control-group">
-        <div class="controls">
-            <button class="btn btn-primary" type="button">保存</button>
-            <button class="btn" type="button">取消</button>
-        </div>
-    </div>
-</form>
 
-<hr class="bs-docs-separator">
+        <h2>您的应用</h2>
+        <form class="form-horizontal bs-docs">
+            <div class="control-group">
+                <label class="control-label">当前应用：</label>
+
+                <div class="controls">
+                    <select class="pull-left">
+                        <option>无应用，添加一个试试↓↓</option>
+                    </select>
+                    <div class="btn-group pull-left">
+                        <button class="btn"><i class="icon-edit"></i> 编辑</button>
+                        <button class="btn"><i class="icon-remove"></i> 删除</button>
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <a href="#addNewAppModal" class="btn btn-primary" id="J_AddNewApp">添加一个新应用</a>
+                    <br/><br/>
+                    <div class="alert alert-info">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        VMarket基于您的应用目录来管理模板，您需要给每个应用取一个名字，默认以最后一级目录名作为应用名。
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="modal hide fade" id="addNewAppModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 800px;margin-left: -400px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel">你的应用</h3>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                <div class="control-group">
+                    <label class="control-label" for="approot">应用根目录：</label>
+                    <div class="controls">
+                        <input type="text" id="approot"
+                               placeholder=""
+                               class="input-xxlarge">
+                        <a href="#" class="btn"><i class="icon-refresh"></i></a>
+                        <br/><br/>
+                        <div class="progress progress-striped active">
+                            <div class="bar" style="width: 0%;"></div>
+                        </div>
+                        <div class="alert alert-info">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            <strong>Windows：</strong> D:\project\tradeface
+                            <br/>
+                            <strong>Mac：</strong> /Users/harry/projects/tradeface
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <ul id="treeDemo" class="ztree"></ul>
+                    </div>
+                </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+                <button class="btn btn-primary">保存改动</button>
+            </div>
+        </div>
+
+        <hr class="bs-docs-separator">
 
 
-<h2>您的代理</h2>
-<p>Included with Bootstrap are three optional form layouts for common use cases.</p>
-</section>
+        <h2>您的代理</h2>
+
+        <p>Included with Bootstrap are three optional form layouts for common use cases.</p>
+    </section>
 </div>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.1.min.js"></script>
 <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="http://www.ztree.me/v3/js/jquery.ztree.core-3.4.js"></script>
-<script>
-    var setting = {
-        showLine: true,
-        checkable: true
-    };
-
-    var zNodes =[
-        { name:"父节点1 - 展开", open:true,
-            children: [
-                { name:"父节点11 - 折叠",open:true,
-                    children: [
-                        { name:"叶子节点111"},
-                        { name:"叶子节点112"},
-                        { name:"叶子节点113"},
-                        { name:"叶子节点114", open:true,
-                            children:[
-                            { name:"叶子节点111"},
-                            { name:"叶子节点112"},
-                            { name:"叶子节点113"},
-                            { name:"叶子节点114"}
-                        ]}
-                    ]},
-                { name:"父节点12 - 折叠",open:true,
-                    children: [
-                        { name:"叶子节点121"},
-                        { name:"叶子节点122"},
-                        { name:"叶子节点123"},
-                        { name:"叶子节点124"}
-                    ]},
-                { name:"父节点13 - 没有子节点", isParent:true}
-            ]},
-        { name:"父节点2 - 折叠",open:true,
-            children: [
-                { name:"父节点21 - 展开", open:true,
-                    children: [
-                        { name:"叶子节点211"},
-                        { name:"叶子节点212"},
-                        { name:"叶子节点213"},
-                        { name:"叶子节点214"}
-                    ]},
-                { name:"父节点22 - 折叠",open:true,
-                    children: [
-                        { name:"叶子节点221"},
-                        { name:"叶子节点222"},
-                        { name:"叶子节点223"},
-                        { name:"叶子节点224"}
-                    ]},
-                { name:"父节点23 - 折叠",open:true,
-                    children: [
-                        { name:"叶子节点231"},
-                        { name:"叶子节点232"},
-                        { name:"叶子节点233"},
-                        { name:"叶子节点234"}
-                    ]}
-            ]},
-        { name:"父节点3 - 没有子节点", isParent:true}
-    ];
-
-    $(function() {
-        $.fn.zTree.init($("#treeDemo"), setting, zNodes);
-    });
-</script>
+<script type="text/javascript" src="index.js"></script>
 </body>
 </html>
