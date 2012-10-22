@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="bootstrap/css/bootstrap-responsive.min.css"/>
     <link rel="stylesheet" href="bootstrap/css/docs.css"/>
-    <link rel="stylesheet" href="http://www.ztree.me/v3/css/zTreeStyle/zTreeStyle.css"/>
+    <link rel="stylesheet" href="ztree/css/zTreeStyle/zTreeStyle.css"/>
 </head>
 <body>
 <div class="container">
@@ -53,30 +53,30 @@
                     <div class="controls">
                         <input type="text" id="approot"
                                placeholder=""
-                               class="input-xxlarge">
-                        <a href="#" class="btn"><i class="icon-refresh"></i></a>
+                               class="span5">
+                        <a href="#" class="btn btn-primary" id="J_RefreshDir" data-loading-text="分析中..."><i class="icon-refresh icon-white"></i></a>
                         <br/><br/>
-                        <div class="progress progress-striped active">
-                            <div class="bar" style="width: 0%;"></div>
-                        </div>
-                        <div class="alert alert-info">
+                        <div class="alert alert-info" style="width: 420px">
                             <button type="button" class="close" data-dismiss="alert">×</button>
                             <strong>Windows：</strong> D:\project\tradeface
                             <br/>
                             <strong>Mac：</strong> /Users/harry/projects/tradeface
                         </div>
+                        <div class="progress progress-striped active" style="width: 470px;display: none">
+                            <div class="bar" style="width: 0%;"></div>
+                        </div>
                     </div>
                 </div>
                 <div class="control-group">
                     <div class="controls">
-                        <ul id="treeDemo" class="ztree"></ul>
+                        <ul id="configTree" class="ztree" style="display: none"></ul>
                     </div>
                 </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
-                <button class="btn btn-primary">保存改动</button>
+                <button class="btn btn-primary disabled" id="J_SaveConfig">保存改动</button>
             </div>
         </div>
 
@@ -90,7 +90,7 @@
 </div>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.1.min.js"></script>
 <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="http://www.ztree.me/v3/js/jquery.ztree.core-3.4.js"></script>
+<script type="text/javascript" src="ztree/js/jquery.ztree.all-3.4.min.js"></script>
 <script type="text/javascript" src="index.js"></script>
 </body>
 </html>

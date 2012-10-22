@@ -1,39 +1,80 @@
-/**
+ï»¿/**
  * @fileoverview
- * @author ÕÅÍ¦ <zhangting@taobao.com>
+ * @author å¼ æŒº <zhangting@taobao.com>
  *
  */
 $(function(){
+    var checkValid =function(text){
+        return !!text;
+    };
+
     $('#J_AddNewApp').click(function(e){
         e.preventDefault();
         $('#addNewAppModal').modal();
     });
 
-    var setting = {
-        showLine:true,
-        checkable:true
-    };
-
-    var zNodes = [
-        {
-            name:"¸¸½Úµã1 - Õ¹¿ª",
-            open:true,
-            children:[
-                { name:"¸¸½Úµã11 - ÕÛµþ", open:true,
-                    children:[
-                        { name:"Ò¶×Ó½Úµã111"},
-                        { name:"Ò¶×Ó½Úµã112"},
-                        { name:"Ò¶×Ó½Úµã113"},
-                        { name:"Ò¶×Ó½Úµã114", open:true,
-                            children:[
-                                { name:"Ò¶×Ó½Úµã111"},
-                                { name:"Ò¶×Ó½Úµã112"},
-                                { name:"Ò¶×Ó½Úµã113"},
-                                { name:"Ò¶×Ó½Úµã114"}
-                            ]}
-                    ]}]
+    //blur and check
+    $('#approot').blur(function(e){
+        $(this).parents('.control-group').removeClass('error').removeClass('success');
+        if(!checkValid($(this).val())) {
+            $(this).parents('.control-group').addClass('error');
+        } else {
+            $(this).parents('.control-group').addClass('success');
         }
-    ];
+    });
 
-    $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+    //update dir
+    $('#J_RefreshDir').click(function(e){
+        e.preventDefault();
+        $.fn.zTree.destroy('configTree');
+
+        $('#approot').parents('.control-group').removeClass('error').removeClass('success');
+        if(!checkValid($('#approot').val())) {
+            $('#approot').parents('.control-group').addClass('error');
+            return;
+        } else {
+            $('#approot').parents('.control-group').addClass('success');
+        }
+
+        $(this).button('loading');
+        $('#addNewAppModal .progress .bar').css('width', '10%').parent().show();
+
+        $.post('/app/find', {
+            root:$('#approot').val()
+        }, function(data) {
+            $('#addNewAppModal .progress .bar').css('width', '60%');
+            $.fn.zTree.init($("#configTree"), {
+                showLine:true,
+                checkable:true
+            }, data);
+            $('#addNewAppModal .progress .bar').css('width', '100%').parent().fadeOut(function(){
+                $("#configTree").fadeIn();
+            });
+
+            $('#J_RefreshDir').button('reset');
+            $('#J_SaveConfig').button('reset');
+        });
+    });
+
+    //cancel popup
+    $('#addNewAppModal').on('hidden', function (e) {
+        $.fn.zTree.destroy('configTree');
+        $('#addNewAppModal .progress .bar').css('width', '0%');
+        $('#J_RefreshDir').button('reset');
+        $('#addNewAppModal .progress').hide();
+        $(this).parents('.control-group').removeClass('error').removeClass('success');
+    });
+
+    $('#J_SaveConfig').click(function(e){
+        e.preventDefault();
+        $.post('/app/add', {
+            root:$('#approot').val()
+        }, function(data) {
+            $('.result').html(data);
+        });
+        $('#addNewAppModal').button('hide');
+    });
+
+    //save config
+
 });
