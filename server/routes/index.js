@@ -46,6 +46,32 @@ var App = {
                 }
             });
         });
+    },
+    remove: function(params, cb){
+        var appName = params.appName;
+        var apps = userCfg.get('apps');
+        delete apps[appName];
+        userCfg.set('apps', apps);
+        var appsNames = _.keys(apps);
+        userCfg.set('use', appsNames.length ? appsNames[0] : '');
+        userCfg.save(function(err){
+            if(err) {
+                cb(null, {success:false,msg:err});
+            } else {
+                cb(null, {success:true});
+            }
+        });
+    },
+    change: function(params, cb) {
+        var appName = params.appName;
+        userCfg.set('use', appName);
+        userCfg.save(function(err){
+            if(err) {
+                cb(null, {success:false,msg:err});
+            } else {
+                cb(null, {success:true});
+            }
+        });
     }
 };
 

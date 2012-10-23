@@ -76,19 +76,45 @@ $(function(){
                 $("#J_Apps").empty();
                 $.post('/app/loadapps', function(data){
                     var tpl = [];
-                    $.each(data.apps, function(app){
-                        if(app==data.use) {
-                            tpl.push('<option selected value="' + app +'">' + app + '</option>');
+                    $.each(data.apps, function(idx){
+                        if(data.apps[idx]==data.use) {
+                            tpl.push('<option selected value="' + data.apps[idx] +'">' + data.apps[idx] + '</option>');
                         } else {
-                            tpl.push('<option  value="' + app +'">' + app + '</option>');
+                            tpl.push('<option  value="' + data.apps[idx] +'">' + data.apps[idx] + '</option>');
                         }
                     });
                     $("#J_Apps").append(tpl.join(''));
+                    $('.J_AppOperate').show();
                 });
                 $('#addNewAppModal').modal('hide');
             } else {
                 $('#addNewAppModal .error').show();
             }
+        });
+    });
+
+    //remove app
+    $('#J_RemoveApp').click(function(e){
+        e.preventDefault();
+        $('.J_RemoveAppAlertModal').modal();
+    });
+
+    $('#J_RemoveAppAlertConfirm').click(function(e){
+        e.preventDefault();
+
+        $.post('/app/remove', {
+            appName:$('#J_Apps').val()
+        }, function(data){
+            location.reload();
+        });
+
+    });
+
+    $('#J_Apps').change(function(){
+        $.post('/app/change', {
+            appName:$('#J_Apps').val()
+        }, function(data){
+            location.reload();
         });
     });
 

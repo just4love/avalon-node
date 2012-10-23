@@ -15,7 +15,7 @@
         <form class="form-horizontal bs-docs">
             <div class="control-group"><label class="control-label">当前应用：</label>
                 <div class="controls">
-                    <select class="pull-left" id="J_Apps">
+                    <select class="pull-left input-xlarge" id="J_Apps" style="margin-right: 10px;">
                     {if apps.length}
                         {foreach app in apps}
                             {if app eq use}
@@ -25,13 +25,27 @@
                             {end}
                         {end}
                     {else}
-                        <option>无应用，添加一个试试↓↓</option>
+                        <option>没有配置应用，添加一个试试 ↓↓↓</option>
                     {end}
                     </select>
 
-                    <div class="btn-group pull-left">
-                        <button class="btn"><i class="icon-edit"></i>编辑</button>
-                        <button class="btn"><i class="icon-remove"></i>删除</button>
+                    <div class="btn-group pull-left J_AppOperate" {if not apps.length}style="display: none"{end}>
+                    <button class="btn" id="J_EditApp"><i class="icon-edit"></i>编辑</button>
+                    <button class="btn" id="J_RemoveApp"><i class="icon-remove"></i>删除</button>
+                </div>
+
+                    <div class="modal hide fade J_RemoveAppAlertModal">
+                        <div class="modal-body">
+                            <div class="J_RemoveAppAlert alert alert-block alert-error fade in clearfix">
+                                <h4 class="alert-heading">警告！您正在删除一个应用的所以配置！</h4>
+                                <p>一旦您的应用被删除，VMarket将无法使用该应用配置来进行模板的渲染。</p>
+                                <p>确认请继续。</p>
+                                <p class="pull-right">
+                                    <a class="btn" data-dismiss="modal" aria-hidden="true">噢，我点错了</a>
+                                    <a class="btn btn-danger" href="#" id="J_RemoveAppAlertConfirm">确定删除</a>
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -60,7 +74,7 @@
 
                             <div style="width: 420px;" class="alert alert-info">
                                 <button type="button" data-dismiss="alert" class="close">×</button>
-                                <strong>Windows：</strong>D:\project\tradeface<br><strong>Mac：</strong>/Users/harry/projects/tradeface
+                                <strong>Windows：</strong>D:\\project\\tradeface<br><strong>Mac：</strong>/Users/harry/projects/tradeface
                             </div>
                             <div style="width: 470px; display: none;" class="progress progress-striped active">
                                 <div style="width: 0%;" class="bar"></div>
