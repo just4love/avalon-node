@@ -72,6 +72,18 @@ $(function(){
             root:$('#approot').val()
         }, function(data) {
             if(data.success) {
+                $("#J_Apps").empty();
+                $.post('/app/loadapps', function(data){
+                    var tpl = [];
+                    $.each(data.apps, function(app){
+                        if(app==data.use) {
+                            tpl.push('<option selected value="' + app +'">' + app + '</option>');
+                        } else {
+                            tpl.push('<option  value="' + app +'">' + app + '</option>');
+                        }
+                    });
+                    $("#J_Apps").append(tpl.join(''));
+                });
                 $('#addNewAppModal').modal('hide');
             } else {
                 $('#addNewAppModal .error').show();
