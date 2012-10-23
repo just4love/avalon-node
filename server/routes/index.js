@@ -21,6 +21,12 @@ var App = {
             vmcommon:userCfg.get('vmcommon')
         }
     },
+    loadapps: function(params, cb){
+        cb(null, {
+            apps:_.keys(userCfg.get('apps')),
+            use:userCfg.get('use')
+        });
+    },
     get: function(appName) {
         var json = userCfg.get('apps')[appName];
         return util.json2Tree(json)

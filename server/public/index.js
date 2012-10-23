@@ -65,6 +65,7 @@ $(function(){
         $(this).parents('.control-group').removeClass('error').removeClass('success');
     });
 
+    //save config
     $('#J_SaveConfig').click(function(e){
         e.preventDefault();
         $(this).button('loading');
@@ -90,7 +91,5 @@ $(function(){
             }
         });
     });
-
-    //save config
 
 });
