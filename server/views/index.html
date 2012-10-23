@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head><title>配置你的VMarket</title>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap-responsive.min.css">
+    <link rel="stylesheet" href="/bootstrap/css/docs.css">
+    <link rel="stylesheet" href="/ztree/css/zTreeStyle/zTreeStyle.css">
+</head>
+<body>
+<div class="container">
+    <section id="forms">
+        <div class="page-header"><h1>配置你的VMarket</h1></div>
+        <h2>您的应用</h2>
+
+        <form class="form-horizontal bs-docs">
+            <div class="control-group"><label class="control-label">当前应用：</label>
+                <div class="controls">
+                    <select class="pull-left">
+                    {if apps.length}
+                        {foreach app in apps}
+                            {if app eq use}
+                            <option value="{app}" selected>{app}</option>
+                            {else}
+                            <option value="{app}">{app}</option>
+                            {end}
+                        {end}
+                    {else}
+                        <option>无应用，添加一个试试↓↓</option>
+                    {end}
+                    </select>
+
+                    <div class="btn-group pull-left">
+                        <button class="btn"><i class="icon-edit"></i>编辑</button>
+                        <button class="btn"><i class="icon-remove"></i>删除</button>
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls"><a id="J_AddNewApp" href="#addNewAppModal" class="btn btn-primary">添加一个新应用</a><br><br>
+
+                    <div class="alert alert-info">
+                        <button type="button" data-dismiss="alert" class="close">×</button>
+                        VMarket基于您的应用目录来管理模板，您需要给每个应用取一个名字，默认以最后一级目录名作为应用名。
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div id="addNewAppModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+             style="width: 800px; margin-left: -400px;" class="modal hide fade">
+            <div class="modal-header">
+                <button type="button" data-dismiss="modal" aria-hidden="true" class="close">×</button>
+                <h3 id="myModalLabel">你的应用</h3></div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="control-group"><label for="approot" class="control-label">应用根目录：</label>
+
+                        <div class="controls"><input id="approot" type="text" placeholder="" class="span5"><a
+                                id="J_RefreshDir" href="#" data-loading-text="分析中..." class="btn btn-primary"><i
+                                class="icon-refresh icon-white"></i></a><br><br>
+
+                            <div style="width: 420px;" class="alert alert-info">
+                                <button type="button" data-dismiss="alert" class="close">×</button>
+                                <strong>Windows：</strong>D:\project\tradeface<br><strong>Mac：</strong>/Users/harry/projects/tradeface
+                            </div>
+                            <div style="width: 470px; display: none;" class="progress progress-striped active">
+                                <div style="width: 0%;" class="bar"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <ul id="configTree" style="display: none;" class="ztree"></ul>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer"><span style="display: none;margin-right: 10px;"
+                                            class="alert alert-error">系统错误，请重试</span>
+                <button data-dismiss="modal" aria-hidden="true" class="btn">取消</button>
+                <button id="J_SaveConfig" data-loading-text="保存中..." class="btn btn-primary disabled">保存改动</button>
+            </div>
+        </div>
+        <hr class="bs-docs-separator">
+        <h2>您的代理</h2>
+
+        <p>Included with Bootstrap are three optional form layouts for common use cases.</p></section>
+</div>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.1.min.js"></script>
+<script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/ztree/js/jquery.ztree.all-3.4.min.js"></script>
+<script type="text/javascript" src="/index.js"></script>
+</body>
+</html>

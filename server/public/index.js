@@ -67,12 +67,16 @@ $(function(){
 
     $('#J_SaveConfig').click(function(e){
         e.preventDefault();
+        $(this).button('loading');
         $.post('/app/add', {
             root:$('#approot').val()
         }, function(data) {
-            $('.result').html(data);
+            if(data.success) {
+                $('#addNewAppModal').modal('hide');
+            } else {
+                $('#addNewAppModal .error').show();
+            }
         });
-        $('#addNewAppModal').button('hide');
     });
 
     //save config

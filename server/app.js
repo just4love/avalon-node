@@ -13,6 +13,7 @@ var express = require('express')
     , userCfg = require('../lib/userConfig')
     , argv = require('optimist').argv
     , util = require('../lib/util/util')
+    , cons = require('consolidate')
     , _ = require('underscore');
 
 userCfg.init(argv.cfg);
@@ -30,9 +31,10 @@ var app = express();
 app.configure(function () {
     app.set('port', argv.port || 3000);
     app.set('views', __dirname + '/views');
-    app.set('view engine', 'jade');
+    app.set('view engine', 'html');
+    app.engine('html', cons.jazz);
     app.use(express.favicon());
-    app.use(express.logger('dev'));
+//    app.use(express.logger('dev'));
     app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(app.router);

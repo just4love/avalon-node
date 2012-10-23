@@ -5,6 +5,7 @@
 var webx = require('../../lib/webx/webx'),
     util = require('../../lib/util/util'),
     path = require('path'),
+    _ = require('underscore'),
     userCfg = require('../../lib/userConfig');
 
 var App = {
@@ -13,9 +14,16 @@ var App = {
             cb(err, util.json2Tree(result));
         });
     },
-    load: function(appName) {
+    load: function() {
+        return {
+            apps:_.keys(userCfg.get('apps')),
+            use:userCfg.get('use'),
+            vmcommon:userCfg.get('vmcommon')
+        }
+    },
+    get: function(appName) {
         var json = userCfg.get('apps')[appName];
-        return util.json2Tree(json);
+        return util.json2Tree(json)
     },
     add: function(params, cb){
         webx.getConfig(params.root, function(err, result) {
@@ -25,7 +33,11 @@ var App = {
             userCfg.set('apps', apps);
             userCfg.set('use', appName);
             userCfg.save(function(err){
-                cb(err);
+                if(err) {
+                    cb(null, {success:false,msg:err});
+                } else {
+                    cb(null, {success:true});
+                }
             });
         });
     }
@@ -33,7 +45,7 @@ var App = {
 
 
 exports.index = function(req, res){
-  res.render('index', { title: 'Express' });
+  res.render('index', App.load());
 };
 
 exports.operate = function(req, res){
