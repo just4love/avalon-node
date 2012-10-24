@@ -22,8 +22,9 @@ var checkConfig = function(req, res, next){
     var apps = userCfg.get('apps');
     if(apps && !_.isEmpty(apps)) {
         next();
+    } else {
+        res.redirect('/');
     }
-    res.redirect('/');
 };
 
 var app = express();
@@ -50,10 +51,10 @@ app.configure('production', function(){
 });
 
 app.get('/', routes.index);
-app.get('/user', routes.list);
+app.get('/list', routes.list);
 app.all('/app/:operate', routes.operate);
 
-app.all('/*.*htm*', checkConfig, function(req, res){
+app.all('/*.*htm*', checkConfig, function(req, res, next){
     var useApp = userCfg.get('use');
     var config = util.merge({}, userCfg.get('apps')[useApp]);
     config.vmcommon = userCfg.get('vmcommon');
@@ -65,7 +66,11 @@ app.all('/*.*htm*', checkConfig, function(req, res){
         parameters: req.method == 'get' ? req.query : req.body
     });
 
-    template.render(req, res);
+    if(template) {
+        template.render(req, res);
+    } else {
+        res.render('404', { url: req.url });
+    }
 });
 
 http.createServer(app).listen(app.get('port'), function () {

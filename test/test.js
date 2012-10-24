@@ -7,8 +7,11 @@ var assert = require("assert"),
     fs = require('fs'),
     path = require('path'),
     nconf = require('nconf'),
-    request = require('request');
-
+    render = require('../lib/render'),
+    webx = require('../lib/webx/webx'),
+    userCfg = require('../lib/userConfig'),
+    request = require('request'),
+    _ = require('underscore');
 
 describe('Array', function(){
     describe('#indexOf()', function(){
@@ -121,8 +124,32 @@ describe('get template', function() {
 });
 
 describe('js', function() {
-    it.only('eval test', function() {
+    it('eval test', function() {
         eval('var json = {a:1,B:2}');
         console.log(json);
+    });
+});
+
+describe('render template', function() {
+    it.only('render', function(done) {
+        userCfg.init('C:\\Users\\czy-dell\\.avalon');
+
+        var content = webx.getContentSync('/auction/order/unityOrderConfirm.vm', userCfg.get('apps')['tradeface']);
+
+        request.post('http://127.0.0.1:8000/render.do', {
+            encoding:'utf-8',
+            form:{
+                target: 'screen/order/unityOrderConfirm.vm',
+                templates:JSON.stringify(content),
+                data:JSON.stringify({}),
+                macros:'',
+                tools:{}
+            }
+        }, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                console.log(body);
+                done();
+            }
+        })
     });
 });
