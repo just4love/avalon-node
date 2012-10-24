@@ -33,7 +33,14 @@
         <h2>您的应用</h2>
 
         <form class="form-horizontal bs-docs">
-            <div class="control-group"><label class="control-label">当前应用：</label>
+            <div class="control-group">
+                <label class="control-label" for="J_Vmcommon">vmcommon：</label>
+                <div class="controls input-append" style="display: block;">
+                    <input type="text" class="input-xxlarge" id="J_Vmcommon" placeholder="假如使用了淘宝通用的vmcommon，请checkout到本地，然后指向该地址"><span class="add-on">/vmcommon</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">当前应用：</label>
                 <div class="controls">
                     <select class="pull-left input-xlarge" id="J_Apps" style="margin-right: 10px;">
                     {if apps.length}
@@ -50,10 +57,9 @@
                     </select>
 
                     <div class="btn-group pull-left J_AppOperate" {if not apps.length}style="display: none"{end}>
-                    <button class="btn" id="J_EditApp"><i class="icon-edit"></i>编辑</button>
-                    <button class="btn" id="J_RemoveApp"><i class="icon-remove"></i>删除</button>
-                </div>
-
+                        <button class="btn" id="J_EditApp"><i class="icon-edit"></i>编辑</button>
+                        <button class="btn" id="J_RemoveApp"><i class="icon-remove"></i>删除</button>
+                    </div>
                     <div class="modal hide fade J_RemoveAppAlertModal">
                         <div class="modal-body">
                             <div class="J_RemoveAppAlert alert alert-block alert-error fade in clearfix">
@@ -70,8 +76,9 @@
                 </div>
             </div>
             <div class="control-group">
-                <div class="controls"><a id="J_AddNewApp" href="#addNewAppModal" class="btn btn-primary">添加一个新应用</a><br><br>
-
+                <div class="controls">
+                    <a id="J_AddNewApp" href="#addNewAppModal" class="btn btn-primary">添加一个新应用</a>
+                    <br /><br />
                     <div class="alert alert-info">
                         <button type="button" data-dismiss="alert" class="close">×</button>
                         VMarket基于您的应用目录来管理模板，您需要给每个应用取一个名字，默认以最后一级目录名作为应用名。
@@ -86,8 +93,8 @@
                 <h3 id="myModalLabel">你的应用</h3></div>
             <div class="modal-body">
                 <form class="form-horizontal">
-                    <div class="control-group"><label for="approot" class="control-label">应用根目录：</label>
-
+                    <div class="control-group">
+                        <label for="approot" class="control-label">应用根目录：</label>
                         <div class="controls"><input id="approot" type="text" placeholder="" class="span5"><a
                                 id="J_RefreshDir" href="#" data-loading-text="分析中..." class="btn btn-primary"><i
                                 class="icon-refresh icon-white"></i></a><br><br>
@@ -99,6 +106,19 @@
                             <div style="width: 470px; display: none;" class="progress progress-striped active">
                                 <div style="width: 0%;" class="bar"></div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="approot" class="control-label">模板编码：</label>
+                        <div class="controls">
+                            <label class="radio inline">
+                                <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                                GBK （默认）
+                            </label>
+                            <label class="radio inline">
+                                <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                                UTF-8
+                            </label>
                         </div>
                     </div>
                     <div class="control-group">

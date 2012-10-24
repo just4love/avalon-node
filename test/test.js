@@ -132,11 +132,11 @@ describe('js', function() {
 
 describe('render template', function() {
     it.only('render', function(done) {
-        userCfg.init('C:\\Users\\czy-dell\\.avalon');
+        userCfg.init('C:\\Users\\Harry\\.avalon');
 
         var content = webx.getContentSync('/auction/order/unityOrderConfirm.vm', userCfg.get('apps')['tradeface']);
 
-        request.post('http://127.0.0.1:8000/render.do', {
+        request.post('http://127.0.0.1/render.do', {
             encoding:'utf-8',
             form:{
                 target: 'screen/order/unityOrderConfirm.vm',
