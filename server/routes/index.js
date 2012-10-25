@@ -72,6 +72,24 @@ var App = {
                 cb(null, {success:true});
             }
         });
+    },
+    setvmcommon: function(params, cb){
+        var vmcommon = params.vmcommon;
+        vmcommon = path.resolve(vmcommon);
+
+        if(vmcommon == userCfg.get('vmcommon')) {
+            //cache
+            cb(null, {success:true});
+        } else {
+            userCfg.set('vmcommon', vmcommon);
+            userCfg.save(function(err){
+                if(err) {
+                    cb(null, {success:false,msg:err});
+                } else {
+                    cb(null, {success:true});
+                }
+            });
+        }
     }
 };
 

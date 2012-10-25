@@ -118,4 +118,12 @@ $(function(){
         });
     });
 
+    $('#J_Vmcommon').blur(function(e){
+        $.post('/app/setvmcommon', {
+            vmcommon:$('#J_Vmcommon').val()
+        }, function(data){
+            location.reload();
+        });
+    });
+
 });
