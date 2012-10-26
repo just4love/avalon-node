@@ -16,7 +16,10 @@ var express = require('express')
     , cons = require('consolidate')
     , _ = require('underscore');
 
-userCfg.init(argv.cfg);
+userCfg.init({
+    cfg:argv.cfg,
+    api: argv.api
+});
 
 var checkConfig = function(req, res, next){
     var apps = userCfg.get('apps');
@@ -63,6 +66,7 @@ app.all('/*.*htm*', checkConfig, function(req, res, next){
         app: useApp,
         config: config,
         path: req.params[0],
+        api: userCfg.get('api'),
         parameters: req.method == 'get' ? req.query : req.body
     });
 
