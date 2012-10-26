@@ -63,7 +63,7 @@ describe('analyze', function () {
             });
         });
 
-        it('test get content sync', function(done) {
+        it.only('test get content sync', function(done) {
             webx.getConfig('D:\\project\\tradeface', function(err, result){
                 result.vmcommon = 'D:\\project\\vmcommon';
 
@@ -73,7 +73,7 @@ describe('analyze', function () {
             });
         });
 
-        it.only('test get data sync', function(done) {
+        it('test get data sync', function(done) {
             webx.getConfig('D:\\project\\tradeface', function(err, result){
                 result.vmcommon = 'D:\\project\\vmcommon';
 
