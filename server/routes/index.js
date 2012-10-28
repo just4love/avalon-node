@@ -11,7 +11,15 @@ var webx = require('../../lib/webx/webx'),
 var App = {
     find: function(params, cb) {
         webx.getConfig(params.root, function(err, result) {
-            cb(err, util.json2Tree(result));
+            if(err) {
+                cb(err);
+            } else {
+                var data = {
+                    tree:util.json2Tree(result),
+                    subModule:_.keys(result['subModule'])
+                };
+                cb(err, data);
+            }
         });
     },
     load: function() {
@@ -32,8 +40,15 @@ var App = {
         return util.json2Tree(json)
     },
     add: function(params, cb){
-        webx.getConfig(params.root, function(err, result) {
-            var appName = path.basename(params.root);
+        var root = params.root,
+            encoding = params.encoding;
+            defaultModule = params.defaultModule;
+
+        webx.getConfig(root, function(err, result) {
+            var appName = path.basename(root);
+            result.encoding = encoding;
+            result.defaultModule = defaultModule;
+
             var apps = userCfg.get('apps');
             apps[appName] = result;
             userCfg.set('apps', apps);

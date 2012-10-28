@@ -57,7 +57,7 @@ app.get('/', routes.index);
 app.get('/list', routes.list);
 app.all('/app/:operate', routes.operate);
 
-app.all('/*.*htm*', checkConfig, function(req, res, next){
+app.all('/*.(*htm*|do)', checkConfig, function(req, res, next){
     var useApp = userCfg.get('use');
     var config = util.merge({}, userCfg.get('apps')[useApp]);
     config.vmcommon = userCfg.get('vmcommon');

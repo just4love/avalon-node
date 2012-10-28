@@ -27,6 +27,9 @@ $(function(){
     $('#J_RefreshDir').click(function(e){
         e.preventDefault();
         $.fn.zTree.destroy('configTree');
+        $('#J_SubModuleSelect').parents('.control-group').hide();
+        $('#J_SubModuleSelect option').remove();
+        $('#J_SubModuleSelect').append('<option value="">无</option>');
 
         $('#approot').parents('.control-group').removeClass('error').removeClass('success');
         if(!checkValid($('#approot').val())) {
@@ -46,9 +49,19 @@ $(function(){
             $.fn.zTree.init($("#configTree"), {
                 showLine:true,
                 checkable:true
-            }, data);
+            }, data.tree);
             $('#addNewAppModal .progress .bar').css('width', '100%').parent().fadeOut(function(){
                 $("#configTree").fadeIn();
+                if(data.subModule && data.subModule.length) {
+                    if(!(data.subModule.length == 1 && data.subModule[0] == 'noModule')) {
+                        var tpl = [];
+                        $.each(data.subModule, function(idx){
+                            tpl.push('<option  value="' + data.subModule[idx] +'">' + data.subModule[idx] + '</option>');
+                        });
+                        $('#J_SubModuleSelect').append(tpl.join(''));
+                        $('#J_SubModuleSelect').parents('.control-group').show();
+                    }
+                }
             });
 
             $('#J_RefreshDir').button('reset');
@@ -63,6 +76,10 @@ $(function(){
         $('#J_RefreshDir').button('reset');
         $('#addNewAppModal .progress').hide();
         $(this).parents('.control-group').removeClass('error').removeClass('success');
+        $('#J_SubModuleSelect').parents('.control-group').hide();
+        $('#J_SubModuleSelect option').remove();
+        $('#J_SubModuleSelect').append('<option value="">无</option>');
+        $('#J_Encoding').attr('checked', true);
     });
 
     //save config
@@ -70,7 +87,9 @@ $(function(){
         e.preventDefault();
         $(this).button('loading');
         $.post('/app/add', {
-            root:$('#approot').val()
+            root:$('#approot').val(),
+            encoding:$('#J_Encoding').attr('checked') ? 'gbk':'utf8',
+            defaultModule: $('#J_SubModuleSelect').val()||""
         }, function(data) {
             if(data.success) {
                 $("#J_Apps").empty();

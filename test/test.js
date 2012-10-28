@@ -11,6 +11,7 @@ var assert = require("assert"),
     webx = require('../lib/webx/webx'),
     userCfg = require('../lib/userConfig'),
     request = require('request'),
+    vm = require('vm'),
     _ = require('underscore');
 
 describe('Array', function(){
@@ -131,7 +132,7 @@ describe('js', function() {
 });
 
 describe('render template', function() {
-    it.only('render', function(done) {
+    it('render', function(done) {
         userCfg.init('C:\\Users\\Harry\\.avalon');
 
         var content = webx.getContentSync('/auction/order/unityOrderConfirm.vm', userCfg.get('apps')['tradeface']);
@@ -151,5 +152,24 @@ describe('render template', function() {
                 done();
             }
         })
+    });
+});
+
+describe('js vm', function() {
+    it.only('render static js logic', function() {
+        var content = fs.readFileSync('D:\\project\\avalon-node\\test\\logic.js', '').toString();
+        var data = {
+            a:1,
+            b:{
+                c:2
+            }
+        };
+        try {
+            vm.runInNewContext(content, data);
+        } catch (ex) {
+            console.log(ex);
+        }
+
+        console.log(data);
     });
 });
