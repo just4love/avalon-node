@@ -6,3 +6,4 @@
 *.iws
 target/
 node_modules
+/*.iws~
