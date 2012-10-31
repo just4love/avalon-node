@@ -54,7 +54,7 @@ app.configure('production', function(){
 });
 
 app.get('/', routes.index);
-app.get('/list', routes.list);
+app.get('/list/(:appname)?', user.list);
 app.all('/app/:operate', routes.operate);
 
 app.all('/*.(*htm*|do)', checkConfig, function(req, res, next){

@@ -156,7 +156,7 @@ describe('render template', function() {
 });
 
 describe('js vm', function() {
-    it.only('render static js logic', function() {
+    it('render static js logic', function() {
         var content = fs.readFileSync('D:\\project\\avalon-node\\test\\logic.js', '').toString();
         var data = {
             a:1,

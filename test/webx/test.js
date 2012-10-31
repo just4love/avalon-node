@@ -63,7 +63,7 @@ describe('analyze', function () {
             });
         });
 
-        it.only('test get content sync', function(done) {
+        it('test get content sync', function(done) {
             webx.getConfig('D:\\project\\tradeface', function(err, result){
                 result.vmcommon = 'D:\\project\\vmcommon';
 
@@ -81,6 +81,15 @@ describe('analyze', function () {
                 var data = webx.getDataSync('auction',_.keys(content), result);
                 console.log(JSON.stringify(data));
                 done();
+            });
+        });
+
+        it.only('test get screen file', function(done) {
+            webx.getConfig('D:\\project\\tradeface', function(err, result){
+                webx.getScreenUrl(result, function(err, data){
+                    console.log(data);
+                    done();
+                });
             });
         });
     });

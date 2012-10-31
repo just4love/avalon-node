@@ -1,0 +1,27 @@
+<style type="text/css">
+    .vmarket-render-error {{
+        border: dashed 2px red;
+        min-height: 100px;
+        font-size: 18px;
+        padding: 20px;
+    }}
+</style>
+<div class="vmarket-render-error">
+    <h1>Error:</h1>
+    <ul>
+        {foreach error in errors}
+        <li>{error}</li>
+        {end}
+    </ul>
+    <hr>
+    <h1>Render Stack:</h1>
+    <table border="1" style="word-break: break-all;">
+        {foreach s in stack}
+        <tr>
+            <td>{s.key}</td>
+            <td>{s.value}</td>
+        </tr>
+        {end}
+    </table>
+</div>
+{content}
