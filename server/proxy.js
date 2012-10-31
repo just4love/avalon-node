@@ -1,4 +1,4 @@
-ï»¿/**
+/**
  * @fileoverview
  * @author Harry Chen <zhangting@taobao.com>
  *
@@ -10,30 +10,23 @@ var express = require('express')
     , http = require('http')
     , path = require('path')
     , render = require('../lib/render')
-    , userCfg = require('../lib/userConfig')
+    , proxyCfg = require('../lib/proxyConfig')
     , argv = require('optimist').argv
     , util = require('../lib/util/util')
     , cons = require('consolidate')
-    , _ = require('underscore');
+    , _ = require('underscore')
+    , httpProxy = require('http-proxy');
 
-userCfg.init({
+proxyCfg.init({
     cfg:argv.cfg,
     api: argv.api
 });
 
-var checkConfig = function(req, res, next){
-    var apps = userCfg.get('apps');
-    if(apps && !_.isEmpty(apps)) {
-        next();
-    } else {
-        res.redirect('/');
-    }
-};
 
 var app = express();
 
 app.configure(function () {
-    app.set('port', argv.port || 3000);
+    app.set('port', argv.port || 3722);
     app.set('views', __dirname + '/views');
     app.set('view engine', 'html');
     app.engine('html', cons.jazz);
@@ -54,27 +47,25 @@ app.configure('production', function(){
 });
 
 app.get('/', routes.index);
-app.get('/list/(:appname)?', user.list);
-app.all('/app/:operate', routes.operate);
 
-app.all('/*.(*htm*|do)', checkConfig, function(req, res, next){
-    var useApp = userCfg.get('use');
-    var config = util.merge({}, userCfg.get('apps')[useApp]);
-    config.vmcommon = userCfg.get('vmcommon');
+var proxy = new httpProxy.RoutingProxy();
 
-    var template = render.parse({
-        app: useApp,
-        config: config,
-        path: req.params[0],
-        api: userCfg.get('api'),
-        parameters: req.method == 'get' ? req.query : req.body
-    });
+app.get('*.(css|js|ico|png|jpg|swf|less|gif)', function(req, res){
+    //ÅÐ¶ÏurlÂ·¾¶£¬¶ÁÈ¡ÏàÓ¦µÄÎÄ¼þ£¬·ñÔò¾Í×ßÈÕ³£»·¾³
+    if(req.url.indexOf('/apps/tradeface') == 0 && req.url.indexOf("??") == -1) {
+        //¹ýÂËÊ±¼ä´Á
+        var url = req.url.replace(/\?.+/, '');
 
-    if(template) {
-        template.render(req, res);
-    } else {
-        res.render('404', { url: req.url });
+        var filePath = path.join('D:\\project\\tradeface\\assets', url.replace('/apps/tradeface', ''));
+        if(fs.existsSync(filePath)) {
+            res.write(fs.readFileSync(filePath));
+            res.end();
+        }
     }
+    proxy.proxyRequest(req, res, {
+        host: 'assets.daily.taobao.net',
+        port: 80
+    });
 });
 
 http.createServer(app).listen(app.get('port'), function () {
