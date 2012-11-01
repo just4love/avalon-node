@@ -33,31 +33,42 @@
         <h2>您的代理</h2>
         <form class="bs-docs">
             <div class="controls">
-                <input class="span5" type="text" placeholder="pattern/string">
-                <select id="" class="span2">
-                    <option value="string">文本匹配</option>
-                    <option value="regexp">正则匹配</option>
-                </select>
-                <input class="span5" type="text" placeholder="替换内容">
+                <label class="radio inline">
+                    <input type="radio" name="optionsRadios" value="string" checked>
+                    文本匹配
+                </label>
+                <label class="radio inline">
+                    <input type="radio" name="optionsRadios" value="regexp">
+                    正则匹配
+                </label>
+            </div>
+            <br>
+            <div class="controls">
+                <input class="span4" type="text" placeholder="匹配文本/正则">
+                <i class="icon-retweet">&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                <input class="span2" type="text" placeholder="代理IP/域名(:端口)">
+                <input class="span4" type="text" placeholder="替换内容/正则">
+                权重<input class="span1" type="text">
             </div>
             <div class="controls">
-                <a id="J_AddNewApp" class="btn btn-primary">添加一个proxy</a>
+                <a id="J_AddNewApp" class="btn btn-primary">添加一个代理规则</a>
                 <br/><br/>
 
                 <div class="alert alert-info">
                     <button type="button" data-dismiss="alert" class="close">×</button>
-                    <strong>注意：</strong>代理规则从上到下依次匹配，如果匹配到多条只有第一条规则生效
+                    <strong>注意：</strong>代理规则从上到下依次匹配，如果匹配到多条只有第一条规则生效，调整顺序请用权重，数字越小排序越靠前
                 </div>
             </div>
             <div class="controls">
-                <input class="span5" type="text" readonly>
+                <input class="span4" type="text" readonly>
                 <i class="icon-retweet">&nbsp;&nbsp;&nbsp;&nbsp;</i>
-                <input class="span5" type="text" readonly>
+                <input class="span2" type="text" placeholder="代理IP/域名(:端口)" readonly>
+                <input class="span4" type="text" readonly>
+                权重<input class="span1" type="text">
+                <input type="checkbox" checked>
             </div>
             <div class="controls">
-                <input class="span5" type="text" readonly>
-                <i class="icon-retweet">&nbsp;&nbsp;&nbsp;&nbsp;</i>
-                <input class="span5" type="text" readonly>
+                <a id="" class="btn btn-primary">更新改动</a>
             </div>
         </form>
     </section>

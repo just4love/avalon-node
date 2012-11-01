@@ -22,5 +22,19 @@
         },
         "cart":{}
     },
-    "use":"tradeface"
+    "use":"tradeface",
+    "rules":[
+        {
+            "type":"string",
+            "pattern":"kissy-min.js",
+            "target":"kissy.js",
+            "proxyDomain":"a.tbcdn.cn"
+        },
+        {
+            "type":"regexp",
+            "pattern":"\\.source\\.js",
+            "target":"\\.js",
+            "proxyDomain":"a.tbcdn.cn"
+        }
+    ]
 }

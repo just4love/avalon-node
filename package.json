@@ -47,6 +47,7 @@
         "xml2js":">=0.2.0",
         "consolidate":">=0.4.0",
         "jazz":">=0.0.18",
-        "http-proxy":">=0.8.4"
+        "http-proxy":">=0.8.4",
+        "combo-url-parser":">=0.0.2"
     }
 }
