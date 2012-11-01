@@ -125,5 +125,4 @@ exports.operate = function(req, res){
             res.send(result);
         }
     });
-
 };

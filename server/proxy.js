@@ -6,27 +6,27 @@
 
 var express = require('express')
     , routes = require('./routes')
-    , user = require('./routes/user')
+    , proxy = require('./routes/proxy')
     , http = require('http')
     , path = require('path')
+    , fs = require('fs')
     , render = require('../lib/render')
     , proxyCfg = require('../lib/proxyConfig')
     , argv = require('optimist').argv
     , util = require('../lib/util/util')
     , cons = require('consolidate')
     , _ = require('underscore')
-    , httpProxy = require('http-proxy');
+    , request = require('request');
 
 proxyCfg.init({
-    cfg:argv.cfg,
-    api: argv.api
+    cfg:argv.cfg
 });
 
 
 var app = express();
 
 app.configure(function () {
-    app.set('port', argv.port || 3722);
+    app.set('port', argv.port || 10087);
     app.set('views', __dirname + '/views');
     app.set('view engine', 'html');
     app.engine('html', cons.jazz);
@@ -38,34 +38,86 @@ app.configure(function () {
     app.use(express.static(path.join(__dirname, 'public')));
 });
 
-app.configure('development', function () {
-    app.use(express.errorHandler({ dumpExceptions:true, showStack:true }));
-});
-
 app.configure('production', function(){
     app.use(express.errorHandler());
 });
 
-app.get('/', routes.index);
+app.get('/proxy', proxy.index);
 
-var proxy = new httpProxy.RoutingProxy();
+var isLocal = function(url){
+    //è¿‡æ»¤æ—¶é—´æˆ³
+    url = url.replace(/\?.+/, '');
+    return fs.existsSync(path.resolve(url));
+};
 
-app.get('*.(css|js|ico|png|jpg|swf|less|gif)', function(req, res){
-    //ÅÐ¶ÏurlÂ·¾¶£¬¶ÁÈ¡ÏàÓ¦µÄÎÄ¼þ£¬·ñÔò¾Í×ßÈÕ³£»·¾³
-    if(req.url.indexOf('/apps/tradeface') == 0 && req.url.indexOf("??") == -1) {
-        //¹ýÂËÊ±¼ä´Á
-        var url = req.url.replace(/\?.+/, '');
+var contentType = {
+    '.js':'text/javascript',
+    '.css':'text/css'
+};
 
-        var filePath = path.join('D:\\project\\tradeface\\assets', url.replace('/apps/tradeface', ''));
-        if(fs.existsSync(filePath)) {
-            res.write(fs.readFileSync(filePath));
-            res.end();
-        }
+app.get('(*??*|*.(css|js|ico|png|jpg|swf|less|gif))', function(req, res){
+    var rules = proxyCfg.get('rules'),
+        url = req.url,
+        isMatch = false;
+console.log(url);
+    if(req.url.indexOf('??') != -1) {
+        request.get('http://proxy.taobao.net' + url + '&domain=' + req.headers.host.split(':')[0], function (error, response, body) {
+            if(error) {
+                res.send(error.toString() + ', url=' + url);
+            }
+
+            if(response.statusCode == 200) {
+                res.setHeader('Content-type', contentType[path.extname(url)]);
+                res.send(error ? error.toString(): body);
+            } else if(response.statusCode == 404) {
+                res.send(error ? error.toString(): body);
+            }
+        });
     }
-    proxy.proxyRequest(req, res, {
-        host: 'assets.daily.taobao.net',
-        port: 80
+
+    rules.forEach(function(rule){
+        if(!isMatch) {
+            var pattern;
+            if(rule.type == 'string') {
+                pattern = rule.pattern;
+                if(url.indexOf(pattern) != -1) {
+                    url = url.replace(pattern, rule.target);
+                    isMatch = true;
+                }
+            } else if(rule.type == 'regexp'){
+                pattern = new RegExp(rule.pattern, 'g');
+                if(pattern.test(url)) {
+                    url = url.replace(pattern, rule.target);
+                    isMatch = true;
+                }
+            }
+        }
     });
+
+    if(isLocal(url)) {
+        url = url.replace(/\?.+/, '');
+        fs.readFile(url, '', function(err, data){
+            res.setHeader('Content-type', contentType[path.extname(url)]);
+            res.send(err ? err: data);
+        });
+    } else {
+        request.get('http://proxy.taobao.net' + url, {
+            qs:{
+                domain:req.headers.host.split(':')[0]
+            }
+        }, function (error, response, body) {
+            if(error) {
+                res.send(error.toString() + ', url=' + url);
+            }
+
+            if(response.statusCode == 200) {
+                res.setHeader('Content-type', contentType[path.extname(url)]);
+                res.send(error ? error.toString(): body);
+            } else if(response.statusCode == 404) {
+                res.send(error ? error.toString(): body);
+            }
+        });
+    }
 });
 
 http.createServer(app).listen(app.get('port'), function () {
