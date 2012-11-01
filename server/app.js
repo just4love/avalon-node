@@ -77,6 +77,21 @@ app.all('/*.(*htm*|do)', checkConfig, function(req, res, next){
     }
 });
 
+app.get('(*??*|*.(css|js|ico|png|jpg|swf|less|gif))', function(req, res, next){
+    if(req.headers.host.indexOf('127.0.0.1') == -1
+        && (/\.(css|js|ico|png|jpg|swf|less|gif)/.test(req.url) || req.url.indexOf("??") != -1)) {
+//        proxy.proxyRequest(req, res, {
+//            host: '127.0.0.1',
+//            port: env.proxyPort
+//        });
+        console.log('assets here');
+    } else {
+        console.log('app css here');
+        next();
+    }
+});
+
+
 http.createServer(app).listen(app.get('port'), function () {
     console.log("Express server listening on port " + app.get('port'));
 });
