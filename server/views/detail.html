@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="/bootstrap/css/bootstrap-responsive.min.css">
     <link rel="stylesheet" href="/bootstrap/css/docs.css">
     <link rel="stylesheet" href="/ztree/css/zTreeStyle/zTreeStyle.css">
+    <script type="text/javascript" src="/jquery/jquery-1.8.1.min.js"></script>
 </head>
 <body>
 <div class="navbar navbar-inverse navbar-fixed-top">
@@ -31,6 +32,29 @@
     <a href="https://github.com/czy88840616/avalon-node" id="github-ribbon"><img src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
     <section id="forms">
         <div class="page-header"><h1>应用:{appname}</h1></div>
+        <h2>工具类</h2>
+        <form class="form-horizontal" autocomplete="on">
+            <div class="control-group">
+                <label class="control-label">Tools</label>
+                <div class="controls controls-row">
+                    <p>
+                        <button type="button" class="btn" id="J_AddTools" rel="popover" title="A Title"
+                                data-content="And here's some amazing content. It's very engaging. right?">
+                            <i class="icon-wrench"></i> Add a Tool
+                        </button>
+                    <span class="help-inline alert fade in">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        <strong>警告!</strong> 如果Tool的key和默认Tool相同，无需手动添加，查询Tools和key：<a
+                            href="doc.html#toolslist">Toolslist</a>
+                    </span>
+                    </p>
+                    <div class="btn-toolbar toolslist" id="J_ToolslistConfirm">
+                    </div>
+                </div>
+            </div>
+        </form>
+        <hr>
+        <h2>模块screen列表</h2>
         {foreach module in urls}
         <h3>Module: {if module.key eq 'noModule'}无{else}{module.key}{end}</h3>
         <ul>
@@ -47,8 +71,36 @@
         {end}
     </section>
 </div>
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.1.min.js"></script>
+<div id="J_ToolModel" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Add some Tools</h3>
+    </div>
+    <div class="modal-body">
+        <div class="alert fade in">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <strong>警告!</strong> 添加完后点击【Save All】才会真正的保存
+        </div>
+        <div class="btn-toolbar toolslist" id="J_ToolslistMock"></div>
+        <hr>
+        <div class="controls controls-row">
+            <div class="input-append">
+                <select name="" class="span3" id="J_ToolsList">
+                    <option value="">-------- please select a tool --------</option>
+                </select>
+                <input class="span2" type="text" placeholder="key" id="J_ToolsKey">
+                <button class="btn" type="button" id="J_ToolsUse"><i class="icon-ok"></i> use</button>
+            </div>
+        </div>
+        <div class="alert alert-error" style="display: none" id="J_ToolsError"></div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal">Cancel</button>
+        <button class="btn btn-primary" id="J_BtnConfirm">Save All</button>
+    </div>
+</div>
 <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/ztree/js/jquery.ztree.all-3.4.min.js"></script>
+<script type="text/javascript" src="/render.js"></script>
 </body>
 </html>
