@@ -149,7 +149,7 @@ app.get('(*??*|*.(css|js|ico|png|jpg|swf|less|gif))', function(req, res, next){
             paths = [req.url];
         }
 
-        res.setHeader('Content-type', contentType[path.extname(paths[0])]);
+        res.setHeader('Content-type', contentType[path.extname(paths[0].replace(/\?.+/, ''))]);
 
         async.forEachSeries(paths, function(p, callback){
             var uri = processUrl(p, req.headers.host);
@@ -163,6 +163,7 @@ app.get('(*??*|*.(css|js|ico|png|jpg|swf|less|gif))', function(req, res, next){
                     });
                 } else {
                     res.statusCode = 404;
+                    res.write('get 404 ' + uri);
                     res.end();
                 }
             } else {
