@@ -81,47 +81,60 @@ app.all('/*.(*htm*|do)', checkConfig, function(req, res, next){
     }
 });
 
-var isLocal = function(url){
+var isLocalFile = function(uri){
     //过滤时间戳
-    url = url.replace(/\?.+/, '');
-    return fs.existsSync(path.resolve(url));
+    uri = uri.replace(/\?.+/, '');
+    if(process.platform == 'win32') {
+        return uri.indexOf(':') != -1;
+    } else {
+        return uri.indexOf('/home') != -1;
+    }
 };
 
-var processUrl = function(url){
+var processUrl = function(uri, domain){
     var rules = userCfg.get('rules'),
+        proxyDomain = userCfg.get('proxyDomain'),
         isMatch = false;
 
     rules.forEach(function(rule){
-        if(!isMatch) {
+        if(!isMatch && rule.enable) {
             var pattern;
             if(rule.type == 'string') {
                 pattern = rule.pattern;
-                if(url.indexOf(pattern) != -1) {
-                    url = url.replace(pattern, rule.target);
-                    if(rule.proxyDomain) {
-                        url = 'http://' + rule.proxyDomain + url;
-                    }
+                if(uri.indexOf(pattern) != -1) {
+                    uri = uri.replace(pattern, rule.target);
                     isMatch = true;
                 }
             } else if(rule.type == 'regexp'){
                 pattern = new RegExp(rule.pattern, 'g');
-                if(pattern.test(url)) {
-                    url = url.replace(pattern, rule.target);
-                    if(rule.proxyDomain) {
-                        url = 'http://' + rule.proxyDomain + url;
-                    }
+                if(pattern.test(uri)) {
+                    uri = uri.replace(pattern, rule.target);
                     isMatch = true;
                 }
             }
         }
     });
 
-    return url;
+    if(!isMatch) {
+        if(!proxyDomain[domain]) {
+            console.log('请配置一条域名转换以避免死循环, domain='+domain);
+        }
+        //没匹配到的，必须要过滤域名为ip
+        uri = proxyDomain[domain] + uri;
+    } else if(!isLocalFile(uri)) {
+        if(!proxyDomain[domain]) {
+            console.log('请配置一条域名转换以避免死循环, domain='+domain);
+        }
+        uri = proxyDomain[domain] + uri;
+    }
+
+    return uri;
 };
 
 var contentType = {
-    '.js':'text/javascript',
-    '.css':'text/css'
+    '.js':'application/x-javascript',
+    '.css':'text/css',
+    '.swf':'application/x-shockwave-flash'
 };
 
 app.get('(*??*|*.(css|js|ico|png|jpg|swf|less|gif))', function(req, res, next){
@@ -138,19 +151,28 @@ app.get('(*??*|*.(css|js|ico|png|jpg|swf|less|gif))', function(req, res, next){
 
         res.setHeader('Content-type', contentType[path.extname(paths[0])]);
 
-        async.forEach(paths, function(p, callback){
-            var url = processUrl(p);
+        async.forEachSeries(paths, function(p, callback){
+            var uri = processUrl(p, req.headers.host);
 
-            if(isLocal(url)) {
-                url = url.replace(/\?.+/, '');
-                fs.readFile(url, '', function(err, data){
-                    res.write(err ? err: data);
-                    callback(err);
-                });
+            if(isLocalFile(uri)) {
+                uri = uri.replace(/\?.+/, '');
+                if(fs.existsSync(uri)) {
+                    fs.readFile(uri, '', function(err, data){
+                        res.write(err ? err: data);
+                        callback(err);
+                    });
+                } else {
+                    res.statusCode = 404;
+                    res.end();
+                }
             } else {
-                request.get(url, function (error, response, body) {
+                request.get('http://' + uri, function (error, response, body) {
                     if(error) {
-                        res.write(error.toString() + ', url=' + url);
+                        res.write(error.toString() + ', uri=' + uri);
+                    }
+
+                    if(!response) {
+                        console.log(uri);
                     }
 
                     if(response.statusCode == 200) {

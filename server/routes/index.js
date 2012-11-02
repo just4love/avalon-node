@@ -129,6 +129,7 @@ exports.operate = function(req, res){
 
 exports.proxy = function(req, res){
     res.render('proxy', {
-
+        proxyDomain:userCfg.get('proxyDomain'),
+        rules:userCfg.get('rules')
     });
 };
