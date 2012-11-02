@@ -34,9 +34,9 @@
         <form class="bs-docs">
             <h2>域名转换</h2>
             <div class="controls">
-                <input class="span3" type="text" placeholder="域名">
+                <input class="span3" type="text" placeholder="域名" id="J_Domain">
                 <i class="icon-chevron-right">&nbsp;&nbsp;&nbsp;&nbsp;</i>
-                <input class="span3" type="text" placeholder="代理IP/域名(:端口)">
+                <input class="span3" type="text" placeholder="代理IP/域名(:端口)" id="J_ProxyIp">
             </div>
             <div class="controls">
                 <a id="J_AddNewDomain" class="btn btn-primary">添加域名转ip</a>
@@ -44,34 +44,27 @@
 
                 <div class="alert alert-info">
                     <button type="button" data-dismiss="alert" class="close">×</button>
-                    <strong>注意：</strong>用于在代理规则中替换URL类型的域名，防止HOST绑定到本地死循环
+                    <strong>注意：</strong>用于在代理规则中替换URL类型的域名，防止HOST绑定到本地死循环，添加同名域名即可覆盖
                 </div>
             </div>
             {foreach domain in proxyDomain}
             <div class="controls">
-                <input class="span3" type="text" placeholder="{domain.key}" readonly>
+                <input class="span3 J_Domain" type="text" value="{domain.key}" readonly>
                 <i class="icon-chevron-right">&nbsp;&nbsp;&nbsp;&nbsp;</i>
-                <input class="span3" type="text" placeholder="{domain.value}" readonly>
+                <input class="span3" type="text" value="{domain.value}" readonly>
+                <a href="#" class="J_RemoveDomain"><i class="icon-remove"></i></a>
             </div>
             {end}
             <hr>
             <h2>代理规则</h2>
             <div class="controls">
-                <label class="radio inline">
-                    <input type="radio" name="optionsRadios" value="string" checked>
-                    文本匹配
-                </label>
-                <label class="radio inline">
-                    <input type="radio" name="optionsRadios" value="regexp">
-                    正则匹配
-                </label>
-            </div>
-            <br>
-            <div class="controls">
-                <input class="span4" type="text" placeholder="匹配文本/正则">
+                <input class="span4" type="text" placeholder="匹配内容/正则" id="J_Pattern">
                 <i class="icon-retweet">&nbsp;&nbsp;&nbsp;&nbsp;</i>
-                <input class="span4" type="text" placeholder="替换内容/正则">
-                权重<input class="span1" type="number" value="-1">
+                <input class="span4" type="text" placeholder="替换内容/正则" id="J_Target">
+                <select id="J_Charset" class="span1">
+                    <option value="gbk">gbk</option>
+                    <option value="utf-8">utf-8</option>
+                </select>
             </div>
             <div class="controls">
                 <a id="J_AddNewRule" class="btn btn-primary">添加一个代理规则</a>
@@ -79,31 +72,36 @@
 
                 <div class="alert alert-info">
                     <button type="button" data-dismiss="alert" class="close">×</button>
-                    <strong>注意：</strong>代理规则从上到下依次匹配，如果匹配到多条只有第一条规则生效，调整顺序请用权重，数字越小排序越靠前
+                    <strong>注意：</strong>代理规则从上到下依次匹配，如果匹配到多条只有第一条规则生效，调整顺序在空白处拖动，调整完毕请保存
                 </div>
             </div>
+            <div id="J_SortRules">
             {foreach rule in rules}
-            <div class="controls clearfix">
+            <div class="controls clearfix J_Sort">
                 <div class="pull-left" style="margin-right: 10px;">
-                    <input class="span4" type="text" readonly value="{rule.pattern}">
+                    <input class="span4" type="text" value="{rule.pattern}">
                     <i class="icon-retweet">&nbsp;&nbsp;&nbsp;&nbsp;</i>
-                    <input class="span4" type="text" readonly value="{rule.target}">
+                    <input class="span4" type="text" value="{rule.target}">
+                    <select class="span1">
+                        <option value="gbk">gbk</option>
+                        <option value="utf-8">utf-8</option>
+                    </select>
                 </div>
                 <div class="input-prepend input-append pull-left">
-                    <span class="add-on">权重</span>
-                    <input class="span1" id="appendedInputButtons" type="number" value="{idx}">
                     <a type="button" class="btn J_RuleEnabled" data-enable="{rule.enable}">启用</a>
                     <a class="btn btn btn-danger" id="J_RemoveApp"><i class="icon-remove icon-white"></i> 删除</a>
                 </div>
             </div>
             {end}
+            </div>
             <div class="controls">
-                <a class="btn btn-primary">更新改动</a>
+                <a class="btn btn-primary">保存改动</a>
             </div>
         </form>
     </section>
 </div>
 <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/dd/jquery.dragsort-0.5.1.min.js"></script>
 <script type="text/javascript" src="/proxy.js"></script>
 </body>
 </html>

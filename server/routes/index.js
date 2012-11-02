@@ -90,7 +90,7 @@ var App = {
     },
     setvmcommon: function(params, cb){
         var vmcommon = params.vmcommon;
-        vmcommon = path.resolve(vmcommon);
+        vmcommon = vmcommon ? path.resolve(vmcommon):vmcommon;
 
         if(vmcommon == userCfg.get('vmcommon')) {
             //cache
@@ -131,5 +131,79 @@ exports.proxy = function(req, res){
     res.render('proxy', {
         proxyDomain:userCfg.get('proxyDomain'),
         rules:userCfg.get('rules')
+    });
+};
+
+var Proxy = {
+    addDomain: function(params, cb){
+        var domain = params.domain,
+            proxyDomain = params.proxyDomain;
+
+        var proxyDomains = userCfg.get('proxyDomain') || {};
+        proxyDomains[domain] = proxyDomain;
+        userCfg.set('proxyDomain', proxyDomains);
+
+        userCfg.save(function(err){
+            if(err) {
+                cb(null, {success:false,msg:err});
+            } else {
+                cb(null, {success:true});
+            }
+        });
+    },
+    removeDomain: function(params, cb){
+        var domain = params.domain;
+
+        var proxyDomains = userCfg.get('proxyDomain') || {};
+        if(proxyDomains[domain]) {
+            delete proxyDomains[domain];
+        }
+
+        userCfg.set('proxyDomain', proxyDomains);
+
+        userCfg.save(function(err){
+            if(err) {
+                cb(null, {success:false,msg:err});
+            } else {
+                cb(null, {success:true});
+            }
+        });
+    },
+    addRule: function(params, cb){
+        var pattern = params.pattern,
+            target = params.target,
+            charset = params.charset || 'gbk';
+
+        var proxyDomains = userCfg.get('rules') || [];
+        proxyDomains.push({
+            pattern: pattern,
+            target: target,
+            enable: true,
+            charset: charset
+        });
+
+        userCfg.set('proxyDomain', proxyDomains);
+
+        userCfg.save(function(err){
+            if(err) {
+                cb(null, {success:false,msg:err});
+            } else {
+                cb(null, {success:true});
+            }
+        });
+    }
+};
+
+exports.proxyOperate = function(req, res){
+    var operate = req.params.operate;
+
+    var params = req.method == 'GET' ? req.query : req.body;
+
+    Proxy[operate](params, function(err, result) {
+        if(err) {
+            res.send(err);
+        } else {
+            res.send(result);
+        }
     });
 };

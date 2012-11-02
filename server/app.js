@@ -98,19 +98,10 @@ var processUrl = function(uri, domain){
 
     rules.forEach(function(rule){
         if(!isMatch && rule.enable) {
-            var pattern;
-            if(rule.type == 'string') {
-                pattern = rule.pattern;
-                if(uri.indexOf(pattern) != -1) {
-                    uri = uri.replace(pattern, rule.target);
-                    isMatch = true;
-                }
-            } else if(rule.type == 'regexp'){
-                pattern = new RegExp(rule.pattern, 'g');
-                if(pattern.test(uri)) {
-                    uri = uri.replace(pattern, rule.target);
-                    isMatch = true;
-                }
+            var pattern = new RegExp(rule.pattern, 'g');
+            if(pattern.test(uri)) {
+                uri = uri.replace(pattern, rule.target);
+                isMatch = true;
             }
         }
     });
@@ -194,6 +185,7 @@ app.get('(*??*|*.(css|js|ico|png|jpg|swf|less|gif))', function(req, res, next){
 
 app.get('/', routes.index);
 app.get('/proxy', routes.proxy);
+app.post('/proxy/:operate', routes.proxyOperate);
 
 http.createServer(app).listen(app.get('port'), function () {
     console.log("Express server listening on port " + app.get('port'));
