@@ -174,15 +174,15 @@ var Proxy = {
             target = params.target,
             charset = params.charset || 'gbk';
 
-        var proxyDomains = userCfg.get('rules') || [];
-        proxyDomains.push({
+        var rules = userCfg.get('rules') || [];
+        rules.push({
             pattern: pattern,
             target: target,
             enable: true,
             charset: charset
         });
 
-        userCfg.set('proxyDomain', proxyDomains);
+        userCfg.set('rules', rules);
 
         userCfg.save(function(err){
             if(err) {
@@ -191,7 +191,20 @@ var Proxy = {
                 cb(null, {success:true});
             }
         });
+    },
+    updateRule: function(params, cb){
+        var rules = params.rules || [];
+
+        userCfg.set('rules', rules);
+        userCfg.save(function(err){
+            if(err) {
+                cb(null, {success:false,msg:err});
+            } else {
+                cb(null, {success:true});
+            }
+        });
     }
+
 };
 
 exports.proxyOperate = function(req, res){

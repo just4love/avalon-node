@@ -23,7 +23,11 @@ $(function () {
             domain:$('#J_Domain').val(),
             proxyDomain:$('#J_ProxyIp').val()
         }, function(data){
-            location.reload();
+            if(data.success) {
+                location.reload();
+            } else {
+                alert(data.msg);
+            }
         });
     });
 
@@ -32,7 +36,11 @@ $(function () {
         $.post('/proxy/removeDomain', {
             domain:$(this).parent().children('.J_Domain').val()
         }, function(data){
-            location.reload();
+            if(data.success) {
+                location.reload();
+            } else {
+                alert(data.msg);
+            }
         });
     });
 
@@ -40,10 +48,42 @@ $(function () {
         e.preventDefault();
         $.post('/proxy/addRule', {
             pattern:$('#J_Pattern').val(),
-            target:$('#J_Target').val()
+            target:$('#J_Target').val(),
+            charset: $('#J_Charset').attr('checked') ? 'utf-8' : 'gbk'
         }, function(data){
-            location.reload();
+            if(data.success) {
+                location.reload();
+            } else {
+                alert(data.msg);
+            }
         });
     });
 
+    $('#J_Save').click(function(e){
+        e.preventDefault();
+        var rules = [];
+        $('#J_SortRules .J_Sort').each(function(idx, el){
+            rules.push({
+                pattern: $('.J_RulePattern', el).val(),
+                target: $('.J_RuleTarget', el).val(),
+                charset: $('.J_RuleCharset', el).attr('checked') ? 'utf-8' : 'gbk',
+                enable: $('.J_RuleEnabled', el).hasClass('active')
+            });
+        });
+
+        $.post('/proxy/updateRule', {
+            rules: rules
+        }, function(data){
+            if(data.success) {
+                location.reload();
+            } else {
+                alert(data.msg);
+            }
+        });
+    });
+
+    $('.J_RuleRemove').click(function(ev){
+        ev.preventDefault();
+        $(this).parent().remove();
+    });
 });

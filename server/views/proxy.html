@@ -57,14 +57,13 @@
             {end}
             <hr>
             <h2>代理规则</h2>
-            <div class="controls">
+            <div class="controls controls-row">
                 <input class="span4" type="text" placeholder="匹配内容/正则" id="J_Pattern">
-                <i class="icon-retweet">&nbsp;&nbsp;&nbsp;&nbsp;</i>
+                <i class="icon-retweet pull-left" style="margin: 0 10px;"></i>
                 <input class="span4" type="text" placeholder="替换内容/正则" id="J_Target">
-                <select id="J_Charset" class="span1">
-                    <option value="gbk">gbk</option>
-                    <option value="utf-8">utf-8</option>
-                </select>
+                <label class="checkbox inline" style="margin: 0 10px;">
+                    <input type="checkbox" value="utf-8" id="J_Charset">utf-8
+                </label>
             </div>
             <div class="controls">
                 <a id="J_AddNewRule" class="btn btn-primary">添加一个代理规则</a>
@@ -77,25 +76,20 @@
             </div>
             <div id="J_SortRules">
             {foreach rule in rules}
-            <div class="controls clearfix J_Sort">
-                <div class="pull-left" style="margin-right: 10px;">
-                    <input class="span4" type="text" value="{rule.pattern}">
-                    <i class="icon-retweet">&nbsp;&nbsp;&nbsp;&nbsp;</i>
-                    <input class="span4" type="text" value="{rule.target}">
-                    <select class="span1">
-                        <option value="gbk">gbk</option>
-                        <option value="utf-8">utf-8</option>
-                    </select>
-                </div>
-                <div class="input-prepend input-append pull-left">
-                    <a type="button" class="btn J_RuleEnabled" data-enable="{rule.enable}">启用</a>
-                    <a class="btn btn btn-danger" id="J_RemoveApp"><i class="icon-remove icon-white"></i> 删除</a>
-                </div>
+            <div class="controls  controls-row J_Sort">
+                <input class="span4 J_RulePattern" type="text" value="{rule.pattern}">
+                <i class="icon-retweet pull-left" style="margin: 0 10px;"></i>
+                <input class="span4 J_RuleTarget" type="text" value="{rule.target}">
+                <label class="checkbox inline"  style="margin: 0 10px;">
+                    <input type="checkbox" value="utf-8" class="J_RuleCharset" {if rule.charset eq 'utf-8'}checked{end}>utf-8
+                </label>
+                <a type="button" class="btn J_RuleEnabled" data-enable="{rule.enable}">启用</a>
+                <a href="#" class="J_RuleRemove"><i class="icon-remove"></i></a>
             </div>
             {end}
             </div>
             <div class="controls">
-                <a class="btn btn-primary">保存改动</a>
+                <a class="btn btn-primary" id="J_Save">保存改动</a>
             </div>
         </form>
     </section>
