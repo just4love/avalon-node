@@ -105,6 +105,43 @@ var App = {
                 }
             });
         }
+    },
+    settools: function(params, cb){
+        var tools = params.tools,
+            appname = params.app;
+
+        var apps = userCfg.get('apps');
+        apps[appname].tools = tools;
+        userCfg.set('apps', apps);
+
+        userCfg.save(function(err){
+            if(err) {
+                cb(null, {success:false,msg:err});
+            } else {
+                cb(null, {success:true});
+            }
+        });
+    },
+    removetool: function(params, cb){
+        var key = params.toolkey,
+            appname = params.app;
+
+        var apps = userCfg.get('apps');
+        delete apps[appname].tools[key];
+        userCfg.set('apps', apps);
+
+        userCfg.save(function(err){
+            if(err) {
+                cb(null, {success:false,msg:err});
+            } else {
+                cb(null, {success:true});
+            }
+        });
+    },
+    loadtools: function(params, cb){
+        var appname = params.app;
+        var apps = userCfg.get('apps');
+        cb(null, {success:true, tools:apps[appname].tools});
     }
 };
 

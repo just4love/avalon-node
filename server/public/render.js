@@ -54,24 +54,26 @@ var toolsList = {
         class:"web.tools.webx.CsrfTokenTool"
     }
 };
-var tools = {};
+window.tools = window.tools || {};
 
-var TPL = ['<div class="btn-group" data-toolkey="',
-    $('#J_ToolsKey').val(),
-    '"><a class="btn btn-small btn-info J_Tooltip" rel="tooltip"',
-    'href="#" data-placement="top" data-original-title="',
-    $('#J_ToolsList option:selected').text(),
-    '"><i class="icon-wrench icon-white"></i> ',
-    $('#J_ToolsKey').val(),
-    '</a><a class="btn btn-small btn-info dropdown-toggle" data-toggle="dropdown" href="#">',
-    '<span class="caret"></span></a> <ul class="dropdown-menu"><li>',
-    '<a href="#" class="J_DeleteTool"><i class="icon-trash"></i> Delete</a></li></ul></div>'].join('');
+var TPLReader =  function(data){
+    return ['<div class="btn-group" data-toolkey="',
+        data.key,
+        '"><a class="btn btn-small btn-info J_Tooltip" rel="tooltip"',
+        'href="#" data-placement="top" data-original-title="',
+        data.className + ' ' + data.propString,
+        '"><i class="icon-wrench icon-white"></i> ',
+        data.key,
+        '</a><a class="btn btn-small btn-info dropdown-toggle" data-toggle="dropdown" href="#">',
+        '<span class="caret"></span></a> <ul class="dropdown-menu"><li>',
+        '<a href="#" class="J_DeleteTool"><i class="icon-trash"></i> Delete</a></li></ul></div>'].join('');
+};
 
 var propTPLRender = function(data){
 
     if($.isArray(data.propValue)) {
         var selecttpl = [];
-        selecttpl.push('<select>');
+        selecttpl.push('<select class="J_PropCls" prop-key="' + data.propKey + '">');
         $.each(data.propValue, function(k, v){
             selecttpl.push('<option value="'+v+'">' + v + '</option>');
         });
@@ -90,14 +92,62 @@ var propTPLRender = function(data){
             data.propKey,
             '</label>',
             '<div class="controls" style="margin-left: 80px;">',
-            '<input class="span4" type="text" placeholder="',
+            '<input class="span4 J_PropCls" type="text" prop-key="',
+            data.propKey,
+            '" placeholder="',
             data.propValue,
             '"></div></div>'].join('');
     }
 };
 
 $(function () {
+    //init load tools
+    $.post('/app/loadtools', {
+        app:$('#J_CurrentApp').val()
+    }, function(data){
+        if(data.success) {
+            window.tools = data.tools;
 
+            $.each(data.tools, function(idx, tool){
+                //添加属性
+                var propString = [];
+                if(tool.props) {
+                    $.each(tool.props, function(key, prop){
+                        propString.push(key+'='+prop);
+                    });
+                }
+                propString.join(',');
+
+                $(TPLReader({
+                    key:idx,
+                    className:tool.class,
+                    propString:propString
+                })).appendTo($('#J_ToolslistConfirm')).find('.J_DeleteTool').click(function(e){
+                    e.preventDefault();
+                    var el = $(this);
+                    var toolKey = el.parents('.btn-group').attr('data-toolkey');
+                    //删除
+                    $.post('/app/removetool', {
+                        app:$('#J_CurrentApp').val(),
+                        toolkey:toolKey
+                    }, function(data){
+                        if(data.success) {
+                            //delete data
+                            delete tools[toolKey];
+                            //remove dom
+                            $(el).parents('.btn-group').remove();
+                        } else {
+                            alert(data.msg);
+                        }
+                    });
+                }).end().find('.J_Tooltip').tooltip();
+            });
+        }
+    });
+
+
+
+    //event bind
     $('#J_AddTools').click(function(){
         $('#J_ToolModel').modal('show');
     });
@@ -136,35 +186,79 @@ $(function () {
             return;
         }
 
-        if(!$('#J_ToolsKey').val() || $('#J_ToolsKey').val() === $('#J_ToolsKey').attr('placeholder')) {
-            $('#J_ToolsError').text('请填写一个和默认变量不同的变量值！').show();
-            return;
-        }
-
         if(tools[$('#J_ToolsKey').val()]) {
             $('#J_ToolsError').text('当前变量值已经存在，请添加一个不存在的值或者删除旧值！').show();
             return;
         }
 
-        $(TPL).appendTo($('#J_ToolslistMock')).find('.J_DeleteTool').click(function(e){
+        var key = $('#J_ToolsKey').val(),
+            className = $('#J_ToolsList option:selected').text();
+
+        if($('#J_ToolsList').val() == 'uri') {
+            className = 'uri';
+        }
+
+        //添加属性
+        var propString = [];
+        if(toolsList[$('#J_ToolsList').val()].props) {
+            $('#J_ToolsProps .J_PropCls').each(function(idx, el){
+                propString.push($(el).attr('prop-key')+'='+$(el).val());
+            });
+        }
+        propString.join(',');
+
+        $(TPLReader({
+            key:key,
+            className:className,
+            propString:propString
+        })).appendTo($('#J_ToolslistMock')).find('.J_DeleteTool').click(function(e){
             e.preventDefault();
-            //delete data
-            delete tools[$(this).parents('.btn-group').attr('data-toolkey')];
-            //remove dom
-            $(this).parents('.btn-group').remove();
+
+            //删除
+            $.post('/app/removetool', {
+                app:$('#J_CurrentApp').val(),
+                toolkey:$(this).parents('.btn-group').attr('data-toolkey')
+            }, function(data){
+                if(data.success) {
+                    //delete data
+                    delete tools[$(this).parents('.btn-group').attr('data-toolkey')];
+                    //remove dom
+                    $(this).parents('.btn-group').remove();
+                } else {
+                    alert(data.msg);
+                }
+            });
         }).end().find('.J_Tooltip').tooltip();
 
-        tools[$('#J_ToolsKey').val()] = $('#J_ToolsList option:selected').text();
+        tools[$('#J_ToolsKey').val()] = {
+            class:$('#J_ToolsList').val()=='uri'||$('#J_ToolsList').val()=='custom' ? $('#J_ToolsList').val() : $('#J_ToolsList option:selected').text()
+        };
 
+        if(toolsList[$('#J_ToolsList').val()].props) {
+            var props = tools[$('#J_ToolsKey').val()].props = {};
+            $('#J_ToolsProps .J_PropCls').each(function(idx, el){
+                props[$(el).attr('prop-key')] = $(el).val();
+            });
+        }
+
+        //reset
         $("#J_ToolsList").get(0).selectedIndex = 0;
         $('#J_ToolsKey').val('').attr('placeholder', 'key');
+        $('#J_ToolsProps').html('');
     });
 
     $('#J_BtnConfirm').click(function(e){
         e.preventDefault();
-        $('#J_ToolslistConfirm').append($('#J_ToolslistMock').children());
-        //hide model
-        $('#J_ToolModel').modal('hide');
+        $.post('/app/settools', {
+            app:$('#J_CurrentApp').val(),
+            tools:tools
+        }, function(data){
+            if(data.success) {
+                location.reload();
+            } else {
+                alert(data.msg);
+            }
+        });
     });
 
 });
