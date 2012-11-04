@@ -5,24 +5,96 @@
  */
 
 var toolsList = {
-    control:"web.tools.webx.ControlTool",
-    rundata:"web.tools.webx.RundataTool",
-    vmcommonControl:"web.tools.webx.VmcommonControl",
-    tmsTool:"web.tools.webx.TmsTool",
-    cmsTool:"web.tools.webx.CmsTool",
-    stringUtil:"com.alibaba.common.lang.StringUtil",
-    tbStringUtil:"com.taobao.util.TBStringUtil",
-    securityUtil:"com.taobao.security.util.SecurityUtil",
-    systemUtil:"com.alibaba.common.lang.SystemUtil",
-    randomUtil:"com.taobao.util.RandomUtil",
-    calendarUtil:"com.taobao.util.CalendarUtil",
-    dateUtil:"com.taobao.util.DateUtils",
-    collectionUtil:"com.taobao.util.CollectionUtil",
-    mapUtil:"com.taobao.util.MapUtil",
-    stringEscapeUtil:"com.alibaba.common.lang.StringEscapeUtil",
-    csrfToken:"web.tools.webx.CsrfTokenTool"
+    "uri":{
+        class:"URL类型(直接输入url即可)",
+        props:{
+            uri:"http://assets.daily.taobao.net"
+        }
+    },
+    tmsTool: {
+        class:"web.tools.webx.TmsTool",
+        props:{
+            env:["dev","online"]
+        }
+    },
+    cmsTool:{
+        class:"web.tools.webx.CmsTool"
+    },
+    stringUtil:{
+        class:"com.alibaba.common.lang.StringUtil"
+    },
+    tbStringUtil:{
+        class:"com.taobao.util.TBStringUtil"
+    },
+    securityUtil:{
+        class:"com.taobao.security.util.SecurityUtil"
+    },
+    systemUtil:{
+        class:"com.alibaba.common.lang.SystemUtil"
+    },
+    randomUtil:{
+        class:"com.taobao.util.RandomUtil"
+    },
+    calendarUtil:{
+        class:"com.taobao.util.CalendarUtil"
+    },
+    dateUtil:{
+        class:"com.taobao.util.DateUtils"
+    },
+    collectionUtil:{
+        class:"com.taobao.util.CollectionUtil"
+    },
+    mapUtil:{
+        class:"com.taobao.util.MapUtil"
+    },
+    stringEscapeUtil:{
+        class:"com.alibaba.common.lang.StringEscapeUtil"
+    },
+    csrfToken:{
+        class:"web.tools.webx.CsrfTokenTool"
+    }
 };
 var tools = {};
+
+var TPL = ['<div class="btn-group" data-toolkey="',
+    $('#J_ToolsKey').val(),
+    '"><a class="btn btn-small btn-info J_Tooltip" rel="tooltip"',
+    'href="#" data-placement="top" data-original-title="',
+    $('#J_ToolsList option:selected').text(),
+    '"><i class="icon-wrench icon-white"></i> ',
+    $('#J_ToolsKey').val(),
+    '</a><a class="btn btn-small btn-info dropdown-toggle" data-toggle="dropdown" href="#">',
+    '<span class="caret"></span></a> <ul class="dropdown-menu"><li>',
+    '<a href="#" class="J_DeleteTool"><i class="icon-trash"></i> Delete</a></li></ul></div>'].join('');
+
+var propTPLRender = function(data){
+
+    if($.isArray(data.propValue)) {
+        var selecttpl = [];
+        selecttpl.push('<select>');
+        $.each(data.propValue, function(k, v){
+            selecttpl.push('<option value="'+v+'">' + v + '</option>');
+        });
+        selecttpl.push('</select>');
+
+        return ['<div class="control-group">',
+            '<label class="control-label" style="width: 60px;">',
+            data.propKey,
+            '</label>',
+            '<div class="controls" style="margin-left: 80px;">',
+            selecttpl.join(''),
+            '</div></div>'].join('');
+    } else {
+        return ['<div class="control-group">',
+            '<label class="control-label" style="width: 60px;">',
+            data.propKey,
+            '</label>',
+            '<div class="controls" style="margin-left: 80px;">',
+            '<input class="span4" type="text" placeholder="',
+            data.propValue,
+            '"></div></div>'].join('');
+    }
+};
 
 $(function () {
 
@@ -31,14 +103,29 @@ $(function () {
     });
 
     var tpl = [];
-    $.each(toolsList, function(value, key){
-        tpl.push("<option value='"+value+"'>"+key+"</option>");
+    $.each(toolsList, function(key, value){
+        tpl.push("<option value='"+key+"'>"+value.class+"</option>");
     });
 
     //切换tool select
     $("#J_ToolsList").append(tpl.join('')).change(function(e){
         $('#J_ToolsError').hide();
-        $('#J_ToolsKey').attr('placeholder', $(this).val());
+        $('#J_ToolsProps').html('');
+        var key = $(this).val();
+        if(key === 'uri') {
+            $('#J_ToolsKey').attr('placeholder', 'uiModule');
+        } else {
+            $('#J_ToolsKey').attr('placeholder', key);
+        }
+
+        if(toolsList[key].props) {
+            $.each(toolsList[key].props, function(k, v){
+                $(propTPLRender({
+                    propKey: k,
+                    propValue: v
+                })).appendTo($('#J_ToolsProps'));
+            });
+        }
     });
 
     //添加一个tool
@@ -50,25 +137,14 @@ $(function () {
         }
 
         if(!$('#J_ToolsKey').val() || $('#J_ToolsKey').val() === $('#J_ToolsKey').attr('placeholder')) {
-            $('#J_ToolsError').text('请填写一个和默认key不同的key值！').show();
+            $('#J_ToolsError').text('请填写一个和默认变量不同的变量值！').show();
             return;
         }
 
         if(tools[$('#J_ToolsKey').val()]) {
-            $('#J_ToolsError').text('当前key值已经存在，请添加一个不存在的值或者删除旧值！').show();
+            $('#J_ToolsError').text('当前变量值已经存在，请添加一个不存在的值或者删除旧值！').show();
             return;
         }
-
-        var TPL = ['<div class="btn-group" data-toolkey="',
-            $('#J_ToolsKey').val(),
-            '"><a class="btn btn-small btn-info J_Tooltip" rel="tooltip"',
-            'href="#" data-placement="top" data-original-title="',
-            $('#J_ToolsList option:selected').text(),
-            '"><i class="icon-wrench icon-white"></i> ',
-            $('#J_ToolsKey').val(),
-            '</a><a class="btn btn-small btn-info dropdown-toggle" data-toggle="dropdown" href="#">',
-            '<span class="caret"></span></a> <ul class="dropdown-menu"><li>',
-            '<a href="#" class="J_DeleteTool"><i class="icon-trash"></i> Delete</a></li></ul></div>'].join('');
 
         $(TPL).appendTo($('#J_ToolslistMock')).find('.J_DeleteTool').click(function(e){
             e.preventDefault();

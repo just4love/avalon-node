@@ -32,23 +32,26 @@
     <a href="https://github.com/czy88840616/avalon-node" id="github-ribbon"><img src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
     <section id="forms">
         <div class="page-header"><h1>应用:{appname}</h1></div>
+        <input type="hidden" id="J_CurrentApp" value="{appname}"/>
         <h2>工具类</h2>
         <form class="form-horizontal" autocomplete="on">
             <div class="control-group">
                 <label class="control-label">Tools</label>
                 <div class="controls controls-row">
-                    <p>
-                        <button type="button" class="btn" id="J_AddTools" rel="popover" title="A Title"
-                                data-content="And here's some amazing content. It's very engaging. right?">
-                            <i class="icon-wrench"></i> Add a Tool
-                        </button>
+                    <button type="button" class="btn" id="J_AddTools" rel="popover" title="A Title"
+                            data-content="And here's some amazing content. It's very engaging. right?">
+                        <i class="icon-wrench"></i> 添加一个工具类
+                    </button>
                     <span class="help-inline alert fade in">
                         <button type="button" class="close" data-dismiss="alert">×</button>
-                        <strong>警告!</strong> 如果Tool的key和默认Tool相同，无需手动添加，查询Tools和key：<a
-                            href="doc.html#toolslist">Toolslist</a>
+                        <strong>警告!</strong> 如果待添加的变量和默认工具类相同，无需手动添加，查询默认工具类和默认变量：<a
+                            href="http://v.taobao.net/doc.html#toolslist">工具类列表</a>
                     </span>
-                    </p>
-                    <div class="btn-toolbar toolslist" id="J_ToolslistConfirm">
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <div class="btn-toolbar toolslist" id="J_ToolslistConfirm" style="border: 2px dashed red;min-height: 20px;padding:10px;">
                     </div>
                 </div>
             </div>
@@ -74,29 +77,43 @@
 <div id="J_ToolModel" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="myModalLabel">Add some Tools</h3>
+        <h3 id="myModalLabel">添加工具类</h3>
     </div>
     <div class="modal-body">
         <div class="alert fade in">
             <button type="button" class="close" data-dismiss="alert">×</button>
-            <strong>警告!</strong> 添加完后点击【Save All】才会真正的保存
+            <strong>警告!</strong> 添加完后点击【保存】才会真正的保存
         </div>
         <div class="btn-toolbar toolslist" id="J_ToolslistMock"></div>
         <hr>
-        <div class="controls controls-row">
-            <div class="input-append">
-                <select name="" class="span3" id="J_ToolsList">
+        <form class="form-horizontal">
+        <div class="control-group">
+            <label class="control-label" style="width: 60px;">工具类</label>
+            <div class="controls" style="margin-left: 80px;">
+                <select class="span4" id="J_ToolsList">
                     <option value="">-------- please select a tool --------</option>
                 </select>
-                <input class="span2" type="text" placeholder="key" id="J_ToolsKey">
-                <button class="btn" type="button" id="J_ToolsUse"><i class="icon-ok"></i> use</button>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" style="width: 60px;">变量名</label>
+            <div class="controls" style="margin-left: 80px;">
+                <input class="span4" type="text" placeholder="key" id="J_ToolsKey">
+            </div>
+        </div>
+        <div id="J_ToolsProps"></div>
+        <div class="controls-group">
+            <label class="control-label" style="width: 60px;"></label>
+            <div class="controls" style="margin-left: 80px;">
+                <button class="btn btn-primary" type="button" id="J_ToolsUse"><i class="icon-ok icon-white"></i>添加</button>
             </div>
         </div>
         <div class="alert alert-error" style="display: none" id="J_ToolsError"></div>
+        </form>
     </div>
     <div class="modal-footer">
-        <button class="btn" data-dismiss="modal">Cancel</button>
-        <button class="btn btn-primary" id="J_BtnConfirm">Save All</button>
+        <button class="btn" data-dismiss="modal">取消</button>
+        <button class="btn btn-primary" id="J_BtnConfirm">保存</button>
     </div>
 </div>
 <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
