@@ -230,7 +230,7 @@ var Proxy = {
         });
     },
     updateRule: function(params, cb){
-        var rules = params.rules || [];
+        var rules = JSON.parse(params.rules) || [];
 
         userCfg.set('rules', rules);
         userCfg.save(function(err){

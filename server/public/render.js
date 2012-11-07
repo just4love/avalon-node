@@ -106,9 +106,9 @@ $(function () {
         app:$('#J_CurrentApp').val()
     }, function(data){
         if(data.success) {
-            window.tools = data.tools;
+            window.tools = data.tools || {};
 
-            $.each(data.tools, function(idx, tool){
+            $.each(window.tools, function(idx, tool){
                 //添加属性
                 var propString = [];
                 if(tool.props) {
@@ -133,7 +133,7 @@ $(function () {
                     }, function(data){
                         if(data.success) {
                             //delete data
-                            delete tools[toolKey];
+                            delete window.tools[toolKey];
                             //remove dom
                             $(el).parents('.btn-group').remove();
                         } else {
@@ -186,7 +186,7 @@ $(function () {
             return;
         }
 
-        if(tools[$('#J_ToolsKey').val()]) {
+        if(window.tools[$('#J_ToolsKey').val()]) {
             $('#J_ToolsError').text('当前变量值已经存在，请添加一个不存在的值或者删除旧值！').show();
             return;
         }
@@ -221,7 +221,7 @@ $(function () {
             }, function(data){
                 if(data.success) {
                     //delete data
-                    delete tools[$(this).parents('.btn-group').attr('data-toolkey')];
+                    delete window.tools[$(this).parents('.btn-group').attr('data-toolkey')];
                     //remove dom
                     $(this).parents('.btn-group').remove();
                 } else {
@@ -230,12 +230,12 @@ $(function () {
             });
         }).end().find('.J_Tooltip').tooltip();
 
-        tools[$('#J_ToolsKey').val()] = {
+        window.tools[$('#J_ToolsKey').val()] = {
             class:$('#J_ToolsList').val()=='uri'||$('#J_ToolsList').val()=='custom' ? $('#J_ToolsList').val() : $('#J_ToolsList option:selected').text()
         };
 
         if(toolsList[$('#J_ToolsList').val()].props) {
-            var props = tools[$('#J_ToolsKey').val()].props = {};
+            var props = window.tools[$('#J_ToolsKey').val()].props = {};
             $('#J_ToolsProps .J_PropCls').each(function(idx, el){
                 props[$(el).attr('prop-key')] = $(el).val();
             });
@@ -251,7 +251,7 @@ $(function () {
         e.preventDefault();
         $.post('/app/settools', {
             app:$('#J_CurrentApp').val(),
-            tools:tools
+            tools:window.tools
         }, function(data){
             if(data.success) {
                 location.reload();

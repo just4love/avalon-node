@@ -72,7 +72,7 @@ $(function () {
         });
 
         $.post('/proxy/updateRule', {
-            rules: rules
+            rules: JSON.stringify(rules)
         }, function(data){
             if(data.success) {
                 location.reload();
