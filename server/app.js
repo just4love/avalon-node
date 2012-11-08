@@ -61,7 +61,7 @@ app.configure('production', function(){
 app.get('/list/(:appname)?', user.list);
 app.all('/app/:operate', routes.operate);
 
-app.all('/*.(*htm*|do)', checkConfig, function(req, res, next){
+app.all('/*.(*htm*|do|info)', checkConfig, function(req, res, next){
     var useApp = userCfg.get('use');
     var config = util.merge({}, userCfg.get('apps')[useApp]);
     config.vmcommon = userCfg.get('vmcommon');
@@ -79,6 +79,18 @@ app.all('/*.(*htm*|do)', checkConfig, function(req, res, next){
     } else {
         res.render('404', { url: req.url });
     }
+});
+
+app.get('*.do', checkConfig, function(req, res, next){
+    var useApp = userCfg.get('use');
+    var config = util.merge({}, userCfg.get('apps')[useApp]);
+    config.vmcommon = userCfg.get('vmcommon');
+
+    res.render('info', render.getInfo({
+        app: useApp,
+        config: config,
+        path: req.params[0]
+    }));
 });
 
 var isLocalFile = function(uri){

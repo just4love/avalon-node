@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/bootstrap/css/bootstrap-responsive.min.css">
     <link rel="stylesheet" href="/bootstrap/css/docs.css">
+    <link rel="stylesheet" href="/ztree/css/zTreeStyle/zTreeStyle.css">
     <script type="text/javascript" src="/jquery/jquery-1.8.1.min.js"></script>
 </head>
 <body>
@@ -19,7 +20,7 @@
             <div class="nav-collapse collapse">
                 <ul class="nav">
                     <li><a href="/">首页</a></li>
-                    <li class="active"><a href="/list">应用列表</a></li>
+                    <li><a href="/list">应用列表</a></li>
                     <li><a href="/proxy">Assets代理</a></li>
                     <li><a href="http://v.taobao.net">VMarket</a></li>
                 </ul>
@@ -30,12 +31,9 @@
 <div class="container">
     <a href="https://github.com/czy88840616/avalon-node" id="github-ribbon"><img src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
     <section id="forms">
-        <div class="page-header"><h1>应用列表</h1></div>
-        <ul>
-            {foreach app in apps}
-            <li><a href="/list/{app}" style="font-size: 24px;">{app}</a></li>
-            {end}
-        </ul>
+        <div class="page-header"><h1>应用:{appname}</h1></div>
+        <input type="hidden" id="J_CurrentApp" value="{appname}"/>
+        <h2>工具类</h2>
     </section>
 </div>
 <div class="footer">
