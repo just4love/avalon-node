@@ -123,9 +123,12 @@ var processUrl = function(uri, domain){
 };
 
 var contentType = {
-    '.js':'application/x-javascript',
-    '.css':'text/css',
-    '.swf':'application/x-shockwave-flash'
+    '.js':'application/x-javascript;',
+    '.css':'text/css;',
+    '.swf':'application/x-shockwave-flash;',
+    '.png': 'image/png;',
+    '.gif': 'image/gif;',
+    '.jpg': 'image/jpeg;'
 };
 
 app.get('(*??*|*.(css|js|ico|png|jpg|swf|less|gif))', function(req, res, next){
@@ -140,7 +143,7 @@ app.get('(*??*|*.(css|js|ico|png|jpg|swf|less|gif))', function(req, res, next){
             paths = [req.url];
         }
 
-        res.setHeader('Content-type', contentType[path.extname(paths[0].replace(/\?.+/, ''))]);
+        res.setHeader('Content-type', contentType[path.extname(paths[0].replace(/\?.+/, ''))] + 'charset=GBK');
 
         async.forEachSeries(paths, function(p, callback){
             var uri = processUrl(p, req.headers.host);
@@ -149,6 +152,7 @@ app.get('(*??*|*.(css|js|ico|png|jpg|swf|less|gif))', function(req, res, next){
                 uri = uri.replace(/\?.+/, '');
                 if(fs.existsSync(uri)) {
                     fs.readFile(uri, '', function(err, data){
+                        res.write('/*'+uri+'*/\r\n');
                         res.write(err ? err: data);
                         callback(err);
                     });
