@@ -61,7 +61,7 @@ app.configure('production', function(){
 app.get('/list/(:appname)?', user.list);
 app.all('/app/:operate', routes.operate);
 
-app.all('/*.(*htm*|do|info)', checkConfig, function(req, res, next){
+app.all('/*.(*htm*|do)', checkConfig, function(req, res, next){
     var useApp = userCfg.get('use');
     var config = util.merge({}, userCfg.get('apps')[useApp]);
     config.vmcommon = userCfg.get('vmcommon');
@@ -81,7 +81,7 @@ app.all('/*.(*htm*|do|info)', checkConfig, function(req, res, next){
     }
 });
 
-app.get('*.do', checkConfig, function(req, res, next){
+app.get('*.info', checkConfig, function(req, res, next){
     var useApp = userCfg.get('use');
     var config = util.merge({}, userCfg.get('apps')[useApp]);
     config.vmcommon = userCfg.get('vmcommon');
