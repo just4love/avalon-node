@@ -164,15 +164,16 @@ app.get('(*??*|*.(css|js|ico|png|jpg|swf|less|gif))', function(req, res, next){
             processUrl(p, req.headers.host, function(uri, rule){
                 if(isLocalFile(uri)) {
                     uri = uri.replace(/\?.+/, '');
-                    var charset = rule && rule.charset || 'gbk';
+                    var charset = rule && rule.charset || 'gbk',
+                        readCharset = charset;
                     if(charset == 'gbk') {
-                        charset = '';
+                        readCharset = '';
                     }
 
                     if(fs.existsSync(uri)) {
-                        fs.readFile(uri, charset, function(err, data){
+                        fs.readFile(uri, readCharset, function(err, data){
                             res.write('/*'+uri+'*/\r\n');
-                            res.write(err ? err: data);
+                            res.write(err ? err: iconv.decode(data, charset));
                             callback(err);
                         });
                     } else {
