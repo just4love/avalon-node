@@ -19,6 +19,7 @@ var express = require('express')
     , fs = require('fs')
     , comboParser = require('combo-url-parser')
     , request = require('request')
+    , iconv = require('iconv-lite')
     , async = require('async');
 
 userCfg.init({
@@ -103,16 +104,18 @@ var isLocalFile = function(uri){
     }
 };
 
-var processUrl = function(uri, domain){
+var processUrl = function(uri, domain,  callback){
     var rules = userCfg.get('rules'),
         proxyDomain = userCfg.get('proxyDomain'),
-        isMatch = false;
+        isMatch = false,
+        matchRule;
 
     rules.forEach(function(rule){
         if(!isMatch && rule.enable) {
             var pattern = new RegExp(rule.pattern, 'g');
             if(pattern.test(uri)) {
                 uri = uri.replace(pattern, rule.target);
+                matchRule = rule;
                 isMatch = true;
             }
         }
@@ -131,7 +134,7 @@ var processUrl = function(uri, domain){
         uri = proxyDomain[domain] + uri;
     }
 
-    return uri;
+    callback(uri, matchRule);
 };
 
 var contentType = {
@@ -155,42 +158,48 @@ app.get('(*??*|*.(css|js|ico|png|jpg|swf|less|gif))', function(req, res, next){
             paths = [req.url];
         }
 
-        res.setHeader('Content-type', contentType[path.extname(paths[0].replace(/\?.+/, ''))] + 'charset=GBK');
+        res.setHeader('Content-type', contentType[path.extname(paths[0].replace(/\?.+/, ''))]);
 
         async.forEachSeries(paths, function(p, callback){
-            var uri = processUrl(p, req.headers.host);
+            processUrl(p, req.headers.host, function(uri, rule){
+                if(isLocalFile(uri)) {
+                    uri = uri.replace(/\?.+/, '');
+                    var charset = rule && rule.charset || 'gbk';
+                    if(charset == 'gbk') {
+                        charset = '';
+                    }
 
-            if(isLocalFile(uri)) {
-                uri = uri.replace(/\?.+/, '');
-                if(fs.existsSync(uri)) {
-                    fs.readFile(uri, '', function(err, data){
-                        res.write('/*'+uri+'*/\r\n');
-                        res.write(err ? err: data);
-                        callback(err);
-                    });
+                    if(fs.existsSync(uri)) {
+                        fs.readFile(uri, charset, function(err, data){
+                            res.write('/*'+uri+'*/\r\n');
+                            res.write(err ? err: data);
+                            callback(err);
+                        });
+                    } else {
+                        res.statusCode = 404;
+                        res.write('get 404 ' + uri);
+                        res.end();
+                    }
                 } else {
-                    res.statusCode = 404;
-                    res.write('get 404 ' + uri);
-                    res.end();
+                    request.get({
+                        url:  'http://' + uri,
+                        encoding: null
+                    }, function (error, response, body) {
+                        if(error) {
+                            res.write(error.toString() + ', uri=http://' + uri);
+                        }
+
+                        if(!response) {
+                            console.log('connect fail: ' + uri);
+                        } else if(response.statusCode == 200) {
+                            res.write(error ? error.toString(): body);
+                        } else if(response.statusCode == 404) {
+                            res.write(error ? error.toString(): body);
+                        }
+                        callback(error);
+                    });
                 }
-            } else {
-                request.get('http://' + uri, function (error, response, body) {
-                    if(error) {
-                        res.write(error.toString() + ', uri=' + uri);
-                    }
-
-                    if(!response) {
-                        console.log(uri);
-                    }
-
-                    if(response.statusCode == 200) {
-                        res.write(error ? error.toString(): body);
-                    } else if(response.statusCode == 404) {
-                        res.write(error ? error.toString(): body);
-                    }
-                    callback(error);
-                });
-            }
+            });
         }, function(err){
             res.end();
         });
