@@ -173,7 +173,7 @@ app.get('(*??*|*.(css|js|ico|png|jpg|swf|less|gif))', function(req, res, next){
                     if(fs.existsSync(uri)) {
                         fs.readFile(uri, readCharset, function(err, data){
                             res.write('/*'+uri+'*/\r\n');
-                            res.write(err ? err: iconv.decode(data, charset));
+                            res.write(err ? err: data);
                             callback(err);
                         });
                     } else {
