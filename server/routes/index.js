@@ -44,6 +44,7 @@ var App = {
             encoding = params.encoding;
             defaultModule = params.defaultModule;
 
+        root = root.replace(/(\\|\/)$/, '');
         webx.getConfig(root, function(err, result) {
             var appName = path.basename(root);
             result.encoding = encoding;
@@ -90,6 +91,7 @@ var App = {
     },
     setvmcommon: function(params, cb){
         var vmcommon = params.vmcommon;
+        vmcommon = vmcommon.replace(/(\\|\/)$/, '');
         vmcommon = vmcommon ? path.resolve(vmcommon):vmcommon;
 
         if(vmcommon == userCfg.get('vmcommon')) {

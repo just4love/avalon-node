@@ -2,7 +2,7 @@
     "author":"Harry <czy88840616@gmail.com>",
     "name":"avalon-node",
     "description":"The nodejs client for VMarket",
-    "version":"0.1.1",
+    "version":"0.1.4",
     "keywords":[
         "vmarket",
         "vcenter",
