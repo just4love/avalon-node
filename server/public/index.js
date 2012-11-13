@@ -85,6 +85,11 @@ $(function(){
     //save config
     $('#J_SaveConfig').click(function(e){
         e.preventDefault();
+        if(!checkValid($('#approot').val()) || !$('#configTree').html()){
+            alert('请先填写应用根目录并等待系统分析目录完成');
+            return;
+        }
+
         $(this).button('loading');
         $.post('/app/add', {
             root:$('#approot').val(),
