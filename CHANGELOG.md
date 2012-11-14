@@ -7,7 +7,8 @@
 ###0.1.4###
 * bugfix 未分析目录直接点保存也会执行
 * bugfix 填写路径后多了斜杠导致应用名出错
-* bugfix 添加一个命令vm help用于打开帮助文档
+* bugfix 添加一个命令vm help用于打开帮助文档，导航也添加了文档链接
+* bugfix 访问localhost时的assets处理
 
 ###0.1.2~0.1.3###
 * bugfix mac npm install encoding error
