@@ -164,18 +164,13 @@ app.get('(*??*|*.(css|js|ico|png|jpg|swf|less|gif))', function(req, res, next){
             processUrl(p, req.headers.host, function(uri, rule){
                 if(isLocalFile(uri)) {
                     uri = uri.replace(/\?.+/, '');
-                    var charset = rule && rule.charset || 'gbk',
-                        readCharset = charset;
-                    if(charset == 'gbk') {
-                        readCharset = '';
-                    }
 
                     if(fs.existsSync(uri)) {
-                        fs.readFile(uri, readCharset, function(err, data){
-                            res.write('/*'+uri+'*/\r\n');
-                            res.write(err ? err: data);
-                            callback(err);
-                        });
+                        var stream = fs.createReadStream(uri);
+                        res.write('/*'+uri+'*/\r\n');
+                        stream.pipe(res, { end: false });
+                        stream.on('end', callback);
+                        stream.on('error', callback);
                     } else {
                         res.statusCode = 404;
                         res.write('get 404 ' + uri);

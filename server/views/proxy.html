@@ -61,7 +61,7 @@
                 <input class="span4" type="text" placeholder="匹配的正则，例如：kissy-min" id="J_Pattern">
                 <i class="icon-retweet pull-left" style="margin: 0 10px;"></i>
                 <input class="span4" type="text" placeholder="替换的内容，例如：kissy" id="J_Target">
-                <label class="checkbox inline" style="margin: 0 10px;">
+                <label class="checkbox inline" style="margin: 0 10px;display: none;">
                     <input type="checkbox" value="utf-8" id="J_Charset">utf-8
                 </label>
             </div>
@@ -80,10 +80,10 @@
                 <input class="span4 J_RulePattern" type="text" value="{rule.pattern}">
                 <i class="icon-retweet pull-left" style="margin: 0 10px;"></i>
                 <input class="span4 J_RuleTarget" type="text" value="{rule.target}">
-                <label class="checkbox inline"  style="margin: 0 10px;">
+                <label class="checkbox inline"  style="margin: 0 10px;display: none;">
                     <input type="checkbox" value="utf-8" class="J_RuleCharset" {if rule.charset eq 'utf-8'}checked{end}>utf-8
                 </label>
-                <a type="button" class="btn J_RuleEnabled" data-enable="{rule.enable}">启用</a>
+                <a type="button" class="btn J_RuleEnabled" data-enable="{rule.enable}" style="margin-left: 10px;">启用</a>
                 <a href="#" class="J_RuleRemove"><i class="icon-remove"></i></a>
             </div>
             {end}
