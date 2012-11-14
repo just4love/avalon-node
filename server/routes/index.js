@@ -6,7 +6,8 @@ var webx = require('../../lib/webx/webx'),
     util = require('../../lib/util/util'),
     path = require('path'),
     _ = require('underscore'),
-    userCfg = require('../../lib/userConfig');
+    userCfg = require('../../lib/userConfig'),
+    request = require('request');
 
 var App = {
     find: function(params, cb) {
@@ -144,6 +145,12 @@ var App = {
         var appname = params.app;
         var apps = userCfg.get('apps');
         cb(null, {success:true, tools:apps[appname].tools});
+    },
+    getlastest: function(params, cb){
+        var pjson = require('../../package.json');
+        request.get('https://registry.npmjs.org/avalon-node', function (error, response, body) {
+            cb(null, {success:true, current:pjson.version, cfg: JSON.parse(body)});
+        });
     }
 };
 
@@ -243,7 +250,6 @@ var Proxy = {
             }
         });
     }
-
 };
 
 exports.proxyOperate = function(req, res){

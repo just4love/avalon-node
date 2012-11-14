@@ -146,8 +146,19 @@ $(function(){
         $.post('/app/setvmcommon', {
             vmcommon:$('#J_Vmcommon').val()
         }, function(data){
-            location.reload();
+            if(data.success) {
+                location.reload();
+            } else {
+                alert(data.error);
+            }
         });
     });
 
+    $.get('/app/getlastest', function(data){
+        if(data.success) {
+            if(data.current < data.cfg['dist-tags'].latest) {
+                alert('you want update now');
+            }
+        }
+    });
 });
