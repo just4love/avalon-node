@@ -5,10 +5,14 @@
     <link rel="stylesheet" href="/bootstrap/css/bootstrap-responsive.min.css">
     <link rel="stylesheet" href="/bootstrap/css/docs.css">
     <link rel="stylesheet" href="/ztree/css/zTreeStyle/zTreeStyle.css">
+    <link rel="stylesheet" href="/index.css">
     <script type="text/javascript" src="/jquery/jquery-1.8.1.min.js"></script>
 </head>
 <body>
 <div class="navbar navbar-inverse navbar-fixed-top">
+    <div id="loadingContent">
+        <span class="expand"></span>
+    </div>
     <div class="navbar-inner">
         <div class="container">
             <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -32,6 +36,12 @@
 <div class="container">
     <a href="https://github.com/czy88840616/avalon-node" id="github-ribbon"><img src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
     <section id="forms">
+        <div class="alert alert-info" style="display: none" id="J_UpdateTip">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <strong>升级提示!</strong> 当前有新版本 <span class="new">0.1.0</span> 发布，您的版本为 <span class="current">0.1.0</span>，请酌情升级。参考：
+            <a href="https://github.com/czy88840616/avalon-node/wiki/安装及使用" target="_blank">升级指南</a>和
+            <a href="https://github.com/czy88840616/avalon-node/blob/master/CHANGELOG.md" target="_blank">新版本变化</a>
+        </div>
         <div class="page-header"><h1>配置你的VMarket Client</h1></div>
         <h2>您的应用</h2>
 

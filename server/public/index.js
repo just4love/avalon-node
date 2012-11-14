@@ -154,10 +154,14 @@ $(function(){
         });
     });
 
+    $('#loadingContent').addClass('fullwidth');
     $.get('/app/getlastest', function(data){
+        $('#loadingContent').removeClass('fullwidth');
         if(data.success) {
-            if(data.current < data.cfg['dist-tags'].latest) {
-                alert('you want update now');
+            if(data.current != data.cfg['dist-tags'].latest) {
+                $('#J_UpdateTip .new').text(data.cfg['dist-tags'].latest);
+                $('#J_UpdateTip .current').text(data.current);
+                $('#J_UpdateTip').slideDown();
             }
         }
     });
