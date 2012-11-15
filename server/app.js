@@ -100,7 +100,11 @@ var isLocalFile = function(uri){
     if(process.platform == 'win32') {
         return uri.indexOf(':') != -1;
     } else {
-        return uri.indexOf('/home') != -1;
+        if(fs.existsSync(path.resolve(uri))) {
+            return true;
+        }
+
+        return uri.indexOf('/home') != -1 || uri.indexOf('/Users') != -1;
     }
 };
 

@@ -1,3 +1,8 @@
+###0.1.6###
+* bugfix 工具类删除失败
+* bugfix 本地代理在mac匹配路径错误
+* bugfix 设置默认module渲染失败的情况
+
 ###0.1.5###
 * bugfix 未查找默认layout导致渲染页面为空
 * new 给动态逻辑添加了appConfig对象
