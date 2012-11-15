@@ -122,7 +122,7 @@ $(function () {
                     key:idx,
                     className:tool.class,
                     propString:propString
-                })).appendTo($('#J_ToolslistConfirm')).find('.J_DeleteTool').click(function(e){
+                })).appendTo($('#J_ToolContainer')).find('.J_DeleteTool').click(function(e){
                     e.preventDefault();
                     var el = $(this);
                     var toolKey = el.parents('.btn-group').attr('data-toolkey');
@@ -141,6 +141,11 @@ $(function () {
                         }
                     });
                 }).end().find('.J_Tooltip').tooltip();
+            });
+
+            $('#J_ToolslistConfirm .progress .bar').animate({'width':'100%'}, 2000, function(){
+                $('#J_ToolslistConfirm .progress').hide();
+                $('#J_ToolContainer').fadeIn();
             });
         }
     });
@@ -213,21 +218,10 @@ $(function () {
             propString:propString
         })).appendTo($('#J_ToolslistMock')).find('.J_DeleteTool').click(function(e){
             e.preventDefault();
-
-            //删除
-            $.post('/app/removetool', {
-                app:$('#J_CurrentApp').val(),
-                toolkey:$(this).parents('.btn-group').attr('data-toolkey')
-            }, function(data){
-                if(data.success) {
-                    //delete data
-                    delete window.tools[$(this).parents('.btn-group').attr('data-toolkey')];
-                    //remove dom
-                    $(this).parents('.btn-group').remove();
-                } else {
-                    alert(data.msg);
-                }
-            });
+            //delete data
+            delete window.tools[$(this).parents('.btn-group').attr('data-toolkey')];
+            //remove dom
+            $(this).parents('.btn-group').remove();
         }).end().find('.J_Tooltip').tooltip();
 
         window.tools[$('#J_ToolsKey').val()] = {
