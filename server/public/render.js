@@ -8,7 +8,7 @@ var toolsList = {
     "uri":{
         class:"URL类型(直接输入url即可)",
         props:{
-            uri:"http://assets.daily.taobao.net"
+            uri:"例如：http://assets.daily.taobao.net"
         }
     },
     tmsTool: {
@@ -168,7 +168,7 @@ $(function () {
         $('#J_ToolsProps').html('');
         var key = $(this).val();
         if(key === 'uri') {
-            $('#J_ToolsKey').attr('placeholder', 'uiModule');
+            $('#J_ToolsKey').attr('placeholder', '例如：uiModule');
         } else {
             $('#J_ToolsKey').attr('placeholder', key);
         }
