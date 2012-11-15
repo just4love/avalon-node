@@ -146,8 +146,23 @@ $(function(){
         $.post('/app/setvmcommon', {
             vmcommon:$('#J_Vmcommon').val()
         }, function(data){
-            location.reload();
+            if(data.success) {
+                location.reload();
+            } else {
+                alert(data.error);
+            }
         });
     });
 
+    $('#loadingContent').addClass('fullwidth');
+    $.get('/app/getlastest', function(data){
+        $('#loadingContent').removeClass('fullwidth');
+        if(data.success) {
+            if(data.current != data.cfg['dist-tags'].latest) {
+                $('#J_UpdateTip .new').text(data.cfg['dist-tags'].latest);
+                $('#J_UpdateTip .current').text(data.current);
+                $('#J_UpdateTip').slideDown();
+            }
+        }
+    });
 });
