@@ -31,9 +31,12 @@
 <div class="container">
     <a href="https://github.com/czy88840616/avalon-node" id="github-ribbon"><img src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
     <section id="forms">
-        <div class="page-header"><h1>应用:{appname}</h1></div>
+        <div class="page-header"><h1>所属应用:{appname}</h1></div>
         <input type="hidden" id="J_CurrentApp" value="{appname}"/>
-        <h2>工具类</h2>
+        <h2>模板依赖树</h2>
+        <div class="bs-docs">
+            <ul id="configTree" class="ztree"></ul>
+        </div>
     </section>
 </div>
 <div class="footer">
@@ -42,6 +45,9 @@
         <p>Code licensed under <a href="https://github.com/czy88840616/avalon-node/blob/master/LICENSE.md" target="_blank">MIT</a></p>
     </div>
 </div>
+<textarea id="J_TreeData" cols="30" rows="10" style="display: none">{templates}</textarea>
 <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/ztree/js/jquery.ztree.all-3.4.min.js"></script>
+<script type="text/javascript" src="/info.js"></script>
 </body>
 </html>

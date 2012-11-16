@@ -216,5 +216,5 @@ app.post('/proxy/:operate', routes.proxyOperate);
 
 http.createServer(app).listen(app.get('port'), function () {
     console.log("Express server listening on port " + app.get('port'));
-    console.log('请使用 Control+c 来关闭控制台');
+    console.log('请使用 Control+C 来关闭控制台');
 });

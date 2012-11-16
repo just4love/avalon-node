@@ -16,7 +16,7 @@ var App = {
                 cb(err);
             } else {
                 var data = {
-                    tree:util.json2Tree(result),
+                    tree:util.json2Tree(result, {isLeafParent: true}),
                     subModule:_.keys(result['subModule'])
                 };
                 cb(err, data);
