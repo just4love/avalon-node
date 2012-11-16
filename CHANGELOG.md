@@ -1,3 +1,7 @@
+###0.1.7###
+* bugfix 因为上一版加了默认module导致没有module的页面失效了
+* bugfix assets代理问题，仅带有问号的参数会代理失败
+
 ###0.1.6###
 * bugfix 工具类删除失败
 * bugfix 本地代理在mac匹配路径错误

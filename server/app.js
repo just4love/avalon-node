@@ -96,7 +96,7 @@ app.get('*.info', checkConfig, function(req, res, next){
 
 var isLocalFile = function(uri){
     //过滤时间戳
-    uri = uri.replace(/\?.+/, '');
+    uri = uri.replace(/\?.*/, '');
     if(process.platform == 'win32') {
         return uri.indexOf(':') != -1;
     } else {
@@ -164,12 +164,12 @@ app.get('(*??*|*.(css|js|ico|png|jpg|swf|less|gif))', function(req, res, next){
             paths = [req.url];
         }
 
-        res.setHeader('Content-type', contentType[path.extname(paths[0].replace(/\?.+/, ''))]);
+        res.setHeader('Content-type', contentType[path.extname(paths[0].replace(/\?.*/, ''))]);
 
         async.forEachSeries(paths, function(p, callback){
             processUrl(p, req.headers.host, function(uri, rule){
                 if(isLocalFile(uri)) {
-                    uri = uri.replace(/\?.+/, '');
+                    uri = uri.replace(/\?.*/, '');
 
                     if(fs.existsSync(uri)) {
                         var stream = fs.createReadStream(uri);
