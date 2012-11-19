@@ -105,14 +105,4 @@ describe('fileUtil test', function() {
 
         done();
     });
-
-    it.only('parse xml2js', function(done){
-        var parser = new xml2js.Parser();
-        fs.readFile('D:\\project\\tradeface\\tf-web\\src\\main\\webapp\\META-INF\\autoconf\\webx.xml', function(err, data) {
-            parser.parseString(data, function (err, result) {
-                console.log(JSON.stringify(result['beans:beans']['services:pull']));
-                done();
-            });
-        });
-    });
 });

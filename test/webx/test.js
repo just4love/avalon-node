@@ -36,14 +36,6 @@ describe('analyze', function () {
                 done();
             });
         });
-
-        it('find tools', function(done) {
-            finder.findTools('D:\\project\\snsju\\src\\main\\webapp', function(err, result) {
-                console.log(result);
-//                assert.equal(result.length, 2, 'find web-inf directory error');
-                done();
-            });
-        });
     });
 
     describe('test webx', function() {

@@ -34,7 +34,7 @@
         }
     ],
     "dependencies":{
-        "iconv-lite":"~0.2.1",
+        "iconv-lite":">=0.2.1",
         "express":">=3.0.0beta7",
         "mkdirp":">=0.3.4",
         "colors":">=0.6.0",
@@ -44,10 +44,8 @@
         "nconf":">=0.6.4",
         "request":">=2.11.4",
         "walkdir":">=0.0.5",
-        "xml2js":">=0.2.0",
         "consolidate":">=0.4.0",
         "jazz":">=0.0.18",
-        "http-proxy":">=0.8.4",
         "combo-url-parser":">=0.0.2"
     }
 }
