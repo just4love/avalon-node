@@ -52,6 +52,12 @@ var App = {
             result.defaultModule = defaultModule;
 
             var apps = userCfg.get('apps');
+            if(apps[appName]) {
+                //合并新旧同名应用
+                var oldapp = apps[appName];
+                result.tools = oldapp.tools || {};
+            }
+
             apps[appName] = result;
             userCfg.set('apps', apps);
             userCfg.set('use', appName);
