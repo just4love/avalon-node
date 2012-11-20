@@ -143,10 +143,7 @@ $(function () {
                 }).end().find('.J_Tooltip').tooltip();
             });
 
-            $('#J_ToolslistConfirm .progress .bar').animate({'width':'100%'}, 2000, function(){
-                $('#J_ToolslistConfirm .progress').hide();
-                $('#J_ToolContainer').fadeIn();
-            });
+            $('#J_ToolContainer').fadeIn(500);
         }
     });
 
