@@ -13,13 +13,17 @@ var App = {
     find: function(params, cb) {
         webx.getConfig(params.root, function(err, result) {
             if(err) {
-                cb(err);
+                if(err ==='webroot not found') {
+                    cb(JSON.stringify({success:false, msg:'当前路径未找到模板目录结构，请重试'}));
+                } else {
+                    cb(JSON.stringify({success:false, msg:err}));
+                }
             } else {
                 var data = {
                     tree:util.json2Tree(result, {isLeafParent: true}),
                     subModule:_.keys(result['subModule'])
                 };
-                cb(err, data);
+                cb(err, JSON.stringify({success:true, data:data}));
             }
         });
     },

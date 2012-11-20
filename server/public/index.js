@@ -45,7 +45,16 @@ $(function(){
         $.post('/app/find', {
             root:$('#approot').val()
         }, function(data) {
-            $('#addNewAppModal .progress .bar').css('width', '60%');
+            data = $.parseJSON(data);
+            if(!data.success) {
+                alert(data.msg);
+                $('#addNewAppModal .progress .bar').css('width', '100%').parent().fadeOut();
+                $('#J_RefreshDir').button('reset');
+                return;
+            }
+
+            data = data.data;
+            $('#addNewAppModal .progress .bar').css('width', '80%');
             $.fn.zTree.init($("#configTree"), {
                 showLine:true,
                 checkable:true
