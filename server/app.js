@@ -218,7 +218,12 @@ app.get('/proxy', routes.proxy);
 app.post('/proxy/:operate', routes.proxyOperate);
 
 http.createServer(app).listen(app.get('port'), function () {
-    console.log("Listen Port： " + app.get('port').toString().bold.cyan);
-    console.log("Help：" + "(sudo) vm help".bold.cyan);
+    console.log('Status:', 'Ok'.bold.green);
+    console.log("Listen Port： " + app.get('port').toString().cyan);
+    console.log("Help：" + "(sudo) vm help".cyan);
+    console.log('请使用 '+ 'Control+C'.bold +  ' 来关闭控制台');
+}).on('error', function(err){
+    console.log('Status:', 'Fail'.bold.red);
+    console.log('Error:', err.message.toString().bold.red, '可能是'+app.get('port')+'端口被占用');
     console.log('请使用 '+ 'Control+C'.bold +  ' 来关闭控制台');
 });
