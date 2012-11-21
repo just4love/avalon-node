@@ -147,7 +147,9 @@ var contentType = {
     '.swf':'application/x-shockwave-flash;',
     '.png': 'image/png;',
     '.gif': 'image/gif;',
-    '.jpg': 'image/jpeg;'
+    '.jpg': 'image/jpeg;',
+    '.ico': 'image/x-icon;',
+    '.less': 'text/css;'
 };
 
 app.get('(*??*|*.(css|js|ico|png|jpg|swf|less|gif))', function(req, res, next){
