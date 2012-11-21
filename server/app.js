@@ -20,6 +20,7 @@ var express = require('express')
     , comboParser = require('combo-url-parser')
     , request = require('request')
     , iconv = require('iconv-lite')
+    , colors = require('colors')
     , async = require('async');
 
 userCfg.init({
@@ -217,7 +218,7 @@ app.get('/proxy', routes.proxy);
 app.post('/proxy/:operate', routes.proxyOperate);
 
 http.createServer(app).listen(app.get('port'), function () {
-    console.log("当前监听端口： " + app.get('port'));
-    console.log("帮助文档：(sudo) vm help");
-    console.log('请使用 Control+C 来关闭控制台');
+    console.log("Listen Port： " + app.get('port').toString().bold.cyan);
+    console.log("Help：" + "(sudo) vm help".bold.cyan);
+    console.log('请使用 '+ 'Control+C'.bold +  ' 来关闭控制台');
 });
