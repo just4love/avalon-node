@@ -23,11 +23,6 @@ var express = require('express')
     , colors = require('colors')
     , async = require('async');
 
-userCfg.init({
-    cfg:argv.cfg,
-    api: argv.api
-});
-
 var checkConfig = function(req, res, next){
     var apps = userCfg.get('apps');
     if(apps && !_.isEmpty(apps)) {
@@ -218,12 +213,16 @@ app.get('/proxy', routes.proxy);
 app.post('/proxy/:operate', routes.proxyOperate);
 
 http.createServer(app).listen(app.get('port'), function () {
-    console.log('Status:', 'Ok'.bold.green);
+    userCfg.init({
+        cfg:argv.cfg,
+        api: argv.api
+    });
+    console.log('Status:', 'OK'.bold.green);
     console.log("Listen Port： " + app.get('port').toString().cyan);
     console.log("Help：" + "(sudo) vm help".cyan);
     console.log('请使用 '+ 'Control+C'.bold +  ' 来关闭控制台');
 }).on('error', function(err){
     console.log('Status:', 'Fail'.bold.red);
-    console.log('Error:', err.message.toString().bold.red, '可能是'+app.get('port')+'端口被占用');
+    console.log('Error:', err.message.toString().bold.red, '可能是端口被占用');
     console.log('请使用 '+ 'Control+C'.bold +  ' 来关闭控制台');
 });
