@@ -78,7 +78,7 @@ app.all('/*.(*htm*|do)', checkConfig, function(req, res, next){
     }
 });
 
-app.get('*.info', checkConfig, function(req, res, next){
+app.get('*.vm', checkConfig, function(req, res, next){
     var useApp = userCfg.get('use');
     var config = util.merge({}, userCfg.get('apps')[useApp]);
     config.vmcommon = userCfg.get('vmcommon');
@@ -99,6 +99,7 @@ var isLocalFile = function(uri){
         if(fs.existsSync(path.resolve(uri))) {
             return true;
         }
+
 
         return uri.indexOf('/home') != -1 || uri.indexOf('/Users') != -1;
     }
@@ -217,7 +218,7 @@ http.createServer(app).listen(app.get('port'), function () {
         cfg:argv.cfg,
         api: argv.api
     });
-    console.log('Status:', 'OK'.bold.green);
+    console.log('Status:', 'Success'.bold.green);
     console.log("Listen Port： " + app.get('port').toString().cyan);
     console.log("Help：" + "(sudo) vm help".cyan);
     console.log('请使用 '+ 'Control+C'.bold +  ' 来关闭控制台');

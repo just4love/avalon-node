@@ -252,4 +252,22 @@ $(function () {
         });
     });
 
+    $('#J_UpdateApp').click(function(e) {
+        e.preventDefault();
+        $(this).button('loading');
+
+        $.post('/app/update', {
+            app:$('#J_CurrentApp').val()
+        }, function(data){
+            if(data.success) {
+                alert('更新成功，确定后刷新');
+                location.reload();
+            } else {
+                alert(data.msg);
+            }
+
+            $('#J_UpdateApp').button('reset');
+        });
+    });
+
 });

@@ -157,6 +157,33 @@ var App = {
         request.get('https://registry.npmjs.org/avalon-node', function (error, response, body) {
             cb(null, {success:true, current:pjson.version, cfg: JSON.parse(body)});
         });
+    },
+    update: function(params, cb){
+        var appname = params.app,
+            apps = userCfg.get('apps'),
+            oldapp = apps[appname];
+
+        if(!oldapp) {
+            cb(null, {success:false,msg:'当前应用配置不存在'});
+        } else {
+            var root = oldapp.root;
+            webx.getConfig(root, function(err, result) {
+                var appName = path.basename(root);
+
+                //合并新旧同名应用
+                result.tools = oldapp.tools || {};
+
+                apps[appName] = result;
+                userCfg.set('apps', apps);
+                userCfg.save(function(err){
+                    if(err) {
+                        cb(null, {success:false,msg:err});
+                    } else {
+                        cb(null, {success:true});
+                    }
+                });
+            });
+        }
     }
 };
 

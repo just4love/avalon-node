@@ -5,9 +5,10 @@
     <link rel="stylesheet" href="/bootstrap/css/bootstrap-responsive.min.css">
     <link rel="stylesheet" href="/bootstrap/css/docs.css">
     <link rel="stylesheet" href="/ztree/css/zTreeStyle/zTreeStyle.css">
+    <link href="/google-code-prettify/prettify.css" rel="stylesheet">
     <script type="text/javascript" src="/jquery/jquery-1.8.1.min.js"></script>
 </head>
-<body>
+<body onload="prettyPrint()">
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
@@ -37,6 +38,13 @@
         <div class="bs-docs">
             <ul id="configTree" class="ztree"></ul>
         </div>
+        <hr>
+        <h2>模板变量树</h2>
+        <div class="bs-docs">
+<pre class="prettyprint js linenums">
+{keys}
+</pre>
+        </div>
     </section>
 </div>
 <div class="footer">
@@ -48,6 +56,7 @@
 <textarea id="J_TreeData" cols="30" rows="10" style="display: none">{templates}</textarea>
 <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/ztree/js/jquery.ztree.all-3.4.min.js"></script>
+<script src="/google-code-prettify/prettify.js"></script>
 <script type="text/javascript" src="/info.js"></script>
 </body>
 </html>
