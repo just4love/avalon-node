@@ -111,7 +111,7 @@ var processUrl = function(uri, domain,  callback){
         isMatch = false,
         matchRule;
 
-    rules.forEach(function(rule){
+    _.each(rules, function(rule){
         if(!isMatch && rule.enable) {
             var pattern = new RegExp(rule.pattern, 'g');
             if(pattern.test(uri)) {
