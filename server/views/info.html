@@ -4,6 +4,9 @@
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/bootstrap/css/bootstrap-responsive.min.css">
     <link rel="stylesheet" href="/bootstrap/css/docs.css">
+    <link rel="stylesheet" href="/ztree/css/zTreeStyle/zTreeStyle.css">
+    <link type="text/css" rel="stylesheet" href="/syntaxhighlighter/styles/shCore.css"/>
+    <link type="text/css" rel="stylesheet" href="/syntaxhighlighter/styles/shThemeRDark.css" />
     <script type="text/javascript" src="/jquery/jquery-1.8.1.min.js"></script>
 </head>
 <body>
@@ -19,10 +22,9 @@
             <div class="nav-collapse collapse">
                 <ul class="nav">
                     <li><a href="/">首页</a></li>
-                    <li class="active"><a href="/list">应用列表</a></li>
+                    <li><a href="/list">应用列表</a></li>
                     <li><a href="/proxy">Assets代理</a></li>
-                    <li><a href="https://github.com/czy88840616/avalon-node/wiki" target="_blank">文档</a></li>
-                    <li><a href="http://v.taobao.net" target="_blank">VMarket</a></li>
+                    <li><a href="http://v.taobao.net">VMarket</a></li>
                 </ul>
             </div>
         </div>
@@ -31,12 +33,20 @@
 <div class="container">
     <a href="https://github.com/czy88840616/avalon-node" id="github-ribbon"><img src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
     <section id="forms">
-        <div class="page-header"><h1>应用列表</h1></div>
-        <ul>
-            {foreach app in apps}
-            <li><a href="/list/{app}" style="font-size: 24px;">{app}</a></li>
-            {end}
-        </ul>
+        <div class="page-header"><h1>所属应用:{appname}</h1></div>
+        <input type="hidden" id="J_CurrentApp" value="{appname}"/>
+        <hr>
+        <h2>模板依赖树</h2>
+        <div class="bs-docs">
+            <ul id="configTree" class="ztree"></ul>
+        </div>
+        <hr>
+        <h2>模板变量结构</h2>
+        <div class="bs-docs">
+<pre  class='brush: js'>
+{keys}
+</pre>
+        </div>
     </section>
 </div>
 <div class="footer">
@@ -45,6 +55,11 @@
         <p>Code licensed under <a href="https://github.com/czy88840616/avalon-node/blob/master/LICENSE.md" target="_blank">MIT</a></p>
     </div>
 </div>
+<textarea id="J_TreeData" cols="30" rows="10" style="display: none">{templates}</textarea>
 <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/ztree/js/jquery.ztree.all-3.4.min.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter/scripts/shCore.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter/scripts/shBrushJScript.js"></script>
+<script type="text/javascript" src="/info.js"></script>
 </body>
 </html>

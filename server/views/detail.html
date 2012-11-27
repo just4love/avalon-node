@@ -53,18 +53,18 @@
             <div class="control-group">
                 <div class="controls">
                     <div class="btn-toolbar toolslist" id="J_ToolslistConfirm" style="border: 2px dashed red;min-height: 20px;padding:10px;">
-                        <div class="progress progress-striped active">
-                            <div class="bar" style="width: 0%;"></div>
-                        </div>
                         <div id="J_ToolContainer" style="display: none"></div>
                     </div>
                 </div>
             </div>
         </form>
         <hr>
+        <h2>更新应用</h2>
+        <a id="J_UpdateApp" href="#" data-loading-text="更新目录结构中，请稍后..." class="btn btn-primary"><i class="icon-refresh icon-white"></i> 更新应用结构</a>
+        <hr>
         <h2>模块screen列表</h2>
         {foreach module in urls}
-        <h3>Module: {if module.key eq 'noModule'}无{else}{module.key}{end}</h3>
+        <h3>Module: {if module.key eq 'noModule'}/{else}{module.key}{end}</h3>
         <ul>
             {foreach url in module.value}
             <li>
@@ -119,6 +119,12 @@
     <div class="modal-footer">
         <button class="btn" data-dismiss="modal">取消</button>
         <button class="btn btn-primary" id="J_BtnConfirm">保存</button>
+    </div>
+</div>
+<div class="footer">
+    <div class="container">
+        <p>Code by <a href="mailto:zhangting@taobao.com">zhangting@taobao.com</a></p>
+        <p>Code licensed under <a href="https://github.com/czy88840616/avalon-node/blob/master/LICENSE.md" target="_blank">MIT</a></p>
     </div>
 </div>
 <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>

@@ -8,7 +8,7 @@ var toolsList = {
     "uri":{
         class:"URL类型(直接输入url即可)",
         props:{
-            uri:"http://assets.daily.taobao.net"
+            uri:"例如：http://assets.daily.taobao.net"
         }
     },
     tmsTool: {
@@ -143,10 +143,7 @@ $(function () {
                 }).end().find('.J_Tooltip').tooltip();
             });
 
-            $('#J_ToolslistConfirm .progress .bar').animate({'width':'100%'}, 2000, function(){
-                $('#J_ToolslistConfirm .progress').hide();
-                $('#J_ToolContainer').fadeIn();
-            });
+            $('#J_ToolContainer').fadeIn(500);
         }
     });
 
@@ -168,7 +165,7 @@ $(function () {
         $('#J_ToolsProps').html('');
         var key = $(this).val();
         if(key === 'uri') {
-            $('#J_ToolsKey').attr('placeholder', 'uiModule');
+            $('#J_ToolsKey').attr('placeholder', '例如：uiModule');
         } else {
             $('#J_ToolsKey').attr('placeholder', key);
         }
@@ -252,6 +249,24 @@ $(function () {
             } else {
                 alert(data.msg);
             }
+        });
+    });
+
+    $('#J_UpdateApp').click(function(e) {
+        e.preventDefault();
+        $(this).button('loading');
+
+        $.post('/app/update', {
+            app:$('#J_CurrentApp').val()
+        }, function(data){
+            if(data.success) {
+                alert('更新成功，确定后刷新');
+                location.reload();
+            } else {
+                alert(data.msg);
+            }
+
+            $('#J_UpdateApp').button('reset');
         });
     });
 

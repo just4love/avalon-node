@@ -19,12 +19,9 @@ var express = require('express')
     , fs = require('fs')
     , comboParser = require('combo-url-parser')
     , request = require('request')
+    , iconv = require('iconv-lite')
+    , colors = require('colors')
     , async = require('async');
-
-userCfg.init({
-    cfg:argv.cfg,
-    api: argv.api
-});
 
 var checkConfig = function(req, res, next){
     var apps = userCfg.get('apps');
@@ -81,6 +78,18 @@ app.all('/*.(*htm*|do)', checkConfig, function(req, res, next){
     }
 });
 
+app.get('*.vm', checkConfig, function(req, res, next){
+    var useApp = userCfg.get('use');
+    var config = util.merge({}, userCfg.get('apps')[useApp]);
+    config.vmcommon = userCfg.get('vmcommon');
+
+    res.render('info', render.getInfo({
+        app: useApp,
+        config: config,
+        path: req.params[0]
+    }));
+});
+
 var isLocalFile = function(uri){
     //过滤时间戳
     uri = uri.replace(/\?.*/, '');
@@ -91,20 +100,23 @@ var isLocalFile = function(uri){
             return true;
         }
 
+
         return uri.indexOf('/home') != -1 || uri.indexOf('/Users') != -1;
     }
 };
 
-var processUrl = function(uri, domain){
+var processUrl = function(uri, domain,  callback){
     var rules = userCfg.get('rules'),
         proxyDomain = userCfg.get('proxyDomain'),
-        isMatch = false;
+        isMatch = false,
+        matchRule;
 
-    rules.forEach(function(rule){
+    _.each(rules, function(rule){
         if(!isMatch && rule.enable) {
             var pattern = new RegExp(rule.pattern, 'g');
             if(pattern.test(uri)) {
                 uri = uri.replace(pattern, rule.target);
+                matchRule = rule;
                 isMatch = true;
             }
         }
@@ -123,13 +135,18 @@ var processUrl = function(uri, domain){
         uri = proxyDomain[domain] + uri;
     }
 
-    return uri;
+    callback(uri, matchRule);
 };
 
 var contentType = {
-    '.js':'application/x-javascript',
-    '.css':'text/css',
-    '.swf':'application/x-shockwave-flash'
+    '.js':'application/x-javascript;',
+    '.css':'text/css;',
+    '.swf':'application/x-shockwave-flash;',
+    '.png': 'image/png;',
+    '.gif': 'image/gif;',
+    '.jpg': 'image/jpeg;',
+    '.ico': 'image/x-icon;',
+    '.less': 'text/css;'
 };
 
 app.get('(*??*|*.(css|js|ico|png|jpg|swf|less|gif))', function(req, res, next){
@@ -149,38 +166,41 @@ app.get('(*??*|*.(css|js|ico|png|jpg|swf|less|gif))', function(req, res, next){
         res.setHeader('Content-type', contentType[path.extname(paths[0].replace(/\?.*/, ''))]);
 
         async.forEachSeries(paths, function(p, callback){
-            var uri = processUrl(p, req.headers.host);
+            processUrl(p, req.headers.host, function(uri, rule){
+                if(isLocalFile(uri)) {
+                    uri = uri.replace(/\?.*/, '');
 
-            if(isLocalFile(uri)) {
-                uri = uri.replace(/\?.*/, '');
-                if(fs.existsSync(uri)) {
-                    fs.readFile(uri, '', function(err, data){
-                        res.write(err ? err: data);
-                        callback(err);
-                    });
+                    if(fs.existsSync(uri)) {
+                        var stream = fs.createReadStream(uri);
+                        res.write('/*'+uri+'*/\r\n');
+                        stream.pipe(res, { end: false });
+                        stream.on('end', callback);
+                        stream.on('error', callback);
+                    } else {
+                        res.statusCode = 404;
+                        res.write('get 404 ' + uri);
+                        res.end();
+                    }
                 } else {
-                    res.statusCode = 404;
-                    res.write('get 404 ' + uri);
-                    res.end();
+                    request.get({
+                        url:  'http://' + uri,
+                        encoding: null
+                    }, function (error, response, body) {
+                        if(error) {
+                            res.write(error.toString() + ', uri=http://' + uri);
+                        }
+
+                        if(!response) {
+                            console.log('connect fail: ' + uri);
+                        } else if(response.statusCode == 200) {
+                            res.write(error ? error.toString(): body);
+                        } else if(response.statusCode == 404) {
+                            res.write(error ? error.toString(): body);
+                        }
+                        callback(error);
+                    });
                 }
-            } else {
-                request.get('http://' + uri, function (error, response, body) {
-                    if(error) {
-                        res.write(error.toString() + ', uri=' + uri);
-                    }
-
-                    if(!response) {
-                        console.log(uri);
-                    }
-
-                    if(response.statusCode == 200) {
-                        res.write(error ? error.toString(): body);
-                    } else if(response.statusCode == 404) {
-                        res.write(error ? error.toString(): body);
-                    }
-                    callback(error);
-                });
-            }
+            });
         }, function(err){
             res.end();
         });
@@ -194,6 +214,16 @@ app.get('/proxy', routes.proxy);
 app.post('/proxy/:operate', routes.proxyOperate);
 
 http.createServer(app).listen(app.get('port'), function () {
-    console.log("Express server listening on port " + app.get('port'));
-    console.log('请使用 Control+c 来关闭控制台');
+    userCfg.init({
+        cfg:argv.cfg,
+        api: argv.api
+    });
+    console.log('Status:', 'Success'.bold.green);
+    console.log("Listen Port： " + app.get('port').toString().cyan);
+    console.log("Help：" + "(sudo) vm help".cyan);
+    console.log('请使用 '+ 'Control+C'.bold +  ' 来关闭控制台');
+}).on('error', function(err){
+    console.log('Status:', 'Fail'.bold.red);
+    console.log('Error:', err.message.toString().bold.red, '可能是端口被占用');
+    console.log('请使用 '+ 'Control+C'.bold +  ' 来关闭控制台');
 });
