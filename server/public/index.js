@@ -163,9 +163,7 @@ $(function(){
         });
     });
 
-    $('#loadingContent').addClass('fullwidth');
     $.get('/app/getlastest', function(data){
-        $('#loadingContent').removeClass('fullwidth');
         if(data.success) {
             if(data.current != data.cfg['dist-tags'].latest) {
                 $('#J_UpdateTip .new').text(data.cfg['dist-tags'].latest);

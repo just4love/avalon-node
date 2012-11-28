@@ -59,12 +59,12 @@ window.tools = window.tools || {};
 var TPLReader =  function(data){
     return ['<div class="btn-group" data-toolkey="',
         data.key,
-        '"><a class="btn btn-small btn-info J_Tooltip" rel="tooltip"',
+        '"><a class="btn btn-small btn-inverse J_Tooltip" rel="tooltip"',
         'href="#" data-placement="top" data-original-title="',
         data.className + ' ' + data.propString,
         '"><i class="icon-wrench icon-white"></i> ',
         data.key,
-        '</a><a class="btn btn-small btn-info dropdown-toggle" data-toggle="dropdown" href="#">',
+        '</a><a class="btn btn-small btn-inverse dropdown-toggle" data-toggle="dropdown" href="#">',
         '<span class="caret"></span></a> <ul class="dropdown-menu"><li>',
         '<a href="#" class="J_DeleteTool"><i class="icon-trash"></i> Delete</a></li></ul></div>'].join('');
 };

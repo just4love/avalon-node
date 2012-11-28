@@ -16,9 +16,14 @@ $(function () {
 
     $('#J_SortRules').dragsort();
 
-    //���Ӵ�������תip
+    //添加代理域名转ip
     $('#J_AddNewDomain').click(function(e){
         e.preventDefault();
+        if(!$('#J_Domain').val()) {
+            alert('请填写待替换的域名再尝试添加');
+            return;
+        }
+
         $.post('/proxy/addDomain', {
             domain:$('#J_Domain').val(),
             proxyDomain:$('#J_ProxyIp').val()
@@ -46,6 +51,10 @@ $(function () {
 
     $('#J_AddNewRule').click(function(e){
         e.preventDefault();
+        if(!$('#J_Pattern').val()) {
+            alert('请填写匹配正则或者字符串再尝试添加');
+            return;
+        }
         $.post('/proxy/addRule', {
             pattern:$('#J_Pattern').val(),
             target:$('#J_Target').val(),

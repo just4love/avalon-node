@@ -2,8 +2,9 @@
 <html>
 <head><title>配置你的VMarket</title>
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/bootstrap/cosmo/bootstrap.min.css">
     <link rel="stylesheet" href="/bootstrap/css/bootstrap-responsive.min.css">
-    <link rel="stylesheet" href="/bootstrap/css/docs.css">
+    <link rel="stylesheet" href="/bootstrap/cosmo/docs.css">
     <link rel="stylesheet" href="/ztree/css/zTreeStyle/zTreeStyle.css">
     <script type="text/javascript" src="/jquery/jquery-1.8.1.min.js"></script>
 </head>
@@ -29,55 +30,64 @@
         </div>
     </div>
 </div>
+<a href="https://github.com/czy88840616/avalon-node"><img style="position: absolute; top: 0; right: 0; border: 0;z-index: 1031;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a>
 <div class="container">
-    <a href="https://github.com/czy88840616/avalon-node" id="github-ribbon"><img src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
-    <section id="forms">
-        <div class="page-header"><h1>应用:{appname}</h1></div>
-        <input type="hidden" id="J_CurrentApp" value="{appname}"/>
-        <h2>工具类</h2>
-        <form class="form-horizontal" autocomplete="on">
-            <div class="control-group">
-                <label class="control-label">Tools</label>
-                <div class="controls controls-row">
-                    <button type="button" class="btn" id="J_AddTools" rel="popover" title="A Title"
-                            data-content="And here's some amazing content. It's very engaging. right?">
-                        <i class="icon-wrench"></i> 添加一个工具类
-                    </button>
-                    <span class="help-inline alert fade in">
-                        <button type="button" class="close" data-dismiss="alert">×</button>
-                        <strong>警告!</strong> 如果待添加的变量和默认工具类相同，无需手动添加，URL类型除外，查询默认工具类和默认变量：<a
-                            href="http://v.taobao.net/doc.html#toolslist">工具类列表</a>
-                    </span>
+    <div class="page-header"><h1>应用:{appname}</h1></div>
+    <input type="hidden" id="J_CurrentApp" value="{appname}"/>
+    <h2>工具类</h2>
+    <form class="form-horizontal" autocomplete="on">
+        <div class="control-group">
+            <label class="control-label">Tools</label>
+            <div class="controls controls-row">
+                <button type="button" class="btn btn-primary" id="J_AddTools" rel="popover" title="A Title"
+                        data-content="And here's some amazing content. It's very engaging. right?">
+                    <i class="icon-wrench icon-white"></i> 添加一个工具类
+                </button>
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <div class="btn-toolbar toolslist" id="J_ToolslistConfirm" style="border: 2px dashed red;min-height: 20px;padding:10px;">
+                    <div id="J_ToolContainer" style="display: none"></div>
                 </div>
             </div>
-            <div class="control-group">
-                <div class="controls">
-                    <div class="btn-toolbar toolslist" id="J_ToolslistConfirm" style="border: 2px dashed red;min-height: 20px;padding:10px;">
-                        <div id="J_ToolContainer" style="display: none"></div>
-                    </div>
-                </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <p>
+                    <span class="badge badge-warning">Warning</span>
+                    如果待添加的变量和默认工具类相同，无需手动添加，URL类型除外，查询默认工具类和默认变量：<a
+                        href="http://v.taobao.net/doc.html#toolslist" target="_blank">工具类列表</a>
+                </p>
             </div>
-        </form>
-        <hr>
-        <h2>更新应用</h2>
-        <a id="J_UpdateApp" href="#" data-loading-text="更新目录结构中，请稍后..." class="btn btn-primary"><i class="icon-refresh icon-white"></i> 更新应用结构</a>
-        <hr>
-        <h2>模块screen列表</h2>
-        {foreach module in urls}
-        <h3>Module: {if module.key eq 'noModule'}/{else}{module.key}{end}</h3>
-        <ul>
-            {foreach url in module.value}
-            <li>
-                {if module.key eq 'noModule'}
-                <a href="/{url}">{{domain:port}}/{url}</a>
-                {else}
-                <a href="/{module.key}/{url}">{{domain:port}}/{module.key}/{url}</a>
-                {end}
-            </li>
+        </div>
+    </form>
+    <hr>
+    <h2>更新应用</h2>
+    <form class="form-horizontal" autocomplete="on">
+        <label class="control-label">Update</label>
+        <div class="control-group">
+            <div class="controls">
+                <a id="J_UpdateApp" href="#" data-loading-text="更新目录结构中，请稍后..." class="btn btn-primary"><i class="icon-refresh icon-white"></i> 更新应用结构</a>
+            </div>
+        </div>
+    </form>
+    <hr>
+    <h2>模块screen列表</h2>
+    {foreach module in urls}
+    <h3>Module: {if module.key eq 'noModule'}/{else}{module.key}{end}</h3>
+    <ul>
+        {foreach url in module.value}
+        <li>
+            {if module.key eq 'noModule'}
+            <a href="/{url}" target="_blank">{{domain:port}}/{url}</a>
+            {else}
+            <a href="/{module.key}/{url}" target="_blank">{{domain:port}}/{module.key}/{url}</a>
             {end}
-        </ul>
+        </li>
         {end}
-    </section>
+    </ul>
+    {end}
 </div>
 <div id="J_ToolModel" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">

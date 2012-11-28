@@ -1,18 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head><title>配置你的VMarket</title>
-    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/bootstrap/cosmo/bootstrap.min.css">
     <link rel="stylesheet" href="/bootstrap/css/bootstrap-responsive.min.css">
-    <link rel="stylesheet" href="/bootstrap/css/docs.css">
+    <link rel="stylesheet" href="/bootstrap/cosmo/docs.css">
     <link rel="stylesheet" href="/ztree/css/zTreeStyle/zTreeStyle.css">
-    <link rel="stylesheet" href="/loading.css">
     <script type="text/javascript" src="/jquery/jquery-1.8.1.min.js"></script>
 </head>
 <body>
 <div class="navbar navbar-inverse navbar-fixed-top">
-    <div id="loadingContent">
-        <span class="expand"></span>
-    </div>
     <div class="navbar-inner">
         <div class="container">
             <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -33,129 +29,135 @@
         </div>
     </div>
 </div>
+<a href="https://github.com/czy88840616/avalon-node"><img style="position: absolute; top: 0; right: 0; border: 0;z-index: 1031;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a>
 <div class="container">
-    <a href="https://github.com/czy88840616/avalon-node" id="github-ribbon"><img src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
-    <section id="forms">
-        <div class="alert alert-info" style="display: none" id="J_UpdateTip">
-            <button type="button" class="close" data-dismiss="alert">×</button>
-            <strong>升级提示!</strong> 当前有新版本 <span class="new">0.1.0</span> 发布，您的版本为 <span class="current">0.1.0</span>，请酌情升级。参考：
-            <a href="https://github.com/czy88840616/avalon-node/wiki/安装及使用" target="_blank">升级指南</a>和
-            <a href="https://github.com/czy88840616/avalon-node/blob/master/CHANGELOG.md" target="_blank">新版本变化</a>
+    <div class="alert alert-info" style="display: none" id="J_UpdateTip">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <strong>升级提示!</strong> 当前有新版本 <span class="new">0.1.0</span> 发布，您的版本为 <span class="current">0.1.0</span>，请酌情升级。参考：
+        <a href="https://github.com/czy88840616/avalon-node/wiki/安装及使用" target="_blank">升级指南</a>和
+        <a href="https://github.com/czy88840616/avalon-node/blob/master/CHANGELOG.md" target="_blank">新版本变化</a>
+    </div>
+    <div class="page-header"><h1>配置你的VMarket Client</h1></div>
+    <form class="form-horizontal well">
+        <div class="control-group">
+            <label class="control-label" for="J_Engine">API：</label>
+            <div class="controls">
+                <select id="J_Engine" class="input-xlarge">
+                    <option value="http://v.taobao.net/render.do">内网API</option>
+                </select>
+            </div>
         </div>
-        <div class="page-header"><h1>配置你的VMarket Client</h1></div>
-        <h2>您的应用</h2>
-
-        <form class="form-horizontal bs-docs">
-            <div class="control-group">
-                <label class="control-label" for="J_Vmcommon">vmcommon：</label>
-                <div class="controls">
-                    <input type="text" class="input-xxlarge" value="{vmcommon}" id="J_Vmcommon" placeholder="假如您的模板中使用了vmcommon，请checkout到本地，然后指向该地址">
-                </div>
+        <hr>
+        <div class="control-group">
+            <label class="control-label" for="J_Vmcommon">vmcommon：</label>
+            <div class="controls">
+                <input type="text" class="input-xxlarge" value="{vmcommon}" id="J_Vmcommon" placeholder="假如您的模板中使用了vmcommon，请checkout到本地，然后指向该地址">
             </div>
-            <div class="control-group">
-                <label class="control-label">当前应用：</label>
-                <div class="controls">
-                    <select class="pull-left input-xlarge" id="J_Apps" style="margin-right: 10px;">
+        </div>
+        <div class="control-group">
+            <label class="control-label">当前应用：</label>
+            <div class="controls">
+                <select class="pull-left input-xlarge" id="J_Apps" style="margin-right: 10px;">
                     {if apps.length}
-                        {foreach app in apps}
-                            {if app eq use}
-                            <option value="{app}" selected>{app}</option>
-                            {else}
-                            <option value="{app}">{app}</option>
-                            {end}
-                        {end}
+                    {foreach app in apps}
+                    {if app eq use}
+                    <option value="{app}" selected>{app}</option>
                     {else}
-                        <option>没有配置应用，添加一个试试 ↓↓↓</option>
+                    <option value="{app}">{app}</option>
                     {end}
-                    </select>
+                    {end}
+                    {else}
+                    <option>没有配置应用，添加一个试试 ↓↓↓</option>
+                    {end}
+                </select>
 
-                    <div class="btn-group pull-left J_AppOperate" {if not apps.length}style="display: none"{end}>
-                        <a class="btn" href="/list"><i class="icon-zoom-in"></i> 查看</a>
-                        <a class="btn" id="J_RemoveApp"><i class="icon-remove"></i> 删除</a>
+                <div class="pull-left J_AppOperate" {if not apps.length}style="display: none"{end}>
+                <a class="btn btn-primary" href="/list"><i class="icon-zoom-in icon-white"></i> 查看</a>
+                <a class="btn btn-primary" id="J_RemoveApp"><i class="icon-remove icon-white"></i> 删除</a>
+            </div>
+            <div class="modal hide fade J_RemoveAppAlertModal">
+                <div class="modal-body">
+                    <div class="J_RemoveAppAlert alert alert-block alert-error fade in clearfix">
+                        <h4 class="alert-heading">警告！您正在删除一个应用的所有配置！</h4>
+                        <p>一旦您的应用被删除，VMarket将无法使用该应用配置来进行模板的渲染。</p>
+                        <p>确认请继续。</p>
+                        <p class="pull-right">
+                            <a class="btn" data-dismiss="modal" aria-hidden="true">噢，我点错了</a>
+                            <a class="btn btn-danger" href="#" id="J_RemoveAppAlertConfirm">确定删除</a>
+                        </p>
                     </div>
-                    <div class="modal hide fade J_RemoveAppAlertModal">
-                        <div class="modal-body">
-                            <div class="J_RemoveAppAlert alert alert-block alert-error fade in clearfix">
-                                <h4 class="alert-heading">警告！您正在删除一个应用的所有配置！</h4>
-                                <p>一旦您的应用被删除，VMarket将无法使用该应用配置来进行模板的渲染。</p>
-                                <p>确认请继续。</p>
-                                <p class="pull-right">
-                                    <a class="btn" data-dismiss="modal" aria-hidden="true">噢，我点错了</a>
-                                    <a class="btn btn-danger" href="#" id="J_RemoveAppAlertConfirm">确定删除</a>
-                                </p>
-                            </div>
-                        </div>
+                </div>
+            </div>
+        </div>
+</div>
+<div class="control-group">
+    <div class="controls">
+        <a id="J_AddNewApp" href="#addNewAppModal" class="btn btn-primary">添加一个应用</a>
+        <br /><br />
+        <div class="alert alert-info">
+            <button type="button" data-dismiss="alert" class="close">×</button>
+            <strong>约定：</strong>VMarket基于开发同学的svn应用目录来管理模板，默认以应用根目录名作为应用名。
+        </div>
+    </div>
+</div>
+</form>
+<div id="addNewAppModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+     style="width: 800px; margin-left: -400px;" class="modal hide fade">
+    <div class="modal-header">
+        <button type="button" data-dismiss="modal" aria-hidden="true" class="close">×</button>
+        <h3 id="myModalLabel">你的应用</h3></div>
+    <div class="modal-body">
+        <form class="form-horizontal">
+            <div class="control-group">
+                <label for="approot" class="control-label">应用根目录：</label>
+                <div class="controls"><input id="approot" type="text" placeholder="" class="span5"><a
+                        id="J_RefreshDir" href="#" data-loading-text="分析中..." class="btn btn-primary" style="margin-left: 10px;"><i
+                        class="icon-refresh icon-white"></i> 分析</a><br><br>
+
+                    <div style="width: 420px;" class="alert alert-info">
+                        <button type="button" data-dismiss="alert" class="close">×</button>
+                        <strong>Windows：</strong>D:\\project\\tradeface<br><strong>Mac：</strong>/Users/harry/projects/tradeface
+                    </div>
+                    <div style="width: 470px; display: none;" class="progress progress-striped active">
+                        <div style="width: 0%;" class="bar"></div>
                     </div>
                 </div>
             </div>
             <div class="control-group">
+                <label for="approot" class="control-label">模板编码：</label>
                 <div class="controls">
-                    <a id="J_AddNewApp" href="#addNewAppModal" class="btn btn-primary">添加一个应用</a>
-                    <br /><br />
-                    <div class="alert alert-info">
-                        <button type="button" data-dismiss="alert" class="close">×</button>
-                        <strong>约定：</strong>VMarket基于开发同学的svn应用目录来管理模板，默认以应用根目录名作为应用名。
-                    </div>
+                    <label class="radio inline">
+                        <input type="radio" name="encoding" id="J_Encoding" value="gbk" checked>
+                        GBK （默认）
+                    </label>
+                    <label class="radio inline">
+                        <input type="radio" name="encoding" value="utf8">
+                        UTF-8
+                    </label>
+                </div>
+            </div>
+            <div class="control-group" style="display: none">
+                <label for="approot" class="control-label">默认Module：</label>
+                <div class="controls">
+                    <select id="J_SubModuleSelect">
+                        <option value="">无</option>
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <ul id="configTree" style="display: none;" class="ztree"></ul>
                 </div>
             </div>
         </form>
-        <div id="addNewAppModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
-             style="width: 800px; margin-left: -400px;" class="modal hide fade">
-            <div class="modal-header">
-                <button type="button" data-dismiss="modal" aria-hidden="true" class="close">×</button>
-                <h3 id="myModalLabel">你的应用</h3></div>
-            <div class="modal-body">
-                <form class="form-horizontal">
-                    <div class="control-group">
-                        <label for="approot" class="control-label">应用根目录：</label>
-                        <div class="controls"><input id="approot" type="text" placeholder="" class="span5"><a
-                                id="J_RefreshDir" href="#" data-loading-text="分析中..." class="btn btn-primary" style="margin-left: 10px;"><i
-                                class="icon-refresh icon-white"></i> 分析</a><br><br>
+    </div>
+    <div class="modal-footer"><span style="display: none;margin-right: 10px;"
+                                    class="alert alert-error">系统错误，请重试</span>
+        <button data-dismiss="modal" aria-hidden="true" class="btn">取消</button>
+        <button id="J_SaveConfig" data-loading-text="保存中..." class="btn btn-primary disabled">保存改动</button>
+    </div>
+</div>
 
-                            <div style="width: 420px;" class="alert alert-info">
-                                <button type="button" data-dismiss="alert" class="close">×</button>
-                                <strong>Windows：</strong>D:\\project\\tradeface<br><strong>Mac：</strong>/Users/harry/projects/tradeface
-                            </div>
-                            <div style="width: 470px; display: none;" class="progress progress-striped active">
-                                <div style="width: 0%;" class="bar"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label for="approot" class="control-label">模板编码：</label>
-                        <div class="controls">
-                            <label class="radio inline">
-                                <input type="radio" name="encoding" id="J_Encoding" value="gbk" checked>
-                                GBK （默认）
-                            </label>
-                            <label class="radio inline">
-                                <input type="radio" name="encoding" value="utf8">
-                                UTF-8
-                            </label>
-                        </div>
-                    </div>
-                    <div class="control-group" style="display: none">
-                        <label for="approot" class="control-label">默认Module：</label>
-                        <div class="controls">
-                            <select id="J_SubModuleSelect">
-                                <option value="">无</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <div class="controls">
-                            <ul id="configTree" style="display: none;" class="ztree"></ul>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer"><span style="display: none;margin-right: 10px;"
-                                            class="alert alert-error">系统错误，请重试</span>
-                <button data-dismiss="modal" aria-hidden="true" class="btn">取消</button>
-                <button id="J_SaveConfig" data-loading-text="保存中..." class="btn btn-primary disabled">保存改动</button>
-            </div>
-        </div>
-    </section>
 </div>
 <div class="footer">
     <div class="container">

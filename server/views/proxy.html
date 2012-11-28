@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head><title>配置你的VMarket</title>
-    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/bootstrap/cosmo/bootstrap.min.css">
     <link rel="stylesheet" href="/bootstrap/css/bootstrap-responsive.min.css">
-    <link rel="stylesheet" href="/bootstrap/css/docs.css">
+    <link rel="stylesheet" href="/bootstrap/cosmo/docs.css">
     <script type="text/javascript" src="/jquery/jquery-1.8.1.min.js"></script>
 </head>
 <body>
@@ -28,54 +28,49 @@
         </div>
     </div>
 </div>
+<a href="https://github.com/czy88840616/avalon-node"><img style="position: absolute; top: 0; right: 0; border: 0;z-index: 1031;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a>
 <div class="container">
-    <a href="https://github.com/czy88840616/avalon-node" id="github-ribbon"><img src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
-    <section id="forms">
-        <div class="page-header"><h1>配置你的VMarket Assets Proxy</h1></div>
-        <form class="bs-docs">
-            <h2>域名转换</h2>
-            <div class="controls">
-                <input class="span3" type="text" placeholder="域名" id="J_Domain">
-                <i class="icon-chevron-right">&nbsp;&nbsp;&nbsp;&nbsp;</i>
-                <input class="span3" type="text" placeholder="代理IP/域名(:端口)" id="J_ProxyIp">
-            </div>
-            <div class="controls">
-                <a id="J_AddNewDomain" class="btn btn-primary">添加域名转ip</a>
-                <br/><br/>
-
-                <div class="alert alert-info">
-                    <button type="button" data-dismiss="alert" class="close">×</button>
-                    <strong>注意：</strong>用于在代理规则中替换URL类型的域名，防止HOST绑定到本地死循环，添加同名域名即可覆盖
-                </div>
-            </div>
-            {foreach domain in proxyDomain}
-            <div class="controls">
-                <input class="span3 J_Domain" type="text" value="{domain.key}" readonly>
-                <i class="icon-chevron-right">&nbsp;&nbsp;&nbsp;&nbsp;</i>
-                <input class="span3" type="text" value="{domain.value}" readonly>
-                <a href="#" class="J_RemoveDomain"><i class="icon-remove"></i></a>
-            </div>
-            {end}
-            <hr>
-            <h2>代理规则</h2>
-            <div class="controls controls-row">
-                <input class="span4" type="text" placeholder="匹配的正则，例如：kissy-min" id="J_Pattern">
-                <i class="icon-retweet pull-left" style="margin: 0 10px;"></i>
-                <input class="span4" type="text" placeholder="替换的内容，例如：kissy" id="J_Target">
-                <label class="checkbox inline" style="margin: 0 10px;display: none;">
-                    <input type="checkbox" value="utf-8" id="J_Charset">utf-8
-                </label>
-            </div>
-            <div class="controls">
-                <a id="J_AddNewRule" class="btn btn-primary">添加一个代理规则</a>
-                <br/><br/>
-
-                <div class="alert alert-info">
-                    <button type="button" data-dismiss="alert" class="close">×</button>
-                    <strong>注意：</strong>代理规则从上到下依次匹配，如果匹配到多条只有第一条规则生效，调整顺序在空白处拖动，调整完毕请保存
-                </div>
-            </div>
-            <div id="J_SortRules">
+    <div class="page-header"><h1>配置你的VMarket Assets Proxy</h1></div>
+    <form class="bs-docs">
+        <h2>域名转换</h2>
+        <div class="controls">
+            <input class="span3" type="text" placeholder="域名" id="J_Domain">
+            <i class="icon-chevron-right">&nbsp;&nbsp;&nbsp;&nbsp;</i>
+            <input class="span3" type="text" placeholder="代理IP/域名(:端口)" id="J_ProxyIp">
+        </div>
+        <div class="controls">
+            <a id="J_AddNewDomain" class="btn btn-primary">添加域名转ip</a>
+            <br/><br/>
+            <p>
+                <span class="badge badge-warning">Warning</span> 用于在代理规则中替换URL类型的域名，防止HOST绑定到本地死循环，如需修改重复添加同名域名即可
+            </p>
+        </div>
+        {foreach domain in proxyDomain}
+        <div class="controls">
+            <input class="span3 J_Domain" type="text" value="{domain.key}" readonly>
+            <i class="icon-chevron-right">&nbsp;&nbsp;&nbsp;&nbsp;</i>
+            <input class="span3" type="text" value="{domain.value}" readonly>
+            <a href="#" class="J_RemoveDomain"><i class="icon-remove"></i></a>
+        </div>
+        {end}
+        <hr>
+        <h2>代理规则</h2>
+        <div class="controls controls-row">
+            <input class="span4" type="text" placeholder="匹配的正则，例如：kissy-min" id="J_Pattern">
+            <i class="icon-retweet pull-left" style="margin: 0 10px;"></i>
+            <input class="span4" type="text" placeholder="替换的内容，例如：kissy" id="J_Target">
+            <label class="checkbox inline" style="margin: 0 10px;display: none;">
+                <input type="checkbox" value="utf-8" id="J_Charset">utf-8
+            </label>
+        </div>
+        <div class="controls">
+            <a id="J_AddNewRule" class="btn btn-primary">添加一个代理规则</a>
+            <br/><br/>
+            <p>
+                <span class="badge badge-warning">Warning</span> 代理规则从上到下依次匹配，如果匹配到多条只有第一条规则生效，调整顺序在空白处拖动，调整完毕请保存
+            </p>
+        </div>
+        <div id="J_SortRules">
             {foreach rule in rules}
             <div class="controls  controls-row J_Sort">
                 <input class="span4 J_RulePattern" type="text" value="{rule.pattern}">
@@ -88,12 +83,11 @@
                 <a href="#" class="J_RuleRemove"><i class="icon-remove"></i></a>
             </div>
             {end}
-            </div>
-            <div class="controls">
-                <a class="btn btn-primary" id="J_Save">保存改动</a>
-            </div>
-        </form>
-    </section>
+        </div>
+        <div class="controls">
+            <a class="btn btn-primary" id="J_Save">保存改动</a>
+        </div>
+    </form>
 </div>
 <div class="footer">
     <div class="container">
