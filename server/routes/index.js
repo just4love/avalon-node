@@ -197,6 +197,11 @@ var App = {
                 });
             });
         }
+    },
+    createSnap: function(params, cb) {
+//        var appname = params.app,
+//            apps = userCfg.get('apps'),
+//            oldapp = apps[appname];
     }
 };
 

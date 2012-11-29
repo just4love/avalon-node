@@ -4,6 +4,11 @@
  *
  */
 $(function () {
+    $('#J_AddSnap').click(function(ev){
+        ev.preventDefault();
+
+    });
+
     var data = $('#J_TreeData').val();
     $.fn.zTree.init($("#configTree"), {
         showLine: true,
