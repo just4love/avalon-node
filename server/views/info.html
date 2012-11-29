@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head><title>配置你的VMarket</title>
-    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/bootstrap/cosmo/bootstrap.min.css">
     <link rel="stylesheet" href="/bootstrap/css/bootstrap-responsive.min.css">
-    <link rel="stylesheet" href="/bootstrap/css/docs.css">
+    <link rel="stylesheet" href="/bootstrap/cosmo/docs.css">
     <link rel="stylesheet" href="/ztree/css/zTreeStyle/zTreeStyle.css">
     <link type="text/css" rel="stylesheet" href="/syntaxhighlighter/styles/shCore.css"/>
     <link type="text/css" rel="stylesheet" href="/syntaxhighlighter/styles/shThemeRDark.css" />
@@ -30,24 +30,31 @@
         </div>
     </div>
 </div>
+<a href="https://github.com/czy88840616/avalon-node"><img style="position: absolute; top: 0; right: 0; border: 0;z-index: 1031;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a>
 <div class="container">
-    <a href="https://github.com/czy88840616/avalon-node" id="github-ribbon"><img src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
-    <section id="forms">
-        <div class="page-header"><h1>所属应用:{appname}</h1></div>
-        <input type="hidden" id="J_CurrentApp" value="{appname}"/>
-        <hr>
-        <h2>模板依赖树</h2>
-        <div class="bs-docs">
-            <ul id="configTree" class="ztree"></ul>
-        </div>
-        <hr>
-        <h2>模板变量结构</h2>
-        <div class="bs-docs">
+    <div class="page-header"><h1>所属应用:{appname}</h1></div>
+    <input type="hidden" id="J_CurrentApp" value="{appname}"/>
+    <h2>保存快照</h2>
+    <div class="controls">
+        <button type="button" class="btn btn-primary" id="J_AddTools" rel="popover" title="添加一个快照" data-content="And here's some amazing content. It's very engaging. right?">
+            <i class="icon-camera icon-white"></i> 添加一个快照
+        </button>
+    </div>
+    <br>
+    <div class="bs-docs well">
+
+    </div>
+    <h2>模板依赖树</h2>
+    <div class="bs-docs well">
+        <ul id="configTree" class="ztree"></ul>
+    </div>
+    <hr>
+    <h2>模板变量结构</h2>
+    <div class="bs-docs well">
 <pre  class='brush: js'>
 {keys}
 </pre>
-        </div>
-    </section>
+    </div>
 </div>
 <div class="footer">
     <div class="container">

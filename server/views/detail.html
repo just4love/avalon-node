@@ -39,7 +39,7 @@
         <div class="control-group">
             <label class="control-label">Tools</label>
             <div class="controls controls-row">
-                <button type="button" class="btn btn-primary" id="J_AddTools" rel="popover" title="A Title"
+                <button type="button" class="btn btn-primary" id="J_AddTools" rel="popover" title="添加一个工具类"
                         data-content="And here's some amazing content. It's very engaging. right?">
                     <i class="icon-wrench icon-white"></i> 添加一个工具类
                 </button>
@@ -74,15 +74,16 @@
     </form>
     <hr>
     <h2>模块screen列表</h2>
+    <span class="badge badge-inverse">无数据</span> <span class="badge badge-info">有数据 （包含*.json和*.js文件）</span>
     {foreach module in urls}
     <h3>Module: {if module.key eq 'noModule'}/{else}{module.key}{end}</h3>
     <ul>
-        {foreach url in module.value}
+        {foreach Url in module.value}
         <li>
             {if module.key eq 'noModule'}
-            <a href="/{url}" target="_blank">{{domain:port}}/{url}</a>
+            <a href="/{Url.url}" target="_blank" {if not Url.hasData}class="muted"{end}>{{domain:port}}/{Url.url}</a>
             {else}
-            <a href="/{module.key}/{url}" target="_blank">{{domain:port}}/{module.key}/{url}</a>
+            <a href="/{module.key}/{Url.url}" target="_blank" {if not Url.hasData}class="muted"{end}>{{domain:port}}/{module.key}/{Url.url}</a>
             {end}
         </li>
         {end}
