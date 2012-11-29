@@ -27,7 +27,8 @@ var App = {
         return {
             apps:_.keys(userCfg.get('apps')),
             use:userCfg.get('use'),
-            vmcommon:userCfg.get('vmcommon')
+            vmcommon:userCfg.get('vmcommon'),
+            open: userCfg.get('open')
         }
     },
     loadapps: function(params, cb){
@@ -114,6 +115,18 @@ var App = {
                 }
             });
         }
+    },
+    setopen: function(params, cb) {
+        var open = params.open === 'true';
+
+        userCfg.set('open', open);
+        userCfg.save(function(err){
+            if(err) {
+                cb(null, {success:false,msg:err});
+            } else {
+                cb(null, {success:true});
+            }
+        });
     },
     settools: function(params, cb){
         var tools = params.tools,

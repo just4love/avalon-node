@@ -3,6 +3,41 @@
  * @author 张挺 <zhangting@taobao.com>
  *
  */
+
+var later = function (fn, when, periodic, context, data) {
+    when = when || 0;
+    var m = fn,
+        d = $.makeArray(data),
+        f,
+        r;
+
+    if (typeof fn == 'string') {
+        m = context[fn];
+    }
+
+    if (!m) {
+//        S.error('method undefined');
+    }
+
+    f = function () {
+        m.apply(context, d);
+    };
+
+    r = (periodic) ? setInterval(f, when) : setTimeout(f, when);
+
+    return {
+        id:r,
+        interval:periodic,
+        cancel:function () {
+            if (this.interval) {
+                clearInterval(r);
+            } else {
+                clearTimeout(r);
+            }
+        }
+    };
+};
+
 $(function(){
     var checkValid =function(text){
         return !!text;
@@ -42,6 +77,14 @@ $(function(){
         $(this).button('loading');
         $('#addNewAppModal .progress .bar').css('width', '10%').parent().show();
 
+        later(function(){
+            if(!$('#configTree').html()) {
+                $('#J_BusyTip').addClass('in').fadeIn();
+            } else {
+                $('#J_BusyTip').removeClass('in').fadeOut();
+            }
+        }, 5000);
+
         $.post('/app/find', {
             root:$('#approot').val()
         }, function(data) {
@@ -61,6 +104,7 @@ $(function(){
             }, data.tree);
             $('#addNewAppModal .progress .bar').css('width', '100%').parent().fadeOut(function(){
                 $("#configTree").fadeIn();
+                $('#J_BusyTip').removeClass('in').fadeOut();
                 if(data.subModule && data.subModule.length) {
                     if(!(data.subModule.length == 1 && data.subModule[0] == 'noModule')) {
                         var tpl = [];
@@ -171,5 +215,17 @@ $(function(){
                 $('#J_UpdateTip').slideDown();
             }
         }
+    });
+
+    $('#J_AutoOpen').click(function(ev){
+        $.post('/app/setopen', {
+            open: !!$('#J_AutoOpen').attr('checked')
+        }, function (data) {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert(data.error);
+            }
+        });
     });
 });

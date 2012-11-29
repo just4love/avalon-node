@@ -40,15 +40,6 @@
     <div class="page-header"><h1>配置你的VMarket Client</h1></div>
     <form class="form-horizontal well">
         <div class="control-group">
-            <label class="control-label" for="J_Engine">API：</label>
-            <div class="controls">
-                <select id="J_Engine" class="input-xlarge">
-                    <option value="http://v.taobao.net/render.do">内网API</option>
-                </select>
-            </div>
-        </div>
-        <hr>
-        <div class="control-group">
             <label class="control-label" for="J_Vmcommon">vmcommon：</label>
             <div class="controls">
                 <input type="text" class="input-xxlarge" value="{vmcommon}" id="J_Vmcommon" placeholder="假如您的模板中使用了vmcommon，请checkout到本地，然后指向该地址">
@@ -89,15 +80,33 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            <a id="J_AddNewApp" href="#addNewAppModal" class="btn btn-primary">添加一个应用</a>
+            <br /><br />
+            <p>
+                <span class="badge badge-info"><i class="icon-exclamation-sign icon-white"></i> Tips</span>
+                VMarket基于开发同学的svn应用目录来管理模板，默认以应用根目录名作为应用名。
+            </p>
+        </div>
+    </div>
+<hr>
+<div class="control-group">
+    <label class="control-label" for="J_Engine">选择API：</label>
+    <div class="controls">
+        <select id="J_Engine" class="input-xlarge">
+            <option value="http://v.taobao.net/render.do">内网API</option>
+        </select>
+    </div>
 </div>
 <div class="control-group">
+    <label class="control-label" for="J_AutoOpen">是否自启动：</label>
     <div class="controls">
-        <a id="J_AddNewApp" href="#addNewAppModal" class="btn btn-primary">添加一个应用</a>
-        <br /><br />
-        <p>
-            <span class="badge badge-info">Tips</span>
-            VMarket基于开发同学的svn应用目录来管理模板，默认以应用根目录名作为应用名。
-        </p>
+        <label class="checkbox">
+            <input type="checkbox" id="J_AutoOpen" value="1" {if open}checked{end}>
+            启动客户端时自动打开浏览器
+        </label>
     </div>
 </div>
 </form>
@@ -114,12 +123,16 @@
                         id="J_RefreshDir" href="#" data-loading-text="分析中..." class="btn btn-primary" style="margin-left: 10px;"><i
                         class="icon-refresh icon-white"></i> 分析</a><br><br>
 
-                    <div style="width: 420px;" class="alert alert-info">
+                    <div style="width: 420px;" class="alert alert-info fade in">
                         <button type="button" data-dismiss="alert" class="close">×</button>
                         <strong>Windows：</strong>D:\\project\\tradeface<br><strong>Mac：</strong>/Users/harry/projects/tradeface
                     </div>
                     <div style="width: 470px; display: none;" class="progress progress-striped active">
                         <div style="width: 0%;" class="bar"></div>
+                    </div>
+                    <div class="alert alert-info fade out" id="J_BusyTip" style="display: none">
+                        <a class="close" data-dismiss="alert" >×</a>
+                        由于您的应用比较大，分析需要较长时间，请耐心等待。。。
                     </div>
                 </div>
             </div>

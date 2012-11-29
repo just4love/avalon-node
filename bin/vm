@@ -1,11 +1,7 @@
 #!/usr/bin/env node
 var argv = require('optimist')
     .default('port', '80')
-    .default('host', '127.0.0.1')
-    .default('open', 'false')
     .alias('p', 'port')
-    .alias('h', 'host')
-    .alias('o', 'open')
 	.argv;
 
 var util = require('util');
