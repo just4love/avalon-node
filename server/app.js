@@ -74,7 +74,10 @@ app.all('/*.(*htm*|do)', checkConfig, function(req, res, next){
     if(template) {
         template.render(req, res);
     } else {
-        res.render('404', { url: req.url });
+        res.render('404', {
+            app:useApp,
+            url: req.url
+        });
     }
 });
 
