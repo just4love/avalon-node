@@ -6,6 +6,8 @@
 var async = require('async'),
     fs = require('fs'),
     path = require('path'),
+    util = require('../../lib/util/util'),
+    iconv = require('iconv-lite'),
     finder = require('../../lib/webx/finder');
 
 describe('test async', function () {
@@ -30,7 +32,7 @@ describe('test async', function () {
         });
     });
 
-    it.only('test waterfall', function(done){
+    it('test waterfall', function(done){
         var root = 'D:\\project\\tradeface';
         root = path.resolve(root);
         if(!fs.existsSync(root)) {
@@ -78,5 +80,12 @@ describe('test async', function () {
             done();
             // result now equals 'done'
         });
+    });
+
+    it.only('removecomment', function() {
+        var content = iconv.decode(fs.readFileSync('test.vm', ''), 'gbk');
+
+        content = util.removeVelocityComments(content);
+        console.log(content);
     });
 });
