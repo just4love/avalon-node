@@ -36,9 +36,12 @@
     <input type="hidden" id="J_CurrentApp" value="{appname}"/>
     <h2>保存快照</h2>
     <div class="controls">
-        <button type="button" class="btn btn-primary" id="J_AddSnap" rel="popover" title="添加一个快照" data-content="And here's some amazing content. It's very engaging. right?">
+        <button type="button" class="btn btn-primary" id="J_AddSnap" rel="popover" title="添加一个快照">
             <i class="icon-camera icon-white"></i> 添加一个快照
         </button>
+        <span style="width: 470px; display: none;" id="J_Progress">
+            <img src="/loading/loading-2.gif" alt="">
+        </span>
     </div>
     <br>
     <div class="bs-docs well">

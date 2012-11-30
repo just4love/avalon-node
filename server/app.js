@@ -86,11 +86,19 @@ app.get('*.vm', checkConfig, function(req, res, next){
     var config = util.merge({}, userCfg.get('apps')[useApp]);
     config.vmcommon = userCfg.get('vmcommon');
 
-    res.render('info', render.getInfo({
+    render.getInfo({
         app: useApp,
         config: config,
         path: req.params[0]
-    }));
+    }, function(obj) {
+        if(_.isEmpty(obj)) {
+            res.render('404', {
+                app: useApp
+            });
+        } else {
+            res.render('info', obj);
+        }
+    });
 });
 
 var isLocalFile = function(uri){

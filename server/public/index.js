@@ -74,8 +74,7 @@ $(function(){
             $('#approot').parents('.control-group').addClass('success');
         }
 
-        $(this).button('loading');
-        $('#addNewAppModal .progress .bar').css('width', '10%').parent().show();
+        $('#J_RefreshProgress').fadeIn();
 
         later(function(){
             if(!$('#configTree').html()) {
@@ -91,18 +90,17 @@ $(function(){
             data = $.parseJSON(data);
             if(!data.success) {
                 alert(data.msg);
-                $('#addNewAppModal .progress .bar').css('width', '100%').parent().fadeOut();
+                $('#J_RefreshProgress').fadeOut();
                 $('#J_RefreshDir').button('reset');
                 return;
             }
 
             data = data.data;
-            $('#addNewAppModal .progress .bar').css('width', '80%');
             $.fn.zTree.init($("#configTree"), {
                 showLine:true,
                 checkable:true
             }, data.tree);
-            $('#addNewAppModal .progress .bar').css('width', '100%').parent().fadeOut(function(){
+            $('#J_RefreshProgress').fadeOut(function(){
                 $("#configTree").fadeIn();
                 $('#J_BusyTip').removeClass('in').fadeOut();
                 if(data.subModule && data.subModule.length) {
@@ -125,9 +123,8 @@ $(function(){
     //cancel popup
     $('#addNewAppModal').on('hidden', function (e) {
         $.fn.zTree.destroy('configTree');
-        $('#addNewAppModal .progress .bar').css('width', '0%');
         $('#J_RefreshDir').button('reset');
-        $('#addNewAppModal .progress').hide();
+        $('#J_RefreshProgress').hide();
         $(this).parents('.control-group').removeClass('error').removeClass('success');
         $('#J_SubModuleSelect').parents('.control-group').hide();
         $('#J_SubModuleSelect option').remove();

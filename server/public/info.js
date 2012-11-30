@@ -7,6 +7,8 @@ $(function () {
     $('#J_AddSnap').click(function(ev){
         ev.preventDefault();
 
+        $('#J_Progress').fadeIn();
+
     });
 
     var data = $('#J_TreeData').val();
