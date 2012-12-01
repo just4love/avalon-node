@@ -1,5 +1,5 @@
 ﻿var path = require('path'),
-    userCfg = require('../../lib/userConfig'),
+    userCfg = require('../../lib/config/userConfig'),
     _ = require('underscore'),
     webx = require('../../lib/webx/webx');
 /*

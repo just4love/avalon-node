@@ -6,7 +6,7 @@ var webx = require('../../lib/webx/webx'),
     util = require('../../lib/util/util'),
     path = require('path'),
     _ = require('underscore'),
-    userCfg = require('../../lib/userConfig'),
+    userCfg = require('../../lib/config/userConfig'),
     request = require('request');
 
 var App = {

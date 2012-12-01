@@ -74,21 +74,27 @@
     </form>
     <hr>
     <h2>模块screen列表</h2>
-    <span class="badge badge-inverse">无数据</span> <span class="badge badge-info">有数据 （包含*.json和*.js文件）</span>
-    {foreach module in urls}
-    <h3>Module: {if module.key eq 'noModule'}/{else}{module.key}{end}</h3>
-    <ul>
-        {foreach Url in module.value}
-        <li>
-            {if module.key eq 'noModule'}
-            <a href="/{Url.url}" target="_blank" {if not Url.hasData}class="muted"{end}>{{domain:port}}/{Url.url}</a>
-            {else}
-            <a href="/{module.key}/{Url.url}" target="_blank" {if not Url.hasData}class="muted"{end}>{{domain:port}}/{module.key}/{Url.url}</a>
-            {end}
-        </li>
-        {end}
-    </ul>
-    {end}
+    <form class="form-horizontal" autocomplete="on">
+        <div class="control-group">
+            <div class="controls controls-row">
+                <span class="badge badge-inverse">无数据</span> <span class="badge badge-info">有数据 （包含*.json和*.js文件）</span>
+                {foreach module in urls}
+                <h3>Module: {if module.key eq 'noModule'}/{else}{module.key}{end}</h3>
+                <ul>
+                    {foreach Url in module.value}
+                    <li>
+                        {if module.key eq 'noModule'}
+                        <a href="/{Url.url}" target="_blank" {if not Url.hasData}class="muted"{end}>{{domain:port}}/{Url.url}</a>
+                        {else}
+                        <a href="/{module.key}/{Url.url}" target="_blank" {if not Url.hasData}class="muted"{end}>{{domain:port}}/{module.key}/{Url.url}</a>
+                        {end}
+                    </li>
+                    {end}
+                </ul>
+                {end}
+            </div>
+        </div>
+    </form>
 </div>
 <div id="J_ToolModel" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">

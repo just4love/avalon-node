@@ -9,9 +9,10 @@ var assert = require("assert"),
     nconf = require('nconf'),
     render = require('../lib/render'),
     webx = require('../lib/webx/webx'),
-    userCfg = require('../lib/userConfig'),
+    userCfg = require('../lib/config/userConfig'),
     request = require('request'),
     vm = require('vm'),
+    util = require('../lib/util/util'),
     _ = require('underscore');
 
 describe('Array', function(){
@@ -22,7 +23,6 @@ describe('Array', function(){
         })
     });
 });
-
 
 describe('nconf', function() {
     it('get env', function(done) {
@@ -171,5 +171,24 @@ describe('js vm', function() {
         }
 
         console.log(data);
+    });
+});
+
+describe('util', function() {
+    it.only('augment', function() {
+//        var nc = function() {};
+
+//        util.augment(nc, nconf);
+
+//        var nc1 = new nconf();
+
+//        nc1.set('database:host', '127.0.0.1');
+//        nc1.set('database:port', 5984);
+//        nc1.set('home', nconf.get('HOME'));
+
+//        console.log(nc1.get('database:host'));
+
+        var log = require('./nconf_demo.json');
+        console.log(log);
     });
 });
