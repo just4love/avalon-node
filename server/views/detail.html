@@ -114,7 +114,8 @@
         <div class="control-group">
             <label class="control-label" style="width: 60px;">变量名</label>
             <div class="controls" style="margin-left: 80px;">
-                <input class="span4" type="text" placeholder="key" id="J_ToolsKey">
+                <input class="span4" type="text" placeholder="这里填写模板上的变量" id="J_ToolsKey">
+                <a href="#" rel="tooltip" title="假如模板为$rateServer.setTarget(xx)，那么变量就为rateServer" class="J_Tooltip"><i class="icon-question-sign"></i></a>
             </div>
         </div>
         <div id="J_ToolsProps"></div>
@@ -122,9 +123,10 @@
             <label class="control-label" style="width: 60px;"></label>
             <div class="controls" style="margin-left: 80px;">
                 <button class="btn btn-primary" type="button" id="J_ToolsUse"><i class="icon-ok icon-white"></i>添加</button>
+                <div class="alert alert-error" style="margin-top:20px;display: none;" id="J_ToolsError"></div>
             </div>
         </div>
-        <div class="alert alert-error" style="display: none" id="J_ToolsError"></div>
+
         </form>
     </div>
     <div class="modal-footer">

@@ -82,7 +82,7 @@ $(function(){
             } else {
                 $('#J_BusyTip').removeClass('in').fadeOut();
             }
-        }, 5000);
+        }, 7000);
 
         $.post('/app/find', {
             root:$('#approot').val()

@@ -8,7 +8,7 @@ var toolsList = {
     "uri":{
         class:"URL类型(直接输入url即可)",
         props:{
-            uri:"例如：http://assets.daily.taobao.net"
+            uri:"http://assets.daily.taobao.net"
         }
     },
     tmsTool: {
@@ -96,6 +96,8 @@ var propTPLRender = function(data){
             data.propKey,
             '" placeholder="',
             data.propValue,
+            '" value="',
+            data.propValue,
             '"></div></div>'].join('');
     }
 };
@@ -165,9 +167,9 @@ $(function () {
         $('#J_ToolsProps').html('');
         var key = $(this).val();
         if(key === 'uri') {
-            $('#J_ToolsKey').attr('placeholder', '例如：uiModule');
+            $('#J_ToolsKey').val('uiModule');
         } else {
-            $('#J_ToolsKey').attr('placeholder', key);
+            $('#J_ToolsKey').val(key);
         }
 
         if(toolsList[key].props) {
@@ -184,17 +186,28 @@ $(function () {
     $('#J_ToolsUse').click(function(e){
         $('#J_ToolsError').hide();
         if(!$('#J_ToolsList').val()) {
-            $('#J_ToolsError').text('请先选择一个工具类！').show();
+            $('#J_ToolsError').text('请先选择一个工具类！').fadeIn();
+            return;
+        }
+
+        if(!$('#J_ToolsKey').val()) {
+            $('#J_ToolsError').text('请填写变量名！').fadeIn();
             return;
         }
 
         if(window.tools[$('#J_ToolsKey').val()]) {
-            $('#J_ToolsError').text('当前变量值已经存在，请添加一个不存在的值或者删除旧值！').show();
+            $('#J_ToolsError').text('当前变量值已经存在，请添加一个不存在的值或者删除旧值！').fadeIn();
             return;
         }
 
         var key = $('#J_ToolsKey').val(),
             className = $('#J_ToolsList option:selected').text();
+
+        //非uri类型的key不能和默认值相同
+        if($('#J_ToolsList').val() != 'uri' && toolsList[key] && className == toolsList[key]['class']) {
+            $('#J_ToolsError').text('填写的变量请不要和默认值相同！').fadeIn();
+            return;
+        }
 
         if($('#J_ToolsList').val() == 'uri') {
             className = 'uri';
@@ -269,5 +282,7 @@ $(function () {
             $('#J_UpdateApp').button('reset');
         });
     });
+
+    $('.J_Tooltip').tooltip();
 
 });
