@@ -2,6 +2,7 @@
 * new 新增Metro风格主题
 * new 新增api配置和启动自动打开浏览器的配置
 * optimize 高亮有数据的vm链接，方便查找
+* bugfix 移除velocity注释时的bug
 
 ###0.2.0###
 * bugfix 调整assets和页面输出编码，让浏览器自己判断
