@@ -13,6 +13,7 @@ var assert = require("assert"),
     request = require('request'),
     vm = require('vm'),
     util = require('../lib/util/util'),
+    easyconf = require('easyconf'),
     _ = require('underscore');
 
 describe('Array', function(){
@@ -176,19 +177,10 @@ describe('js vm', function() {
 
 describe('util', function() {
     it.only('augment', function() {
-//        var nc = function() {};
+        var conf1 = new easyconf('./test.json');
+        var conf2 = new easyconf('./nconf_demo.json');
 
-//        util.augment(nc, nconf);
-
-//        var nc1 = new nconf();
-
-//        nc1.set('database:host', '127.0.0.1');
-//        nc1.set('database:port', 5984);
-//        nc1.set('home', nconf.get('HOME'));
-
-//        console.log(nc1.get('database:host'));
-
-        var log = require('./nconf_demo.json');
-        console.log(log);
+        console.log(conf1.get('home'));
+        console.log(conf2.get('home'));
     });
 });

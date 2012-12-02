@@ -7,6 +7,8 @@ var webx = require('../../lib/webx/webx'),
     path = require('path'),
     _ = require('underscore'),
     userCfg = require('../../lib/config/userConfig'),
+    snapCfg = require('../../lib/config/snapConfig'),
+    render = require('../../lib/render'),
     request = require('request');
 
 var App = {
@@ -198,10 +200,51 @@ var App = {
             });
         }
     },
+    loadSnap: function(params, cb){
+        var snaps = snapCfg.getSnapShots(),
+            uri = params.uri;
+        cb(null, {
+            success:true,
+            snapshots: _.filter(_.keys(snaps), function(key) {
+                return key.indexOf(uri) != -1;
+            })
+        });
+    },
     createSnap: function(params, cb) {
-//        var appname = params.app,
-//            apps = userCfg.get('apps'),
-//            oldapp = apps[appname];
+        var appname = params.appName,
+            uri = params.uri,
+            parameters = util.unparam(params.parameters),
+            apps = userCfg.get('apps');
+
+        var guid = util.createSnapGuid(uri);
+
+        var template = render.parse({
+            app: appname,
+            config: apps[appname],
+            path: uri,
+            api: userCfg.get('api'),
+            parameters: parameters
+        });
+
+        if(template) {
+            template.renderText(function(result){
+                snapCfg.setSnapShot(guid, result, function(err){
+                    if(err) {
+                        cb(null, {success:false,msg:err});
+                    } else {
+                        cb(null, {success:true, guid:guid});
+                    }
+                });
+            });
+        } else {
+            snapCfg.setSnapShot(guid, '', function(err){
+                if(err) {
+                    cb(null, {success:false,msg:err});
+                } else {
+                    cb(null, {success:true, guid:guid});
+                }
+            });
+        }
     }
 };
 

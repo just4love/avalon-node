@@ -11,6 +11,7 @@ var express = require('express')
     , path = require('path')
     , render = require('../lib/render')
     , userCfg = require('../lib/config/userConfig')
+    , snapCfg = require('../lib/config/snapConfig')
     , argv = require('optimist').argv
     , util = require('../lib/util/util')
     , cons = require('consolidate')
@@ -62,7 +63,7 @@ app.all('/*.(*htm*|do)', checkConfig, function(req, res, next){
     var useApp = userCfg.get('use');
     var config = util.merge({}, userCfg.get('apps')[useApp]);
     config.vmcommon = userCfg.get('vmcommon');
-
+console.log(req.params[0]);
     var template = render.parse({
         app: useApp,
         config: config,
@@ -101,21 +102,6 @@ app.get('*.vm', checkConfig, function(req, res, next){
     });
 });
 
-var isLocalFile = function(uri){
-    //过滤时间戳
-    uri = uri.replace(/\?.*/, '');
-    if(process.platform == 'win32') {
-        return uri.indexOf(':') != -1;
-    } else {
-        if(fs.existsSync(path.resolve(uri))) {
-            return true;
-        }
-
-
-        return uri.indexOf('/home') != -1 || uri.indexOf('/Users') != -1;
-    }
-};
-
 var processUrl = function(uri, domain,  callback){
     var rules = userCfg.get('rules'),
         proxyDomain = userCfg.get('proxyDomain'),
@@ -139,7 +125,7 @@ var processUrl = function(uri, domain,  callback){
         }
         //没匹配到的，必须要过滤域名为ip
         uri = proxyDomain[domain] + uri;
-    } else if(!isLocalFile(uri)) {
+    } else if(!util.isLocalFile(uri)) {
         if(!proxyDomain[domain]) {
             console.log('请配置一条域名转换以避免死循环, domain='+domain);
         }
@@ -178,7 +164,7 @@ app.get('(*??*|*.(css|js|ico|png|jpg|swf|less|gif))', function(req, res, next){
 
         async.forEachSeries(paths, function(p, callback){
             processUrl(p, req.headers.host, function(uri, rule){
-                if(isLocalFile(uri)) {
+                if(util.isLocalFile(uri)) {
                     uri = uri.replace(/\?.*/, '');
 
                     if(fs.existsSync(uri)) {
@@ -224,9 +210,28 @@ app.get('/', routes.index);
 app.get('/proxy', routes.proxy);
 app.post('/proxy/:operate', routes.proxyOperate);
 
+app.get('/snapshot/:snapName', function(req, res){
+    var snapName = req.params.snapName,
+        snap = snapCfg.getSnapShot(snapName);
+
+    //这里编码就取当前使用的应用编码
+    var useApp = userCfg.get('use');
+    var config = util.merge({}, userCfg.get('apps')[useApp]);
+
+    var encoding = config['encoding'] || 'gbk';
+    if(encoding == 'gbk') {
+        res.setHeader('Content-Type','text/html;charset=GBK');
+    }
+    res.send(snap || '');
+});
+
 http.createServer(app).listen(app.get('port'), function () {
     userCfg.init({
         cfg:argv.cfg
+    });
+
+    snapCfg.init({
+        cfg:argv.snapCfg
     });
     console.log('Status:', 'Success'.bold.green);
     console.log("Listen Port： " + app.get('port').toString().cyan);
