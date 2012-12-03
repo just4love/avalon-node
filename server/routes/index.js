@@ -9,6 +9,7 @@ var webx = require('../../lib/webx/webx'),
     userCfg = require('../../lib/config/userConfig'),
     snapCfg = require('../../lib/config/snapConfig'),
     render = require('../../lib/render'),
+    querystring = require('querystring'),
     request = require('request');
 
 var App = {
@@ -200,20 +201,30 @@ var App = {
             });
         }
     },
-    loadSnap: function(params, cb){
+    loadsnap: function(params, cb){
         var snaps = snapCfg.getSnapShots(),
-            uri = params.uri;
+            uri = params.uri,
+            filterSnaps = [];
+
+        _.each(_.keys(snaps), function(key){
+            var real = new Buffer(key, 'base64').toString();
+            if(real.indexOf(uri) != -1) {
+                filterSnaps.push({
+                    guid: key,
+                    real: real
+                });
+            }
+        });
+
         cb(null, {
             success:true,
-            snapshots: _.filter(_.keys(snaps), function(key) {
-                return key.indexOf(uri) != -1;
-            })
+            snapshots:filterSnaps
         });
     },
-    createSnap: function(params, cb) {
+    createsnap: function(params, cb) {
         var appname = params.appName,
             uri = params.uri,
-            parameters = util.unparam(params.parameters),
+            parameters = querystring.parse(params.parameters),
             apps = userCfg.get('apps');
 
         var guid = util.createSnapGuid(uri);
@@ -245,6 +256,9 @@ var App = {
                 }
             });
         }
+    },
+    removesnap: function(params, cb){
+
     }
 };
 
