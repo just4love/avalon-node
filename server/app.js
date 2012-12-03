@@ -132,6 +132,10 @@ var processUrl = function(uri, domain,  callback){
         uri = proxyDomain[domain] + uri;
     }
 
+    if(_.isUndefined(proxyDomain[domain])) {
+        uri = uri.replace('undefined', '127.0.0.1');
+    }
+
     callback(uri, matchRule);
 };
 
