@@ -42,6 +42,7 @@
         <div class="control-group">
             <label class="control-label" for="J_Vmcommon">vmcommon：</label>
             <div class="controls">
+                <input type="hidden" value="{vmcommon}" id="J_OldVmcommon"/>
                 <input type="text" class="input-xxlarge" value="{vmcommon}" id="J_Vmcommon" placeholder="假如您的模板中使用了vmcommon，请checkout到本地，然后指向该地址">
             </div>
         </div>
@@ -63,7 +64,7 @@
                 </select>
 
                 <div class="pull-left J_AppOperate" {if not apps.length}style="display: none"{end}>
-                <a class="btn btn-primary" href="/list"><i class="icon-zoom-in icon-white"></i> 查看</a>
+                <a class="btn btn-primary" href="/list/{use}" id="J_DetailApp"><i class="icon-zoom-in icon-white"></i> 查看</a>
                 <a class="btn btn-primary" id="J_RemoveApp"><i class="icon-remove icon-white"></i> 删除</a>
             </div>
             <div class="modal hide fade J_RemoveAppAlertModal">

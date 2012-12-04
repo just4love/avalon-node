@@ -4,6 +4,9 @@
 * bugfix 当没有配置域名转ip时，ip填充为127.0.0.1，这样可以在域名绑定时，保证404取到css
 * bugfix 空screen的layout渲染
 * bugfix 同级别default.vm的layout获取错误
+* optimize 首页查看直接链接到当前选中应用的详情
+* optimize 应用详情列表对齐
+* optimize vmcommon未变化失去焦点不刷新
 
 ###0.2.1###
 

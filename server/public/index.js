@@ -158,11 +158,13 @@ $(function(){
                         }
                     });
                     $("#J_Apps").append(tpl.join(''));
+                    //变更查看链接
+                    $('#J_DetailApp').attr('href', '/list/' + data.use);
                     $('.J_AppOperate').show();
                 });
                 $('#addNewAppModal').modal('hide');
             } else {
-                $('#addNewAppModal .error').show();
+                $("#addNewAppModal .error").show();
             }
         });
     });
@@ -193,6 +195,10 @@ $(function(){
     });
 
     $('#J_Vmcommon').blur(function(e){
+        if($('#J_Vmcommon').val() === $('#J_OldVmcommon').val()) {
+            return;
+        }
+
         $.post('/app/setvmcommon', {
             vmcommon:$('#J_Vmcommon').val()
         }, function(data){
@@ -202,16 +208,6 @@ $(function(){
                 alert(data.error);
             }
         });
-    });
-
-    $.get('/app/getlastest', function(data){
-        if(data.success) {
-            if(data.current != data.cfg['dist-tags'].latest) {
-                $('#J_UpdateTip .new').text(data.cfg['dist-tags'].latest);
-                $('#J_UpdateTip .current').text(data.current);
-                $('#J_UpdateTip').slideDown();
-            }
-        }
     });
 
     $('#J_AutoOpen').click(function(ev){

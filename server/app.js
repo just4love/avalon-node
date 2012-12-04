@@ -214,9 +214,9 @@ app.get('/', routes.index);
 app.get('/proxy', routes.proxy);
 app.post('/proxy/:operate', routes.proxyOperate);
 
-app.get('/snapshot/:snapName', function(req, res){
-    var snapName = req.params.snapName,
-        snap = snapCfg.getSnapShot(snapName);
+app.get('*.cache', function(req, res){
+    var guid = req.params.guid,
+        snap = snapCfg.getSnapShot(guid);
 
     //这里编码就取当前使用的应用编码
     var useApp = userCfg.get('use');
