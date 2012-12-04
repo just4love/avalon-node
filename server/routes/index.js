@@ -227,7 +227,7 @@ var App = {
             parameters = querystring.parse(params.parameters),
             apps = userCfg.get('apps');
 
-        var guid = util.createSnapGuid(uri);
+        var guid = util.createSnapGuid(uri, params.parameters);
 
         var template = render.parse({
             app: appname,
@@ -243,7 +243,7 @@ var App = {
                     if(err) {
                         cb(null, {success:false,msg:err});
                     } else {
-                        cb(null, {success:true, guid:guid});
+                        cb(null, {success:true, uri: uri + params.parameters ? '?' + params.parameters : '', guid: guid});
                     }
                 });
             });
@@ -252,7 +252,7 @@ var App = {
                 if(err) {
                     cb(null, {success:false,msg:err});
                 } else {
-                    cb(null, {success:true, guid:guid});
+                    cb(null, {success:true, uri: uri + params.parameters ? '?' + params.parameters : '', guid: guid});
                 }
             });
         }
