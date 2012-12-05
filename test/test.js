@@ -23,6 +23,18 @@ describe('Array', function(){
             assert.equal(-1, [1,2,3].indexOf(0));
         })
     });
+
+    describe('sort', function() {
+        it.only('underscore sort', function() {
+            var arr = [{t:1, b:2}, {t:3, c:4}, {t:2, c:4}];
+
+            var newArr = _.sortBy(arr, function(obj, idx){
+                return obj.t;
+            });
+
+            console.log(newArr.reverse());
+        });
+    });
 });
 
 describe('nconf', function() {
@@ -176,7 +188,7 @@ describe('js vm', function() {
 });
 
 describe('util', function() {
-    it.only('augment', function() {
+    it('augment', function() {
         var conf1 = new easyconf('./test.json');
         var conf2 = new easyconf('./nconf_demo.json');
 

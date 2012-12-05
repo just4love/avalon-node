@@ -204,15 +204,44 @@ var App = {
     loadsnap: function(params, cb){
         var snaps = snapCfg.getSnapShots(),
             uri = params.uri,
-            filterSnaps = [];
+            filterKeys = [],
+            filterSnaps = {
+                '24hour':[],
+                '72hour':[],
+                'more':[]
+            };
 
         _.each(_.keys(snaps), function(key){
-            var real = new Buffer(key, 'base64').toString();
-            if(real.indexOf(uri) != -1) {
-                filterSnaps.push({
+            var origin = new Buffer(key, 'base64').toString();
+            if(origin.indexOf(uri) != -1) {
+                var reals = origin.split('_'),
+                    p = reals[0],
+                    t = parseInt(reals[1]);
+
+                filterKeys.push({
+                    t: t,
+                    path: p,
                     guid: key,
-                    real: real
+                    origin: origin
                 });
+            }
+        });
+
+        filterKeys = _.sortBy(filterKeys, function(obj, idx){
+            return obj.t;
+        }).reverse();
+
+        var base = new Date().getTime();
+
+        //开始循环判断时间间隔
+        _.each(filterKeys, function(snap){
+            var diff = (base - snap.t)/1000/3600;
+            if(diff < 24) {
+                filterSnaps['24hour'].push(snap);
+            } else if(diff < 72) {
+                filterSnaps['72hour'].push(snap);
+            } else {
+                filterSnaps['more'].push(snap);
             }
         });
 
@@ -227,7 +256,7 @@ var App = {
             parameters = querystring.parse(params.parameters),
             apps = userCfg.get('apps');
 
-        var guid = util.createSnapGuid(uri, params.parameters);
+        var guid = util.createSnapGuid(uri);
 
         var template = render.parse({
             app: appname,
@@ -258,7 +287,15 @@ var App = {
         }
     },
     removesnap: function(params, cb){
+        var guid = params.guid;
 
+        snapCfg.deleteSnapShot(guid, function(err){
+            if(err) {
+                cb(null, {success:false,msg:err});
+            } else {
+                cb(null, {success:true});
+            }
+        });
     }
 };
 

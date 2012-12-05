@@ -5,16 +5,13 @@
  */
 
 var TPLReader =  function(data){
-    var reals = data.real.split('_'),
-        p = reals[0],
-        t = new Date(parseInt(reals[1]));
+    var t = new Date(data.t);
 
-    return ['<div class="btn-group"><a class="btn btn-small btn-inverse J_Tooltip" rel="tooltip" data-guid="',
+    return ['<li><a href="',
+        location.pathname.replace(/\.vm/, '.htm'),
+        '?guid=',
         data.guid,
-        '"',
-        'href="',
-        location.pathname.replace(/\.vm/, '.cache'),,
-        '" data-placement="top" data-original-title="该缓存生成于',
+        '"><i class="icon-time"></i>该缓存生成于',
         t.getFullYear(),
         '年',
         t.getMonth(),
@@ -27,30 +24,44 @@ var TPLReader =  function(data){
         '分',
         t.getSeconds(),
         '秒',
-        '"><i class="icon-time icon-white"></i> ',
-        data.real,
-        '</a><a class="btn btn-small btn-inverse dropdown-toggle" data-toggle="dropdown" href="#">',
-        '<span class="caret"></span></a> <ul class="dropdown-menu"><li>',
-        '<a href="#" class="J_DeleteTool"><i class="icon-trash"></i> Delete</a></li></ul></div>'].join('');
+        '<i class="icon-remove J_RemoveSnap" data-guid="',
+        data.guid,
+        '"></i></a></li>'].join('');
 };
 
-var createSnapShot = function(snapshot){
-    $(TPLReader(snapshot)).appendTo($('#J_SnapShotsContainer')).find('.J_DeleteTool').click(function(e){
-        e.preventDefault();
-        var el = $(this);
-        var toolKey = el.parents('.btn-group').attr('data-guid');
+var removeSnap = function(el) {
+    if(confirm('确定删除一个快照吗？')) {
+        var guid = el.attr('data-guid');
         //删除
         $.post('/app/removesnap', {
-            guid:toolKey
+            guid:guid
         }, function(data){
             if(data.success) {
                 //remove dom
-                $(el).parents('.btn-group').remove();
+                $(el).parents('li').fadeOut(function() {
+                    $(el).parents('li').remove();
+                });
             } else {
                 alert(data.msg);
             }
         });
-    }).end().find('.J_Tooltip').tooltip();
+    }
+};
+
+var createSnapShot = function(snapshot){
+    $(TPLReader(snapshot)).appendTo($('#J_SnapShotsContainer')).find('.J_RemoveSnap').click(function(e){
+        e.preventDefault();
+        var el = $(this);
+        removeSnap(el);
+    }).end();
+};
+
+var insertSnapShot = function(snapshot){
+    $(TPLReader(snapshot)).insertBefore($('#J_SnapShotsContainer')).find('.J_RemoveSnap').click(function(e){
+        e.preventDefault();
+        var el = $(this);
+        removeSnap(el);
+    }).end();
 };
 
 $(function () {
@@ -76,9 +87,27 @@ $(function () {
         uri: location.pathname.replace(/\.vm/, '')
     }, function(data){
         if(data.success) {
-            $.each(data.snapshots, function(idx, snapshot){
-                createSnapShot(snapshot);
-            });
+            if(data.snapshots['24hour'] && data.snapshots['24hour'].length) {
+                $('<li class="nav-header">1天内</li>').appendTo($('#J_SnapShotsContainer'));
+                $.each(data.snapshots['24hour'], function(idx, snapshot){
+                    createSnapShot(snapshot);
+                });
+            }
+
+            if(data.snapshots['72hour'] && data.snapshots['72hour'].length) {
+                $('<li class="nav-header">3天内</li>').appendTo($('#J_SnapShotsContainer'));
+                $.each(data.snapshots['72hour'], function(idx, snapshot){
+                    createSnapShot(snapshot);
+                });
+            }
+
+            if(data.snapshots['more'] && data.snapshots['more'].length) {
+                $('<li class="nav-header">更早</li>').appendTo($('#J_SnapShotsContainer'));
+                $.each(data.snapshots['more'], function(idx, snapshot){
+                    createSnapShot(snapshot);
+                });
+            }
+
 
             $('#J_SnapShotsContainer').fadeIn();
         } else {
