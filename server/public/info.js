@@ -9,9 +9,9 @@ var TPLReader =  function(data){
 
     return ['<li><a href="',
         location.pathname.replace(/\.vm/, '.htm'),
-        '?guid=',
+        '?vm_snap_guid=',
         data.guid,
-        '"><i class="icon-time"></i>该缓存生成于',
+        '" target="_blank"><i class="icon-time"></i>该缓存生成于',
         t.getFullYear(),
         '年',
         t.getMonth(),

@@ -60,25 +60,55 @@ app.get('/list/(:appname)?', user.list);
 app.all('/app/:operate', routes.operate);
 
 app.all('/*.(*htm*|do)', checkConfig, function(req, res, next){
-    var useApp = userCfg.get('use');
-    var config = util.merge({}, userCfg.get('apps')[useApp]);
-    config.vmcommon = userCfg.get('vmcommon');
-console.log(req.params[0]);
-    var template = render.parse({
-        app: useApp,
-        config: config,
-        path: req.params[0],
-        api: userCfg.get('api'),
-        parameters: req.method == 'get' ? req.query : req.body
-    });
+    //这里编码就取当前使用的应用编码
+    var useApp = userCfg.get('use'),
+        config = util.merge({}, userCfg.get('apps')[useApp]);
 
-    if(template) {
-        template.render(req, res);
+    if(req.query['vm_snap_guid']) {
+        //快照
+        var guid = req.query['vm_snap_guid'],
+            snap = snapCfg.getSnapShot(guid);
+
+        if(snap.indexOf('{') == 0) {
+            var data = JSON.parse(snap);
+            res.render('error', {
+                errors:data.errors,
+                content:data.content,
+                body:snap
+            });
+        } else {
+            var encoding = config['encoding'] || 'gbk';
+            if(encoding == 'gbk') {
+                res.setHeader('Content-Type','text/html;charset=GBK');
+            } else {
+                res.setHeader('Content-Type','text/html');
+            }
+            if(encoding == 'gbk') {
+                res.send(iconv.encode(snap, 'gbk') || '');
+            } else {
+                res.send(snap || '');
+            }
+        }
     } else {
-        res.render('404', {
-            app:useApp,
-            url: req.url
+        //真正的渲染
+        config.vmcommon = userCfg.get('vmcommon');
+
+        var template = render.parse({
+            app: useApp,
+            config: config,
+            path: req.params[0],
+            api: userCfg.get('api'),
+            parameters: req.method == 'get' ? req.query : req.body
         });
+
+        if(template) {
+            template.render(req, res);
+        } else {
+            res.render('404', {
+                app:useApp,
+                url: req.url
+            });
+        }
     }
 });
 

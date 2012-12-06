@@ -254,13 +254,14 @@ var App = {
         var appname = params.appName,
             uri = params.uri,
             parameters = querystring.parse(params.parameters),
-            apps = userCfg.get('apps');
+            apps = userCfg.get('apps'),
+            vmcommon = userCfg.get('vmcommon');
 
         var guid = util.createSnapGuid(uri);
 
         var template = render.parse({
             app: appname,
-            config: apps[appname],
+            config: util.merge(apps[appname], {vmcommon: vmcommon}),
             path: uri,
             api: userCfg.get('api'),
             parameters: parameters
