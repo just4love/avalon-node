@@ -64,10 +64,35 @@ app.all('/*.(*htm*|do)', checkConfig, function(req, res, next){
     var useApp = userCfg.get('use'),
         config = util.merge({}, userCfg.get('apps')[useApp]);
 
-    if(req.query['vm_snap_guid']) {
+    //真正的渲染
+    config.vmcommon = userCfg.get('vmcommon');
+
+    var template = render.parse({
+        app: useApp,
+        config: config,
+        path: req.params[0],
+        api: userCfg.get('api'),
+        parameters: req.method == 'get' ? req.query : req.body
+    });
+
+    if(template) {
+        template.render(req, res);
+    } else {
+        res.render('404', {
+            app:useApp,
+            url: req.url
+        });
+    }
+});
+
+app.get('*.snap', checkConfig, function(req, res, next){
+    var useApp = userCfg.get('use'),
+        config = util.merge({}, userCfg.get('apps')[useApp]);
+
+    if(req.query['guid']) {
         //快照
-        var guid = req.query['vm_snap_guid'],
-            snap = snapCfg.getSnapShot(guid);
+        var guid = req.query['guid'],
+            snap = snapCfg.getSnapShot(guid) || '';
 
         if(snap.indexOf('{') == 0) {
             var data = JSON.parse(snap);
@@ -88,26 +113,6 @@ app.all('/*.(*htm*|do)', checkConfig, function(req, res, next){
             } else {
                 res.send(snap || '');
             }
-        }
-    } else {
-        //真正的渲染
-        config.vmcommon = userCfg.get('vmcommon');
-
-        var template = render.parse({
-            app: useApp,
-            config: config,
-            path: req.params[0],
-            api: userCfg.get('api'),
-            parameters: req.method == 'get' ? req.query : req.body
-        });
-
-        if(template) {
-            template.render(req, res);
-        } else {
-            res.render('404', {
-                app:useApp,
-                url: req.url
-            });
         }
     }
 });

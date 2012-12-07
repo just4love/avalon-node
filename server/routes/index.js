@@ -267,13 +267,26 @@ var App = {
             parameters: parameters
         });
 
+        var origin = new Buffer(guid, 'base64').toString(),
+            origins = origin.split('_'),
+            p = origins[0],
+            t = parseInt(origins[1]);
+
         if(template) {
             template.renderText(function(result){
                 snapCfg.setSnapShot(guid, result, function(err){
                     if(err) {
                         cb(null, {success:false,msg:err});
                     } else {
-                        cb(null, {success:true, uri: uri + params.parameters ? '?' + params.parameters : '', guid: guid});
+                        cb(null, {
+                            success:true,
+                            snapshot: {
+                                t: t,
+                                path: p,
+                                guid: guid,
+                                origin: origin
+                            }
+                        });
                     }
                 });
             });
@@ -282,7 +295,15 @@ var App = {
                 if(err) {
                     cb(null, {success:false,msg:err});
                 } else {
-                    cb(null, {success:true, uri: uri + params.parameters ? '?' + params.parameters : '', guid: guid});
+                    cb(null, {
+                        success:true,
+                        snapshot: {
+                            t: t,
+                            path: p,
+                            guid: guid,
+                            origin: origin
+                        }
+                    });
                 }
             });
         }

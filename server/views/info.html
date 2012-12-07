@@ -35,12 +35,12 @@
     <div class="page-header"><h1>所属应用:{appname}</h1></div>
     <input type="hidden" id="J_CurrentApp" value="{appname}"/>
     <h2>保存快照</h2>
-    <div class="controls">
-        <button type="button" class="btn btn-primary" id="J_AddSnap" rel="popover" title="添加一个快照">
+    <div class="controls" style="position: relative">
+        <button type="button" class="btn btn-primary" id="J_AddSnap" rel="popover" title="添加一个快照" data-loading-text="生成中...">
             <i class="icon-camera icon-white"></i> 添加一个快照
         </button>
-        <span style="width: 470px; display: none;" id="J_Progress">
-            <img src="/loading/loading-2.gif" alt="">
+        <span style="position: absolute;left: 150px;top: -5px;display: none" id="J_Progress">
+            <img src="/loading/loading-3.gif" alt="">
         </span>
     </div>
     <br>

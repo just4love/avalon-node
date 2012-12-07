@@ -3,13 +3,45 @@
  * @author 张挺 <zhangting@taobao.com>
  *
  */
+var later = function (fn, when, periodic, context, data) {
+    when = when || 0;
+    var m = fn,
+        d = $.makeArray(data),
+        f,
+        r;
 
+    if (typeof fn == 'string') {
+        m = context[fn];
+    }
+
+    if (!m) {
+//        S.error('method undefined');
+    }
+
+    f = function () {
+        m.apply(context, d);
+    };
+
+    r = (periodic) ? setInterval(f, when) : setTimeout(f, when);
+
+    return {
+        id:r,
+        interval:periodic,
+        cancel:function () {
+            if (this.interval) {
+                clearInterval(r);
+            } else {
+                clearTimeout(r);
+            }
+        }
+    };
+};
 var TPLReader =  function(data){
     var t = new Date(data.t);
 
     return ['<li><a href="',
-        location.pathname.replace(/\.vm/, '.htm'),
-        '?vm_snap_guid=',
+        location.pathname.replace(/\.vm/, '.snap'),
+        '?guid=',
         data.guid,
         '" target="_blank"><i class="icon-time"></i>该缓存生成于',
         t.getFullYear(),
@@ -57,17 +89,25 @@ var createSnapShot = function(snapshot){
 };
 
 var insertSnapShot = function(snapshot){
-    $(TPLReader(snapshot)).insertBefore($('#J_SnapShotsContainer')).find('.J_RemoveSnap').click(function(e){
+    if(!$('#J_Now')[0]) {
+        $('<li class="nav-header" id="J_Now">刚刚</li>').prependTo($('#J_SnapShotsContainer'));
+    }
+
+    $(TPLReader(snapshot)).insertAfter($('#J_Now')).find('.J_RemoveSnap').click(function(e){
         e.preventDefault();
         var el = $(this);
         removeSnap(el);
     }).end();
+
+    $('#J_Progress').fadeOut();
+    $('#J_AddSnap').button('reset');
 };
 
 $(function () {
     $('#J_AddSnap').click(function(ev){
         ev.preventDefault();
 
+        $(this).button('loading');
         $('#J_Progress').fadeIn();
 
         $.post('/app/createsnap', {
@@ -76,9 +116,13 @@ $(function () {
             parameters:location.search.replace(/^\?/, '')
         }, function(data){
             if(data.success) {
-                createSnapShot();
+                later(function(){
+                    insertSnapShot(data.snapshot);
+                }, 3000);
             } else {
                 alert(data.error);
+                $('#J_Progress').fadeOut();
+                $('#J_AddSnap').button('reset');
             }
         });
     });
