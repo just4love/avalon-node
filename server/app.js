@@ -249,21 +249,6 @@ app.get('/', routes.index);
 app.get('/proxy', routes.proxy);
 app.post('/proxy/:operate', routes.proxyOperate);
 
-app.get('*.cache', function(req, res){
-    var guid = req.params.guid,
-        snap = snapCfg.getSnapShot(guid);
-
-    //这里编码就取当前使用的应用编码
-    var useApp = userCfg.get('use');
-    var config = util.merge({}, userCfg.get('apps')[useApp]);
-
-    var encoding = config['encoding'] || 'gbk';
-    if(encoding == 'gbk') {
-        res.setHeader('Content-Type','text/html;charset=GBK');
-    }
-    res.send(snap || '');
-});
-
 http.createServer(app).listen(app.get('port'), function () {
     userCfg.init({
         cfg:argv.cfg
