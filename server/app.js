@@ -208,7 +208,7 @@ app.get('(*??*|*.(css|js|ico|png|jpg|swf|less|gif))', function(req, res, next){
 
                     if(fs.existsSync(uri)) {
                         var stream = fs.createReadStream(uri);
-                        res.write('/*'+uri+'*/\r\n');
+                        res.write('/*url: '+uri+', matched rule pattern: '+rule.pattern+'*/\r\n');
                         stream.pipe(res, { end: false });
                         stream.on('end', callback);
                         stream.on('error', callback);
