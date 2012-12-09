@@ -284,5 +284,4 @@ $(function () {
     });
 
     $('.J_Tooltip').tooltip();
-
 });
