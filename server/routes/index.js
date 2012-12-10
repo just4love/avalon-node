@@ -31,7 +31,8 @@ var App = {
             apps:_.keys(userCfg.get('apps')),
             use:userCfg.get('use'),
             vmcommon:userCfg.get('vmcommon'),
-            open: userCfg.get('open')
+            open: userCfg.get('open'),
+            checkUpgrade: new Date().getTime() - userCfg.get('lastCheckTime') >= 86400000 //大于3天升级
         }
     },
     loadapps: function(params, cb){
@@ -172,6 +173,16 @@ var App = {
         var pjson = require('../../package.json');
         request.get('https://registry.npmjs.org/avalon-node', function (error, response, body) {
             cb(null, {success:true, current:pjson.version, cfg: JSON.parse(body)});
+        });
+    },
+    updatechecktime: function(params, cb){
+        userCfg.set('lastCheckTime', new Date().getTime());
+        userCfg.save(function(err){
+            if(err) {
+                cb(null, {success:false,msg:err});
+            } else {
+                cb(null, {success:true});
+            }
         });
     },
     update: function(params, cb){
@@ -343,7 +354,8 @@ exports.operate = function(req, res){
 exports.proxy = function(req, res){
     res.render('proxy', {
         proxyDomain:userCfg.get('proxyDomain'),
-        rules:userCfg.get('rules')
+        rules:userCfg.get('rules'),
+        checkUpgrade: new Date().getTime() - userCfg.get('lastCheckTime') >= 86400000 //大于3天升级
     });
 };
 

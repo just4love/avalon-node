@@ -1,14 +1,18 @@
-[升级指南](https://github.com/czy88840616/avalon-node/wiki/安装及使用)
+新版本修复了旧bug，新增了不少功能，也可能会有稳定性风险，请酌情升级，[升级指南](https://github.com/czy88840616/avalon-node/wiki/安装及使用)
 
 ###0.2.2###
 
-* new 新增快照功能，当本地模板没有改动时，快照可以大大提高展现效率
+* new 新增快照功能，当本地模板没有改动时，快照可以大大提高展现效率 @neekey
 * bugfix 当没有配置域名转ip时，ip填充为127.0.0.1，这样可以在域名绑定时，保证404取到css
-* bugfix 空screen的layout渲染
+* bugfix 空screen的layout渲染 #issue6
 * bugfix 同级别default.vm的layout获取错误
+* bugfix ie系列不存在JSON对象的fix #issue10
 * optimize 首页查看直接链接到当前选中应用的详情
 * optimize 应用详情列表对齐
 * optimize vmcommon未变化失去焦点不刷新
+* optimize 修改检测更新频率，集成在吊顶中
+* optimize 工具类placeholder修改，填充成默认值（尝试） #issue4
+* optimize 移除吊顶因为github图片而遮住响应式布局的问题
 
 ###0.2.1###
 
