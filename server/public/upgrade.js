@@ -9,8 +9,8 @@ $(function(){
 
     $.get('/app/getlastest', function(data){
         if(data.success) {
+            $('#J_UpdateLoadingImg').hide();
             if(data.current != data.cfg['dist-tags'].latest) {
-                $('#J_UpdateLoadingImg').hide();
                 $('<a class="btn btn-info btn-small" id="J_UpdateTip" style="display:none;background-color:#8D46B0" href="https://github.com/czy88840616/avalon-node/blob/master/CHANGELOG.md" target="_blank">亲，有新版本可以升级哦 <button type="button" style="float:none;" class="close" data-dismiss="alert">×</button></a>')
                     .appendTo($('.nav')[0])
                     .fadeIn()

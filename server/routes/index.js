@@ -32,7 +32,7 @@ var App = {
             use:userCfg.get('use'),
             vmcommon:userCfg.get('vmcommon'),
             open: userCfg.get('open'),
-            checkUpgrade: new Date().getTime() - userCfg.get('lastCheckTime') >= 86400000 //大于3天升级
+            checkUpgrade: new Date().getTime() - userCfg.get('lastCheckTime') >= 259200000 //大于3天升级
         }
     },
     loadapps: function(params, cb){
