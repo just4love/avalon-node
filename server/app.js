@@ -133,7 +133,7 @@ app.get('*.vm', checkConfig, function(req, res, next){
             });
         } else {
             res.render('info', util.merge(obj, {
-                checkUpgrade: new Date().getTime() - userCfg.get('lastCheckTime') >= 86400000 //大于3天升级
+                checkUpgrade: new Date().getTime() - userCfg.get('lastCheckTime') >= 259200000 //大于3天升级
             }));
         }
     });

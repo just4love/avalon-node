@@ -355,7 +355,7 @@ exports.proxy = function(req, res){
     res.render('proxy', {
         proxyDomain:userCfg.get('proxyDomain'),
         rules:userCfg.get('rules'),
-        checkUpgrade: new Date().getTime() - userCfg.get('lastCheckTime') >= 86400000 //大于3天升级
+        checkUpgrade: new Date().getTime() - userCfg.get('lastCheckTime') >= 259200000 //大于3天升级
     });
 };
 
