@@ -9,11 +9,21 @@ var velocity = require('velocity.js'),
     fs = require('fs');
 
 describe('test velocity', function() {
+    var vm = fs.readFileSync('../myCartBeta.vm').toString(),
+        asts = Parser.parse(vm);
+
     it('test structure', function() {
-        var Structure = new helper.Structure();
-        var vm = fs.readFileSync('../myCartBeta.vm').toString();
-        var asts = Parser.parse(vm);
-        var struct = new Structure(asts);
-        console.log(struct.context);
+        var Structure = new helper.Structure(asts);
+        console.log(Structure.context);
+    });
+
+    it('test BackStep', function() {
+        var BackStep = new helper.BackStep(asts);
+        console.log(BackStep.context);
+    });
+
+    it('test Jsonify', function() {
+        var Jsonify = new helper.Jsonify(asts);
+        console.log(Jsonify);
     });
 });
