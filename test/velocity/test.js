@@ -6,7 +6,8 @@
 var velocity = require('velocity.js'),
     helper = velocity.Helper,
     Parser = velocity.Parser,
-    fs = require('fs');
+    fs = require('fs'),
+    _ = require('underscore');
 
 describe('test velocity', function() {
     var vm = fs.readFileSync('../myCartBeta.vm').toString(),
@@ -14,7 +15,7 @@ describe('test velocity', function() {
 
     it('test structure', function() {
         var Structure = new helper.Structure(asts);
-        console.log(Structure.context);
+        console.log(JSON.stringify(Structure.context));
     });
 
     it('test BackStep', function() {
@@ -22,8 +23,8 @@ describe('test velocity', function() {
         console.log(BackStep.context);
     });
 
-    it('test Jsonify', function() {
+    it.only('test Jsonify', function() {
         var Jsonify = new helper.Jsonify(asts);
-        console.log(Jsonify);
+        console.log(JSON.stringify(Jsonify.context));
     });
 });
