@@ -172,7 +172,16 @@ var App = {
     getlastest: function(params, cb){
         var pjson = require('../../package.json');
         request.get('https://registry.npmjs.org/avalon-node', function (error, response, body) {
-            cb(null, {success:true, current:pjson.version, cfg: JSON.parse(body)});
+            var r;
+            try {
+                r = JSON.parse(body);
+            } catch(ex) {
+                r = {};
+                cb(null, {success:false});
+                return;
+            }
+
+            cb(null, {success:true, current:pjson.version, cfg: r});
         });
     },
     updatechecktime: function(params, cb){
