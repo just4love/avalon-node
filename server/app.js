@@ -72,7 +72,7 @@ app.all('/*.(*htm*|do)', checkConfig, function(req, res, next){
         config: config,
         path: req.params[0],
         api: userCfg.get('api'),
-        parameters: req.method == 'get' ? req.query : req.body
+        parameters: req.method == 'GET' ? req.query : req.body
     });
 
     if(template) {
