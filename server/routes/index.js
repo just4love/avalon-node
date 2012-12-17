@@ -14,7 +14,9 @@ var webx = require('../../lib/webx/webx'),
 
 var App = {
     find: function(params, cb) {
-        webx.getConfig(params.root, function(err, result) {
+        var type = params.type;
+
+        webx.getConfig(params.root, type, function(err, result) {
             if(err) {
                 cb(JSON.stringify({success:false, msg:err}));
             } else {
@@ -47,11 +49,12 @@ var App = {
     },
     add: function(params, cb){
         var root = params.root,
-            encoding = params.encoding;
+            encoding = params.encoding,
+            type = params.type,
             defaultModule = params.defaultModule;
 
         root = root.replace(/(\\|\/)$/, '');
-        webx.getConfig(root, function(err, result) {
+        webx.getConfig(root, type, function(err, result) {
             var appName = path.basename(root);
             result.encoding = encoding;
             result.defaultModule = defaultModule;
@@ -194,7 +197,7 @@ var App = {
             cb(null, {success:false,msg:'当前应用配置不存在'});
         } else {
             var root = oldapp.root;
-            webx.getConfig(root, function(err, result) {
+            webx.getConfig(root, oldapp.type, function(err, result) {
                 var appName = path.basename(root);
 
                 //合并新旧同名应用
