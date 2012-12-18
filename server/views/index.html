@@ -30,7 +30,10 @@
     </div>
 </div>
 <div class="container">
-    <div class="page-header"><h1>配置你的VMarket Client</h1></div>
+    <div class="page-header">
+        <h1>配置你的VMarket Client</h1>
+        <a href="#J_SwitchAppTypeModal" role="button" class="btn" data-toggle="modal">切换应用类型</a>
+    </div>
     <form class="form-horizontal well">
         <div class="control-group">
             <label class="control-label" for="J_Vmcommon">vmcommon：</label>
@@ -91,6 +94,7 @@
     <div class="controls">
         <select id="J_Engine" class="input-xlarge">
             <option value="http://v.taobao.net/render.do">内网API</option>
+            <option value="http://127.0.0.1:8000/render.do">DEBUG API</option>
         </select>
     </div>
 </div>
@@ -164,7 +168,24 @@
         <button id="J_SaveConfig" data-loading-text="保存中..." class="btn btn-primary disabled">保存改动</button>
     </div>
 </div>
-
+<div class="modal" id="J_SwitchAppTypeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-body">
+        <p>一旦您的应用被删除，VMarket将无法使用该应用配置来进行模板的渲染。</p>
+        <p>确认请继续。</p>
+        <label class="radio">
+            <input type="radio" name="appType" value="tb">
+            <img src="/type/tb.gif" alt="">
+        </label>
+        <label class="radio">
+            <input type="radio" name="appType" value="b2b">
+            <img src="/type/b2b.jpg" alt="">
+        </label>
+        <p class="pull-right">
+            <a class="btn" data-dismiss="modal" aria-hidden="true">取消</a>
+            <a class="btn btn-primary" href="#" id="">确定</a>
+        </p>
+    </div>
+</div>
 </div>
 <div class="footer">
     <div class="container">
