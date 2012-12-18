@@ -27,6 +27,9 @@ $(function(){
                     ev.preventDefault();
                     $('#J_UpdateTip').tooltip('hide');
                 });
+            } else {
+                //如果相同版本，也要更新时间戳
+                $.get('/app/updatechecktime');
             }
         }
     });
