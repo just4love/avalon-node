@@ -149,11 +149,12 @@ $(function () {
         }
     });
 
-
-
     //event bind
     $('#J_AddTools').click(function(){
-        $('#J_ToolModel').modal('show');
+        $('#J_ToolModel').modal({
+            backdrop:'static',
+            show: true
+        });
     });
 
     var tpl = [];

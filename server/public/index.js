@@ -45,7 +45,9 @@ $(function(){
 
     $('#J_AddNewApp').click(function(e){
         e.preventDefault();
-        $('#addNewAppModal').modal();
+        $('#addNewAppModal').modal({
+            backdrop:'static'
+        });
     });
 
     //blur and check
@@ -172,7 +174,9 @@ $(function(){
     //remove app
     $('#J_RemoveApp').click(function(e){
         e.preventDefault();
-        $('.J_RemoveAppAlertModal').modal();
+        $('.J_RemoveAppAlertModal').modal({
+            backdrop:'static'
+        });
     });
 
     $('#J_RemoveAppAlertConfirm').click(function(e){
@@ -221,4 +225,27 @@ $(function(){
             }
         });
     });
+
+    $('#J_SwitchAppTypeModal .btn-primary').click(function(ev){
+        ev.preventDefault();
+        $.post('/app/changetype', {
+            type: $('input[name="appType"]:checked').val()
+        }, function (data) {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert(data.error);
+            }
+        });
+    });
 });
+
+Global = {
+    showTypeModal: function(){
+        later(function(){
+            $('#J_SwitchAppTypeModal').modal({
+                backdrop:'static'
+            });
+        }, 500);
+    }
+};

@@ -31,8 +31,13 @@
 </div>
 <div class="container">
     <div class="page-header">
-        <h1>配置你的VMarket Client</h1>
-        <a href="#J_SwitchAppTypeModal" role="button" class="btn" data-toggle="modal">切换应用类型</a>
+        <h1>配置你的VMarket Client
+            {if type}
+            <a href="#" data-toggle="modal" data-target="#J_SwitchAppTypeModal">
+                <img src="/type/{type}.jpg" alt="" style="height: 30px">
+            </a>
+            {end}
+        </h1>
     </div>
     <form class="form-horizontal well">
         <div class="control-group">
@@ -101,7 +106,7 @@
 <div class="control-group">
     <label class="control-label" for="J_AutoOpen">是否自启动：</label>
     <div class="controls">
-        <label class="checkbox">
+        <label class="checkbox inline">
             <input type="checkbox" id="J_AutoOpen" value="1" {if open}checked{end}>
             启动客户端时自动打开浏览器
         </label>
@@ -168,18 +173,22 @@
         <button id="J_SaveConfig" data-loading-text="保存中..." class="btn btn-primary disabled">保存改动</button>
     </div>
 </div>
-<div class="modal" id="J_SwitchAppTypeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal hide fade" id="J_SwitchAppTypeModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" data-dismiss="modal" aria-hidden="true" class="close">×</button>
+        <h3>请选择您的产品所属</h3>
+    </div>
     <div class="modal-body">
-        <p>一旦您的应用被删除，VMarket将无法使用该应用配置来进行模板的渲染。</p>
-        <p>确认请继续。</p>
+        <p>
+            <span class="badge badge-info"><i class="icon-exclamation-sign icon-white"></i> Tips</span>
+            这个选择会影响到应用查询的方式和渲染模板的方式，可以在首页选择切换
+        </p>
+        {foreach company in companys}
         <label class="radio">
-            <input type="radio" name="appType" value="tb">
-            <img src="/type/tb.gif" alt="">
+            <input type="radio" name="appType" value="{company}" style="margin-top: 16px;" {if company eq type}checked{end}>
+            <img src="/type/{company}.jpg" alt="">
         </label>
-        <label class="radio">
-            <input type="radio" name="appType" value="b2b">
-            <img src="/type/b2b.jpg" alt="">
-        </label>
+        {end}
         <p class="pull-right">
             <a class="btn" data-dismiss="modal" aria-hidden="true">取消</a>
             <a class="btn btn-primary" href="#" id="">确定</a>
@@ -198,6 +207,11 @@
 <script type="text/javascript" src="/index.js"></script>
 {if checkUpgrade}
 <script type="text/javascript" src="/upgrade.js"></script>
+{end}
+{if not type}
+<script type="text/javascript">
+    Global.showTypeModal();
+</script>
 {end}
 </body>
 </html>

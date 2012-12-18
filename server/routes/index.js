@@ -34,6 +34,8 @@ var App = {
             use:userCfg.get('use'),
             vmcommon:userCfg.get('vmcommon'),
             open: userCfg.get('open'),
+            type: userCfg.get('type'),
+            companys: ['taobao', 'b2b'],
             checkUpgrade: new Date().getTime() - userCfg.get('lastCheckTime') >= 259200000 //大于3天升级
         }
     },
@@ -326,6 +328,17 @@ var App = {
         var guid = params.guid;
 
         snapCfg.deleteSnapShot(guid, function(err){
+            if(err) {
+                cb(null, {success:false,msg:err});
+            } else {
+                cb(null, {success:true});
+            }
+        });
+    },
+    changetype: function(params, cb){
+        var type = params.type || 'taobao';
+        userCfg.set('type', type);
+        userCfg.save(function(err){
             if(err) {
                 cb(null, {success:false,msg:err});
             } else {
