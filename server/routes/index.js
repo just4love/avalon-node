@@ -14,7 +14,7 @@ var webx = require('../../lib/webx/webx'),
 
 var App = {
     find: function(params, cb) {
-        var type = params.type;
+        var type = userCfg.get('type');
 
         webx.getConfig(params.root, type, function(err, result) {
             if(err) {
@@ -36,6 +36,8 @@ var App = {
             open: userCfg.get('open'),
             type: userCfg.get('type'),
             companys: ['taobao', 'b2b'],
+            debug: userCfg.get('debug'),
+            api: userCfg.get('api'),
             checkUpgrade: new Date().getTime() - userCfg.get('lastCheckTime') >= 259200000 //大于3天升级
         }
     },
@@ -52,7 +54,7 @@ var App = {
     add: function(params, cb){
         var root = params.root,
             encoding = params.encoding,
-            type = params.type,
+            type = userCfg.get('type'),
             defaultModule = params.defaultModule;
 
         root = root.replace(/(\\|\/)$/, '');
@@ -193,13 +195,14 @@ var App = {
     update: function(params, cb){
         var appname = params.app,
             apps = userCfg.get('apps'),
+            type = userCfg.get('type'),
             oldapp = apps[appname];
 
         if(!oldapp) {
             cb(null, {success:false,msg:'当前应用配置不存在'});
         } else {
             var root = oldapp.root;
-            webx.getConfig(root, oldapp.type, function(err, result) {
+            webx.getConfig(root, type, function(err, result) {
                 var appName = path.basename(root);
 
                 //合并新旧同名应用
@@ -338,6 +341,17 @@ var App = {
     changetype: function(params, cb){
         var type = params.type || 'taobao';
         userCfg.set('type', type);
+        userCfg.save(function(err){
+            if(err) {
+                cb(null, {success:false,msg:err});
+            } else {
+                cb(null, {success:true});
+            }
+        });
+    },
+    changeapi: function(params, cb){
+        var api = params.api || 'http://v.taobao.net/render.do';
+        userCfg.set('api', api);
         userCfg.save(function(err){
             if(err) {
                 cb(null, {success:false,msg:err});

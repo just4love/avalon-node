@@ -33,13 +33,14 @@
     <div class="page-header">
         <h1>配置你的VMarket Client
             {if type}
-            <a href="#" data-toggle="modal" data-target="#J_SwitchAppTypeModal">
+            <a href="#" id="J_SwitchAppTypeModalTrigger" data-toggle="modal" data-target="#J_SwitchAppTypeModal" rel="tooltip" data-placement="right" data-original-title="点击切换应用所属">
                 <img src="/type/{type}.jpg" alt="" style="height: 30px">
             </a>
             {end}
         </h1>
     </div>
     <form class="form-horizontal well">
+        {if not (type eq 'b2b')}
         <div class="control-group">
             <label class="control-label" for="J_Vmcommon">vmcommon：</label>
             <div class="controls">
@@ -47,6 +48,7 @@
                 <input type="text" class="input-xxlarge" value="{vmcommon}" id="J_Vmcommon" placeholder="假如您的模板中使用了vmcommon，请checkout到本地，然后指向该地址">
             </div>
         </div>
+        {end}
         <div class="control-group">
             <label class="control-label">当前应用：</label>
             <div class="controls">
@@ -89,20 +91,22 @@
             <br /><br />
             <p>
                 <span class="badge badge-info"><i class="icon-exclamation-sign icon-white"></i> Tips</span>
-                VMarket基于开发同学的svn应用目录来管理模板，默认以应用根目录名作为应用名。
+                VMarket基于开发同学的<code>svn应用目录</code>来管理模板，默认以应用根目录名作为应用名。
             </p>
         </div>
     </div>
 <hr>
+{if debug}
 <div class="control-group">
     <label class="control-label" for="J_Engine">选择API：</label>
     <div class="controls">
         <select id="J_Engine" class="input-xlarge">
-            <option value="http://v.taobao.net/render.do">内网API</option>
-            <option value="http://127.0.0.1:8000/render.do">DEBUG API</option>
+            <option value="http://v.taobao.net/render.do" {if api eq 'http://v.taobao.net/render.do'}selected{end}>内网API</option>
+            <option value="http://127.0.0.1:8000/render.do"{if api eq 'http://127.0.0.1:8000/render.do'}selected{end}>DEBUG API</option>
         </select>
     </div>
 </div>
+{end}
 <div class="control-group">
     <label class="control-label" for="J_AutoOpen">是否自启动：</label>
     <div class="controls">
@@ -158,9 +162,11 @@
                     <select id="J_SubModuleSelect">
                         <option value="">无</option>
                     </select>
+                    <a href="https://github.com/czy88840616/avalon-node/wiki/%E9%BB%98%E8%AE%A4module" target="_blank"><i class="icon-question-sign"></i>这是什么</a>
                 </div>
             </div>
-            <div class="control-group">
+            <div class="control-group" style="display: none">
+                <label for="" class="control-label">预览：</label>
                 <div class="controls">
                     <ul id="configTree" style="display: none;" class="ztree"></ul>
                 </div>

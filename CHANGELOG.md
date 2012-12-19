@@ -1,5 +1,11 @@
 新版本修复了旧bug，新增了不少功能，也可能会有稳定性风险，请酌情升级，[升级指南](https://github.com/czy88840616/avalon-node/wiki/安装及使用)
 
+###0.2.5###
+* new 开始支持b2b的目录结构查询和模板渲染，可以选择应用归属
+* bugfix assets代理的注释输出会被*/截断时做一些处理
+* optimize info页面nav加入文档链接
+* optimize 暂时隐藏api的选择
+
 ###0.2.3###
 * bugfix 空模板，但有数据时输出成json结构而不是404
 

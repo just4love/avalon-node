@@ -78,7 +78,7 @@ $(function(){
 
         $('#J_RefreshProgress').fadeIn();
 
-        later(function(){
+        var timeChecker = later(function(){
             if(!$('#configTree').html()) {
                 $('#J_BusyTip').addClass('in').fadeIn();
             } else {
@@ -89,6 +89,9 @@ $(function(){
         $.post('/app/find', {
             root:$('#approot').val()
         }, function(data) {
+            timeChecker.cancel();
+            timeChecker = null;
+
             data = $.parseJSON(data);
             if(!data.success) {
                 alert(data.msg);
@@ -103,6 +106,7 @@ $(function(){
                 checkable:true
             }, data.tree);
             $('#J_RefreshProgress').fadeOut(function(){
+                $("#configTree").parents('.control-group').show();
                 $("#configTree").fadeIn();
                 $('#J_BusyTip').removeClass('in').fadeOut();
                 if(data.subModule && data.subModule.length) {
@@ -124,6 +128,7 @@ $(function(){
 
     //cancel popup
     $('#addNewAppModal').on('hidden', function (e) {
+        $("#configTree").parents('.control-group').hide();
         $.fn.zTree.destroy('configTree');
         $('#J_RefreshDir').button('reset');
         $('#J_RefreshProgress').hide();
@@ -238,6 +243,20 @@ $(function(){
             }
         });
     });
+
+    $('#J_Engine').change(function(ev){
+        $.post('/app/changeapi', {
+            api: $(this).val()
+        }, function (data) {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert(data.error);
+            }
+        });
+    });
+
+    $('#J_SwitchAppTypeModalTrigger').tooltip();
 });
 
 Global = {
