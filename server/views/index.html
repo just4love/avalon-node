@@ -101,8 +101,9 @@
     <label class="control-label" for="J_Engine">选择API：</label>
     <div class="controls">
         <select id="J_Engine" class="input-xlarge">
-            <option value="http://v.taobao.net/render.do" {if api eq 'http://v.taobao.net/render.do'}selected{end}>内网API</option>
-            <option value="http://127.0.0.1:8000/render.do"{if api eq 'http://127.0.0.1:8000/render.do'}selected{end}>DEBUG API</option>
+            {foreach apiLine in apis}
+            <option value="{apiLine.value}" {if api eq apiLine.value}selected{end}>{apiLine.key}</option>
+            {end}
         </select>
     </div>
 </div>
@@ -181,7 +182,7 @@
 </div>
 <div class="modal hide fade" id="J_SwitchAppTypeModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-header">
-        <button type="button" data-dismiss="modal" aria-hidden="true" class="close">×</button>
+        {if type}<button type="button" data-dismiss="modal" aria-hidden="true" class="close">×</button>{end}
         <h3>请选择您的产品所属</h3>
     </div>
     <div class="modal-body">
@@ -196,7 +197,7 @@
         </label>
         {end}
         <p class="pull-right">
-            <a class="btn" data-dismiss="modal" aria-hidden="true">取消</a>
+            {if type}<a class="btn" data-dismiss="modal" aria-hidden="true">取消</a>{end}
             <a class="btn btn-primary" href="#" id="">确定</a>
         </p>
     </div>

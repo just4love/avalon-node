@@ -38,6 +38,10 @@ var App = {
             companys: ['taobao', 'b2b'],
             debug: userCfg.get('debug'),
             api: userCfg.get('api'),
+            apis: {
+                '内网API':'http://v.taobao.net/render.do',
+                'DEBUG API': 'http://127.0.0.1:8000/render.do'
+            },
             checkUpgrade: new Date().getTime() - userCfg.get('lastCheckTime') >= 259200000 //大于3天升级
         }
     },
