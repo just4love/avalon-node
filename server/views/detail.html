@@ -74,9 +74,11 @@
     <hr>
     <h2>模块screen列表</h2>
     <form class="form-horizontal" autocomplete="on">
-        <div class="control-group">
+        <div class="control-group J_ScreenList">
             <div class="controls controls-row">
-                <span class="badge badge-inverse">无数据</span> <span class="badge badge-info">有数据 （包含*.json和*.js文件）</span>
+                <span class="badge badge-inverse">无数据</span>
+                <span class="badge badge-info">有数据 （包含*.json和*.js文件）</span>
+                <span class="badge badge-important">命名错误，vm文件按驼峰规则命名</span>
                 {foreach module in urls}
                 <h3>Module: {if module.key eq 'noModule'}/{else}{module.key}{end}</h3>
                 <ul>

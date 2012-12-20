@@ -1,5 +1,9 @@
 新版本修复了旧bug，新增了不少功能，也可能会有稳定性风险，请酌情升级，[升级指南](https://github.com/czy88840616/avalon-node/wiki/安装及使用)
 
+###0.2.4###
+* bugfix mac下dos2unix的错误
+* optimize 带下划线的vm进行命名提示
+
 ###0.2.3###
 * bugfix 空模板，但有数据时输出成json结构而不是404
 * bugfix 修复一个因为远端404返回报错而导致更新状态判断错误的问题
