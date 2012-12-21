@@ -203,13 +203,14 @@ $(function(){
         });
     });
 
-    $('#J_Vmcommon').blur(function(e){
-        if($('#J_Vmcommon').val() === $('#J_OldVmcommon').val()) {
+    $('.J_CommonValue').blur(function(e){
+        if($(this).val() === $(this).prev().val()) {
             return;
         }
 
-        $.post('/app/setvmcommon', {
-            vmcommon:$('#J_Vmcommon').val()
+        $.post('/app/setcommon', {
+            key: $(this).attr('name'),
+            value: $(this).val()
         }, function(data){
             if(data.success) {
                 location.reload();

@@ -40,12 +40,12 @@
         </h1>
     </div>
     <form class="form-horizontal well">
-        {if not (type eq 'b2b')}
+        {foreach comValue in commonValues}
         <div class="control-group">
-            <label class="control-label" for="J_Vmcommon">vmcommon：</label>
+            <label class="control-label">{comValue.key}：</label>
             <div class="controls">
-                <input type="hidden" value="{vmcommon}" id="J_OldVmcommon"/>
-                <input type="text" class="input-xxlarge" value="{vmcommon}" id="J_Vmcommon" placeholder="假如您的模板中使用了vmcommon，请checkout到本地，然后指向该地址">
+                <input type="hidden" value="{common[comValue.key]}" class="J_OldCommonValue"/>
+                <input type="text"  name="{comValue.key}" class="input-xxlarge J_CommonValue" value="{common[comValue.key]}" placeholder="{comValue.value}">
             </div>
         </div>
         {end}

@@ -10,6 +10,7 @@ var webx = require('../../lib/webx/webx'),
     snapCfg = require('../../lib/config/snapConfig'),
     render = require('../../lib/render'),
     querystring = require('querystring'),
+    innerData = require('../../lib/webx/innerData'),
     request = require('request');
 
 var App = {
@@ -32,16 +33,14 @@ var App = {
         return {
             apps:_.keys(userCfg.get('apps')),
             use:userCfg.get('use'),
-            vmcommon:userCfg.get('vmcommon'),
+            common:userCfg.get('common'),   //vmcommon这类公共资源
+            commonValues: innerData.data.companys[userCfg.get('type')].common,
             open: userCfg.get('open'),
             type: userCfg.get('type'),
-            companys: ['taobao', 'b2b'],
+            companys: _.keys(innerData.data.companys),
             debug: userCfg.get('debug'),
             api: userCfg.get('api'),
-            apis: {
-                '内网API':'http://v.taobao.net/render.do',
-                'DEBUG API': 'http://127.0.0.1:8000/render.do'
-            },
+            apis: innerData.data.apis,
             checkUpgrade: new Date().getTime() - userCfg.get('lastCheckTime') >= 259200000 //大于3天升级
         }
     },
@@ -112,16 +111,21 @@ var App = {
             }
         });
     },
-    setvmcommon: function(params, cb){
-        var vmcommon = params.vmcommon;
-        vmcommon = vmcommon.replace(/(\\|\/)$/, '');
-        vmcommon = vmcommon ? path.resolve(vmcommon):vmcommon;
+    setcommon: function(params, cb){
+        var key = params.key,
+            value = params.value;
 
-        if(vmcommon == userCfg.get('vmcommon')) {
+        value = value.replace(/(\\|\/)$/, '');
+        value = value ? path.resolve(value):value;
+
+        var common = userCfg.get('common');
+
+        if(value == common[key]) {
             //cache
             cb(null, {success:true});
         } else {
-            userCfg.set('vmcommon', vmcommon);
+            common[key] = value;
+            userCfg.set('common', common);
             userCfg.save(function(err){
                 if(err) {
                     cb(null, {success:false,msg:err});
