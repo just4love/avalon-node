@@ -65,7 +65,8 @@ app.all('/*.(*htm*|do)', checkConfig, function(req, res, next){
         config = util.merge({}, userCfg.get('apps')[useApp]);
 
     //真正的渲染
-    config.vmcommon = userCfg.get('vmcommon');
+    config.type = userCfg.get('type');
+    config.common = userCfg.get('common');
 
     var template = render.parse({
         app: useApp,
@@ -120,7 +121,8 @@ app.get('*.snap', checkConfig, function(req, res, next){
 app.get('*.vm', checkConfig, function(req, res, next){
     var useApp = userCfg.get('use');
     var config = util.merge({}, userCfg.get('apps')[useApp]);
-    config.vmcommon = userCfg.get('vmcommon');
+    config.type = userCfg.get('type');
+    config.common = userCfg.get('common');
 
     render.getInfo({
         app: useApp,
