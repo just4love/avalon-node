@@ -289,7 +289,7 @@ $(function () {
     $('.J_ScreenList li a').each(function(idx, el){
         var url = $(el).html(),
             us = url.split('/');
-        console.log(us[us.length -1]);
+
         if(us[us.length -1].indexOf('_') != -1) {
             $(el).attr('style', 'color:#E51400');
         }

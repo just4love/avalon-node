@@ -189,11 +189,11 @@ var contentType = {
     '.less': 'text/css;'
 };
 
-app.get('(*??*|*.(css|js|ico|png|jpg|swf|less|gif))', function(req, res, next){
+app.get('(*??*|*.(css|js|ico|png|jpg|swf|less|gif|woff))', function(req, res, next){
     var host = req.headers.host;
 
     if(host.indexOf('127.0.0.1') == -1 && host.indexOf('localhost') == -1
-        && (/\.(css|js|ico|png|jpg|swf|less|gif)/.test(req.url) || req.url.indexOf("??") != -1)) {
+        && (/\.(css|js|ico|png|jpg|swf|less|gif|woff)/.test(req.url) || req.url.indexOf("??") != -1)) {
         var paths;
         //combo
         if(req.url.indexOf('??') != -1) {
