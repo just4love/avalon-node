@@ -8,7 +8,7 @@ var async = require('async'),
     path = require('path'),
     util = require('../../lib/util/util'),
     iconv = require('iconv-lite'),
-    finder = require('../../lib/webx/finder');
+    finder = require('../../lib/finder/tbFinder');
 
 describe('test async', function () {
     it('test', function () {
@@ -52,7 +52,7 @@ describe('test async', function () {
 
         async.waterfall([
             function(callback){
-                finder.findWebroot('D:\\project\\tradeface', function(err, result) {
+                finder.findWebroot('D:\\project\\tradeface', 'tb', function(err, result) {
                     if(err) {
                         callback(err);
                     }
@@ -65,13 +65,13 @@ describe('test async', function () {
             },
             function (arg1, callback) {
                 console.log(arg1);
-                finder.findMacros('D:\\project\\tradeface', function(err, result) {
+                finder.findMacros('D:\\project\\tradeface', 'tb', function(err, result) {
                     callback(null, result);
                 });
             },
             function (arg1, callback) {
                 console.log(arg1);
-                finder.findSubModule('D:\\project\\tradeface', function(err, result) {
+                finder.findSubModule('D:\\project\\tradeface', 'tb', function(err, result) {
                     callback(null, result);
                 });
             }

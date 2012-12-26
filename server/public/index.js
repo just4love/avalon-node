@@ -45,7 +45,9 @@ $(function(){
 
     $('#J_AddNewApp').click(function(e){
         e.preventDefault();
-        $('#addNewAppModal').modal();
+        $('#addNewAppModal').modal({
+            backdrop:'static'
+        });
     });
 
     //blur and check
@@ -76,7 +78,7 @@ $(function(){
 
         $('#J_RefreshProgress').fadeIn();
 
-        later(function(){
+        var timeChecker = later(function(){
             if(!$('#configTree').html()) {
                 $('#J_BusyTip').addClass('in').fadeIn();
             } else {
@@ -87,6 +89,9 @@ $(function(){
         $.post('/app/find', {
             root:$('#approot').val()
         }, function(data) {
+            timeChecker.cancel();
+            timeChecker = null;
+
             data = $.parseJSON(data);
             if(!data.success) {
                 alert(data.msg);
@@ -101,6 +106,7 @@ $(function(){
                 checkable:true
             }, data.tree);
             $('#J_RefreshProgress').fadeOut(function(){
+                $("#configTree").parents('.control-group').show();
                 $("#configTree").fadeIn();
                 $('#J_BusyTip').removeClass('in').fadeOut();
                 if(data.subModule && data.subModule.length) {
@@ -122,6 +128,7 @@ $(function(){
 
     //cancel popup
     $('#addNewAppModal').on('hidden', function (e) {
+        $("#configTree").parents('.control-group').hide();
         $.fn.zTree.destroy('configTree');
         $('#J_RefreshDir').button('reset');
         $('#J_RefreshProgress').hide();
@@ -172,7 +179,9 @@ $(function(){
     //remove app
     $('#J_RemoveApp').click(function(e){
         e.preventDefault();
-        $('.J_RemoveAppAlertModal').modal();
+        $('.J_RemoveAppAlertModal').modal({
+            backdrop:'static'
+        });
     });
 
     $('#J_RemoveAppAlertConfirm').click(function(e){
@@ -194,13 +203,14 @@ $(function(){
         });
     });
 
-    $('#J_Vmcommon').blur(function(e){
-        if($('#J_Vmcommon').val() === $('#J_OldVmcommon').val()) {
+    $('.J_CommonValue').blur(function(e){
+        if($(this).val() === $(this).prev().val()) {
             return;
         }
 
-        $.post('/app/setvmcommon', {
-            vmcommon:$('#J_Vmcommon').val()
+        $.post('/app/setcommon', {
+            key: $(this).attr('name'),
+            value: $(this).val()
         }, function(data){
             if(data.success) {
                 location.reload();
@@ -221,4 +231,41 @@ $(function(){
             }
         });
     });
+
+    $('#J_SwitchAppTypeModal .btn-primary').click(function(ev){
+        ev.preventDefault();
+        $.post('/app/changetype', {
+            type: $('input[name="appType"]:checked').val()
+        }, function (data) {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert(data.error);
+            }
+        });
+    });
+
+    $('#J_Engine').change(function(ev){
+        $.post('/app/changeapi', {
+            api: $(this).val()
+        }, function (data) {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert(data.error);
+            }
+        });
+    });
+
+    $('#J_SwitchAppTypeModalTrigger').tooltip();
 });
+
+Global = {
+    showTypeModal: function(){
+        later(function(){
+            $('#J_SwitchAppTypeModal').modal({
+                backdrop:'static'
+            });
+        }, 500);
+    }
+};

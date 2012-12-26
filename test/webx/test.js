@@ -4,7 +4,7 @@
  *
  */
 var assert = require("assert"),
-    finder = require('../../lib/webx/finder'),
+    finder = require('../../lib/finder/tbFinder'),
     webx = require('../../lib/webx/webx'),
     _ = require('underscore'),
     path = require('path');
@@ -40,14 +40,14 @@ describe('analyze', function () {
 
     describe('test webx', function() {
         it('test get config', function(done) {
-            webx.getConfig('D:\\project\\tradeface', function(err, result){
+            webx.getConfig('D:\\project\\tradeface', 'tb', function(err, result){
                 console.log(result);
                 done();
             });
         });
 
         it('test get content', function(done) {
-            webx.getConfig('D:\\project\\tradeface', function(err, result){
+            webx.getConfig('D:\\project\\tradeface', 'tb', function(err, result){
                 webx.getContent('auction/order/unityOrderConfirm.vm', result, function(err, result){
                     console.log(result);
                     done();
@@ -56,7 +56,7 @@ describe('analyze', function () {
         });
 
         it('test get content sync', function(done) {
-            webx.getConfig('D:\\project\\tradeface', function(err, result){
+            webx.getConfig('D:\\project\\tradeface', 'tb', function(err, result){
                 result.vmcommon = 'D:\\project\\vmcommon';
 
                 var content = webx.getContentSync('auction/order/unityOrderConfirm.vm', result);
@@ -66,7 +66,7 @@ describe('analyze', function () {
         });
 
         it('test get data sync', function(done) {
-            webx.getConfig('D:\\project\\tradeface', function(err, result){
+            webx.getConfig('D:\\project\\tradeface', 'tb', function(err, result){
                 result.vmcommon = 'D:\\project\\vmcommon';
 
                 var content = webx.getContentSync('auction/order/unityOrderConfirm.vm', result);
@@ -77,7 +77,7 @@ describe('analyze', function () {
         });
 
         it.only('test get screen file', function(done) {
-            webx.getConfig('D:\\project\\tradeface', function(err, result){
+            webx.getConfig('D:\\project\\tradeface', 'tb', function(err, result){
                 webx.getScreenUrl(result, function(err, data){
                     console.log(data);
                     done();

@@ -10,11 +10,14 @@ var webx = require('../../lib/webx/webx'),
     snapCfg = require('../../lib/config/snapConfig'),
     render = require('../../lib/render'),
     querystring = require('querystring'),
+    innerData = require('../../lib/webx/innerData'),
     request = require('request');
 
 var App = {
     find: function(params, cb) {
-        webx.getConfig(params.root, function(err, result) {
+        var type = userCfg.get('type');
+
+        webx.getConfig(params.root, type, function(err, result) {
             if(err) {
                 cb(JSON.stringify({success:false, msg:err}));
             } else {
@@ -30,8 +33,14 @@ var App = {
         return {
             apps:_.keys(userCfg.get('apps')),
             use:userCfg.get('use'),
-            vmcommon:userCfg.get('vmcommon'),
+            common:userCfg.get('common'),   //vmcommon这类公共资源
+            commonValues: innerData.data.companys[userCfg.get('type')].common,
             open: userCfg.get('open'),
+            type: userCfg.get('type'),
+            companys: _.keys(innerData.data.companys),
+            debug: userCfg.get('debug'),
+            api: userCfg.get('api'),
+            apis: innerData.data.apis,
             checkUpgrade: new Date().getTime() - userCfg.get('lastCheckTime') >= 259200000 //大于3天升级
         }
     },
@@ -47,11 +56,12 @@ var App = {
     },
     add: function(params, cb){
         var root = params.root,
-            encoding = params.encoding;
+            encoding = params.encoding,
+            type = userCfg.get('type'),
             defaultModule = params.defaultModule;
 
         root = root.replace(/(\\|\/)$/, '');
-        webx.getConfig(root, function(err, result) {
+        webx.getConfig(root, type, function(err, result) {
             var appName = path.basename(root);
             result.encoding = encoding;
             result.defaultModule = defaultModule;
@@ -101,16 +111,21 @@ var App = {
             }
         });
     },
-    setvmcommon: function(params, cb){
-        var vmcommon = params.vmcommon;
-        vmcommon = vmcommon.replace(/(\\|\/)$/, '');
-        vmcommon = vmcommon ? path.resolve(vmcommon):vmcommon;
+    setcommon: function(params, cb){
+        var key = params.key,
+            value = params.value;
 
-        if(vmcommon == userCfg.get('vmcommon')) {
+        value = value.replace(/(\\|\/)$/, '');
+        value = value ? path.resolve(value):value;
+
+        var common = userCfg.get('common');
+
+        if(value == common[key]) {
             //cache
             cb(null, {success:true});
         } else {
-            userCfg.set('vmcommon', vmcommon);
+            common[key] = value;
+            userCfg.set('common', common);
             userCfg.save(function(err){
                 if(err) {
                     cb(null, {success:false,msg:err});
@@ -197,13 +212,14 @@ var App = {
     update: function(params, cb){
         var appname = params.app,
             apps = userCfg.get('apps'),
+            type = userCfg.get('type'),
             oldapp = apps[appname];
 
         if(!oldapp) {
             cb(null, {success:false,msg:'当前应用配置不存在'});
         } else {
             var root = oldapp.root;
-            webx.getConfig(root, function(err, result) {
+            webx.getConfig(root, type, function(err, result) {
                 var appName = path.basename(root);
 
                 //合并新旧同名应用
@@ -275,13 +291,17 @@ var App = {
             uri = params.uri,
             parameters = querystring.parse(params.parameters),
             apps = userCfg.get('apps'),
-            vmcommon = userCfg.get('vmcommon');
+            type = userCfg.get('type'),
+            common = userCfg.get('common');
 
         var guid = util.createSnapGuid(uri);
 
         var template = render.parse({
             app: appname,
-            config: util.merge(apps[appname], {vmcommon: vmcommon}),
+            config: util.merge(apps[appname], {
+                common: common,
+                type: type
+            }),
             path: uri,
             api: userCfg.get('api'),
             parameters: parameters
@@ -332,6 +352,28 @@ var App = {
         var guid = params.guid;
 
         snapCfg.deleteSnapShot(guid, function(err){
+            if(err) {
+                cb(null, {success:false,msg:err});
+            } else {
+                cb(null, {success:true});
+            }
+        });
+    },
+    changetype: function(params, cb){
+        var type = params.type || 'taobao';
+        userCfg.set('type', type);
+        userCfg.save(function(err){
+            if(err) {
+                cb(null, {success:false,msg:err});
+            } else {
+                cb(null, {success:true});
+            }
+        });
+    },
+    changeapi: function(params, cb){
+        var api = params.api || 'http://v.taobao.net/render.do';
+        userCfg.set('api', api);
+        userCfg.save(function(err){
             if(err) {
                 cb(null, {success:false,msg:err});
             } else {

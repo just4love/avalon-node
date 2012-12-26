@@ -30,15 +30,25 @@
     </div>
 </div>
 <div class="container">
-    <div class="page-header"><h1>配置你的VMarket Client</h1></div>
+    <div class="page-header">
+        <h1>配置你的VMarket Client
+            {if type}
+            <a href="#" id="J_SwitchAppTypeModalTrigger" data-toggle="modal" data-target="#J_SwitchAppTypeModal" rel="tooltip" data-placement="right" data-original-title="选择应用符合的目录结构">
+                <img src="/type/{type}.jpg" alt="" style="height: 30px">
+            </a>
+            {end}
+        </h1>
+    </div>
     <form class="form-horizontal well">
+        {foreach comValue in commonValues}
         <div class="control-group">
-            <label class="control-label" for="J_Vmcommon">vmcommon：</label>
+            <label class="control-label">{comValue.key}：</label>
             <div class="controls">
-                <input type="hidden" value="{vmcommon}" id="J_OldVmcommon"/>
-                <input type="text" class="input-xxlarge" value="{vmcommon}" id="J_Vmcommon" placeholder="假如您的模板中使用了vmcommon，请checkout到本地，然后指向该地址">
+                <input type="hidden" value="{common[comValue.key]}" class="J_OldCommonValue"/>
+                <input type="text"  name="{comValue.key}" class="input-xxlarge J_CommonValue" value="{common[comValue.key]}" placeholder="{comValue.value}">
             </div>
         </div>
+        {end}
         <div class="control-group">
             <label class="control-label">当前应用：</label>
             <div class="controls">
@@ -81,23 +91,27 @@
             <br /><br />
             <p>
                 <span class="badge badge-info"><i class="icon-exclamation-sign icon-white"></i> Tips</span>
-                VMarket基于开发同学的svn应用目录来管理模板，默认以应用根目录名作为应用名。
+                VMarket基于开发同学的<code>svn应用目录</code>来管理模板，默认以应用根目录名作为应用名。
             </p>
         </div>
     </div>
 <hr>
+{if debug}
 <div class="control-group">
     <label class="control-label" for="J_Engine">选择API：</label>
     <div class="controls">
         <select id="J_Engine" class="input-xlarge">
-            <option value="http://v.taobao.net/render.do">内网API</option>
+            {foreach apiLine in apis}
+            <option value="{apiLine.value}" {if api eq apiLine.value}selected{end}>{apiLine.key}</option>
+            {end}
         </select>
     </div>
 </div>
+{end}
 <div class="control-group">
     <label class="control-label" for="J_AutoOpen">是否自启动：</label>
     <div class="controls">
-        <label class="checkbox">
+        <label class="checkbox inline">
             <input type="checkbox" id="J_AutoOpen" value="1" {if open}checked{end}>
             启动客户端时自动打开浏览器
         </label>
@@ -149,9 +163,11 @@
                     <select id="J_SubModuleSelect">
                         <option value="">无</option>
                     </select>
+                    <a href="https://github.com/czy88840616/avalon-node/wiki/%E9%BB%98%E8%AE%A4module" target="_blank"><i class="icon-question-sign"></i>这是什么</a>
                 </div>
             </div>
-            <div class="control-group">
+            <div class="control-group" style="display: none">
+                <label for="" class="control-label">预览：</label>
                 <div class="controls">
                     <ul id="configTree" style="display: none;" class="ztree"></ul>
                 </div>
@@ -164,7 +180,28 @@
         <button id="J_SaveConfig" data-loading-text="保存中..." class="btn btn-primary disabled">保存改动</button>
     </div>
 </div>
-
+<div class="modal hide fade" id="J_SwitchAppTypeModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-header">
+        {if type}<button type="button" data-dismiss="modal" aria-hidden="true" class="close">×</button>{end}
+        <h3>请选择产品符合的目录结构</h3>
+    </div>
+    <div class="modal-body">
+        <p>
+            <span class="badge badge-info"><i class="icon-exclamation-sign icon-white"></i> Tips</span>
+            这个选择会影响到应用查询的方式和渲染模板的方式，可以在首页选择切换
+        </p>
+        {foreach company in companys}
+        <label class="radio">
+            <input type="radio" name="appType" value="{company}" style="margin-top: 16px;" {if company eq type}checked{end}>
+            <img src="/type/{company}.jpg" alt="">
+        </label>
+        {end}
+        <p class="pull-right">
+            {if type}<a class="btn" data-dismiss="modal" aria-hidden="true">取消</a>{end}
+            <a class="btn btn-primary" href="#" id="">确定</a>
+        </p>
+    </div>
+</div>
 </div>
 <div class="footer">
     <div class="container">
@@ -177,6 +214,11 @@
 <script type="text/javascript" src="/index.js"></script>
 {if checkUpgrade}
 <script type="text/javascript" src="/upgrade.js"></script>
+{end}
+{if not type}
+<script type="text/javascript">
+    Global.showTypeModal();
+</script>
 {end}
 </body>
 </html>
