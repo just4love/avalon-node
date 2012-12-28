@@ -3,6 +3,7 @@
 ###0.2.7###
 
 * bugfix 修复b2b的部分layout查找失败的bug
+* bugfix 不存在json文件时，*.js文件不会生效的bug
 
 ###0.2.6###
 
