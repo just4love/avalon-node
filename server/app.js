@@ -90,6 +90,15 @@ app.get('*.snap', checkConfig, function(req, res, next){
     var useApp = userCfg.get('use'),
         config = util.merge({}, userCfg.get('apps')[useApp]);
 
+    request.post('http://v.taobao.net/empty.do', {
+        encoding:'utf-8',
+        headers: {
+            "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/99999 Safari/537.11"
+        }
+    }, function (error, response, body) {
+
+    });
+
     if(req.query['guid']) {
         //快照
         var guid = req.query['guid'],
