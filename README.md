@@ -13,13 +13,13 @@ $ sudo npm install -g avalon-node
 ```
 
 ## 使用
-1. 在命令行输入vm，默认端口为80，mac用户和linux用户请sudo，不想用80端口的可以使用"vm -p xxxx"来修改端口
-2. 打开 127.0.0.1:xxxx访问首页进行配置
+1. 在命令行输入vm，默认端口为8，可以使用```vm -p xxxx```来修改端口
+2. 打开 ```http://127.0.0.1:xxxx```访问首页进行配置
 3. enjoy it
 
 ## 参数
 
- * -p(--port) [number] 端口号
+ * -p [number] 端口号
 
 ##详细文档
 https://github.com/czy88840616/avalon-node/wiki
