@@ -1,4 +1,4 @@
-新版本修复了旧bug，新增了不少功能，也可能会有稳定性风险，请酌情升级，[升级指南](https://github.com/czy88840616/avalon-node/wiki/安装及使�?
+新版本修复了旧bug，新增了不少功能，也可能会有稳定性风险，请酌情升级，[升级指南](https://github.com/czy88840616/avalon-node/wiki/安装及使用
 
 ###0.2.7###
 
