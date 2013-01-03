@@ -54,10 +54,8 @@
     </div>
     <hr>
     <h2>模板变量结构</h2>
-    <div class="bs-docs well">
-<pre  class='brush: js'>
-{keys}
-</pre>
+    <div class="ace_editor_wrapper">
+        <div id="editor">{keys}</div>
     </div>
 </div>
 <div class="footer">
@@ -75,5 +73,12 @@
 {if checkUpgrade}
 <script type="text/javascript" src="/upgrade.js"></script>
 {end}
+<script src="/ace/src-min-noconflict/ace.js" type="text/javascript"></script>
+<script>
+    var editor = ace.edit("editor");
+//    editor.setTheme("ace/theme/monokai");
+    editor.getSession().setMode("ace/mode/json");
+    editor.setReadOnly(true);
+</script>
 </body>
 </html>
