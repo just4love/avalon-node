@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head><title>配置你的VMarket</title>
+<head><title>{appname}应用详情</title>
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/bootstrap/cosmo/bootstrap.min.css">
     <link rel="stylesheet" href="/bootstrap/css/bootstrap-responsive.min.css">
@@ -85,9 +85,11 @@
                     {foreach Url in module.value}
                     <li>
                         {if module.key eq 'noModule'}
-                        <a href="/{Url.url}" target="_blank" {if not Url.hasData}class="muted"{end}>{{domain:port}}/{Url.url}</a>
+                        <a href="/{Url.url}.htm" target="_blank" {if not Url.hasData}class="muted"{end}>{{domain:port}}/{Url.url}.htm</a>
+                        <a href="/{Url.url}.vm" style="display: none" class="J_ScreenPopup" target="_blank" title="模板详情"><i class="icon-list-alt"></i></a>
                         {else}
-                        <a href="/{module.key}/{Url.url}" target="_blank" {if not Url.hasData}class="muted"{end}>{{domain:port}}/{module.key}/{Url.url}</a>
+                        <a href="/{module.key}/{Url.url}.htm" target="_blank" {if not Url.hasData}class="muted"{end}>{{domain:port}}/{module.key}/{Url.url}.htm</a>
+                        <a href="/{module.key}/{Url.url}.vm" style="display: none" class="J_ScreenPopup" target="_blank" title="模板详情"><i class="icon-list-alt"></i></a>
                         {end}
                     </li>
                     {end}

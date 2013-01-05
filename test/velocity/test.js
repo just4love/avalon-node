@@ -25,6 +25,6 @@ describe('test velocity', function() {
 
     it.only('test Jsonify', function() {
         var Jsonify = new helper.Jsonify(asts);
-        console.log(JSON.stringify(Jsonify.context));
+        console.log(JSON.stringify(Jsonify.context.strings));
     });
 });

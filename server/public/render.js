@@ -294,4 +294,10 @@ $(function () {
             $(el).attr('style', 'color:#E51400');
         }
     });
+
+    $('.J_ScreenList li').mouseenter(function(ev){
+        $(this).find('.J_ScreenPopup').show()
+    }).mouseleave(function(){
+        $(this).find('.J_ScreenPopup').hide()
+    });
 });
