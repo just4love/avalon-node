@@ -88,7 +88,7 @@ var createSnapShot = function(snapshot){
     }).end();
 };
 
-var insertSnapShot = function(snapshot){
+var insertSnapShot = function(snapshot, cb){
     if(!$('#J_Now')[0]) {
         $('<li class="nav-header" id="J_Now">刚刚</li>').prependTo($('#J_SnapShotsContainer'));
     }
@@ -99,16 +99,30 @@ var insertSnapShot = function(snapshot){
         removeSnap(el);
     }).end();
 
-    $('#J_Progress').fadeOut();
-    $('#J_AddSnap').button('reset');
+    cb && cb();
+};
+
+var loadingButton = function(target){
+    $(target).button('loading');
+    var parent = $(target).parent();
+    if($('.J_Progress', parent).length) {
+        $('.J_Progress', parent).fadeIn();
+    } else {
+        $('<span style="position: absolute;left: 150px;top: 0;display:none" class="J_Progress"><img src="/loading/loading-3.gif" alt="请稍后"></span>').appendTo(parent).fadeIn();
+    }
+};
+
+var resetButton = function(target){
+    var parent = $(target).parent();
+    $('.J_Progress', parent).fadeOut();
+    $(target).button('reset');
 };
 
 $(function () {
     $('#J_AddSnap').click(function(ev){
         ev.preventDefault();
 
-        $(this).button('loading');
-        $('#J_Progress').fadeIn();
+        loadingButton(this);
 
         $.post('/app/createsnap', {
             appName:$('#J_CurrentApp').val(),
@@ -117,12 +131,13 @@ $(function () {
         }, function(data){
             if(data.success) {
                 later(function(){
-                    insertSnapShot(data.snapshot);
+                    insertSnapShot(data.snapshot, function(){
+                        resetButton(ev.target)
+                    });
                 }, 3000);
             } else {
                 alert(data.error);
-                $('#J_Progress').fadeOut();
-                $('#J_AddSnap').button('reset');
+                resetButton(ev.target);
             }
         });
     });
@@ -167,4 +182,7 @@ $(function () {
 
     SyntaxHighlighter.config.clipboardSwf = '/syntaxhighlighter/scripts/clipboard.swf';
     SyntaxHighlighter.all();
+
+
+
 });

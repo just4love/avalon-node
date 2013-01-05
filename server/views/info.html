@@ -34,47 +34,65 @@
 <div class="container">
     <div class="page-header"><h1>所属应用:{appname}</h1></div>
     <input type="hidden" id="J_CurrentApp" value="{appname}"/>
-    <h2>保存快照</h2>
-    <div class="controls" style="position: relative">
-        <button type="button" class="btn btn-primary" id="J_AddSnap" rel="popover" title="添加一个快照" data-loading-text="生成中...">
-            <i class="icon-camera icon-white"></i> 添加一个快照
-        </button>
-        <span style="position: absolute;left: 150px;top: -5px;display: none" id="J_Progress">
-            <img src="/loading/loading-3.gif" alt="">
-        </span>
-    </div>
-    <br>
-    <div class="bs-docs" style="border: 2px dashed #5192FB;min-height: 20px;padding:10px;">
-        <ul class="nav nav-list" id="J_SnapShotsContainer" style="display: none">
-        </ul>
-    </div>
-    <h2>模板依赖树</h2>
-    <div class="bs-docs well">
-        <ul id="configTree" class="ztree"></ul>
-    </div>
-    <hr>
-    <h2>模板变量结构</h2>
-    <div class="ace_editor_wrapper">
-        <div id="editor">{keys}</div>
-    </div>
-
     <ul class="nav nav-tabs" id="myTab">
-        <li><a href="#home" data-toggle="tab">Home</a></li>
-        <li><a href="#profile" data-toggle="tab">Profile</a></li>
-        <li><a href="#messages" data-toggle="tab">Messages</a></li>
-        <li><a href="#settings" data-toggle="tab">Settings</a></li>
+        <li class="active"><a href="#vars" data-toggle="tab">模板变量结构</a></li>
+        <li><a href="#static" data-toggle="tab">静态数据文件</a></li>
+        <li><a href="#dynamic" data-toggle="tab">动态数据文件</a></li>
+        <li><a href="#tree" data-toggle="tab">模板依赖树</a></li>
+        <li><a href="#snapshot" data-toggle="tab">快照</a></li>
     </ul>
 
-    <div class="tab-content">
-        <div class="tab-pane active" id="home">1</div>
-        <div class="tab-pane" id="profile">2</div>
-        <div class="tab-pane" id="messages">3</div>
-        <div class="tab-pane" id="settings">4</div>
+    <div class="tab-content" style="min-height: 600px">
+        <div class="tab-pane active" id="vars">
+            <div class="controls" style="position: relative">
+                <button type="button" class="btn btn-primary" title="添加一个快照" data-loading-text="生成中...">
+                    <i class="icon-edit icon-white"></i> 填充到vm模板
+                </button>
+            </div>
+            <hr>
+            <div class="ace_editor_wrapper">
+                <div id="editor">{keys}</div>
+            </div>
+        </div>
+        <div class="tab-pane" id="static">
+            <div class="controls" style="position: relative">
+                <button type="button" class="btn btn-primary" title="添加一个快照" data-loading-text="生成中...">
+                    <i class="icon-file icon-white"></i> 创建静态数据文件
+                </button>
+            </div>
+            <hr>
+        </div>
+        <div class="tab-pane" id="dynamic">
+            <div class="controls" style="position: relative">
+                <button type="button" class="btn btn-primary" title="添加一个快照" data-loading-text="生成中...">
+                    <i class="icon-file icon-white"></i> 创建动态数据文件
+                </button>
+            </div>
+            <hr>
+        </div>
+        <div class="tab-pane" id="tree">
+            <div class="bs-docs well">
+                <ul id="configTree" class="ztree"></ul>
+            </div>
+        </div>
+        <div class="tab-pane" id="snapshot">
+            <div class="controls" style="position: relative">
+                <button type="button" class="btn btn-primary" id="J_AddSnap" title="添加一个快照" data-loading-text="生成中...">
+                    <i class="icon-camera icon-white"></i> 创建快照
+                </button>
+            </div>
+            <hr>
+            <div class="bs-docs" style="border: 2px dashed #5192FB;min-height: 20px;padding:10px;">
+                <ul class="nav nav-list" id="J_SnapShotsContainer" style="display: none">
+                </ul>
+            </div>
+        </div>
     </div>
 
 </div>
 <div class="footer">
     <div class="container">
+        <hr>
         <p>Code by <a href="mailto:zhangting@taobao.com">zhangting@taobao.com</a></p>
         <p>Code licensed under <a href="https://github.com/czy88840616/avalon-node/blob/master/LICENSE.md" target="_blank">MIT</a></p>
     </div>
