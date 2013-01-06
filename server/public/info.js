@@ -180,9 +180,9 @@ $(function () {
         checkable: true
     }, $.parseJSON(data));
 
-    SyntaxHighlighter.config.clipboardSwf = '/syntaxhighlighter/scripts/clipboard.swf';
-    SyntaxHighlighter.all();
-
-
+    var editor = ace.edit("J_Editor");
+//    editor.setTheme("ace/theme/monokai");
+    editor.getSession().setMode("ace/mode/json");
+    editor.setReadOnly(true);
 
 });
