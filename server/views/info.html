@@ -34,10 +34,10 @@
     <input type="hidden" id="J_CurrentApp" value="{appname}"/>
     <ul class="nav nav-tabs" id="myTab">
         <li class="active"><a href="#vars" data-toggle="tab">模板变量结构</a></li>
-        <li><a href="#static" data-toggle="tab">静态数据文件</a></li>
-        <li><a href="#dynamic" data-toggle="tab">动态数据文件</a></li>
-        <li><a href="#tree" data-toggle="tab">模板依赖树</a></li>
-        <li><a href="#snapshot" data-toggle="tab">快照</a></li>
+        <li><a href="#static">静态数据文件</a></li>
+        <li><a href="#dynamic">动态数据文件</a></li>
+        <li><a href="#tree">模板依赖树</a></li>
+        <li><a href="#snapshot">快照</a></li>
     </ul>
 
     <div class="tab-content" style="min-height: 600px">
@@ -57,10 +57,13 @@
                 <button type="button" class="btn btn-primary" id="J_AddStatic" title="创建静态数据文件" data-loading-text="生成中...">
                     <i class="icon-file icon-white"></i> 创建静态数据文件
                 </button>
+                <button type="button" class="btn btn-primary" id="J_SaveStatic" title="保存修改" data-loading-text="保存中...">
+                    <i class="icon-file icon-white"></i> 保存修改
+                </button>
             </div>
             <hr>
             <div class="ace_editor_wrapper">
-                <div id="J_StaticEditor" class="editor"></div>
+                <div id="J_StaticEditor" class="editor">{staticData}</div>
             </div>
         </div>
         <div class="tab-pane" id="dynamic">
@@ -68,10 +71,13 @@
                 <button type="button" class="btn btn-primary" id="J_AddDynamic" title="创建动态数据文件" data-loading-text="生成中...">
                     <i class="icon-file icon-white"></i> 创建动态数据文件
                 </button>
+                <button type="button" class="btn btn-primary" id="J_SaveDynamic" title="保存修改" data-loading-text="保存中...">
+                    <i class="icon-file icon-white"></i> 保存修改
+                </button>
             </div>
             <hr>
             <div class="ace_editor_wrapper">
-                <div id="J_DynamicEditor" class="editor"></div>
+                <div id="J_DynamicEditor" class="editor">{dynamicData}</div>
             </div>
         </div>
         <div class="tab-pane" id="tree">

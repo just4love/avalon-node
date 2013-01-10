@@ -5,6 +5,7 @@
 var webx = require('../../lib/webx/webx'),
     util = require('../../lib/util/util'),
     path = require('path'),
+    fs = require('fs'),
     _ = require('underscore'),
     userCfg = require('../../lib/config/userConfig'),
     snapCfg = require('../../lib/config/snapConfig'),
@@ -379,6 +380,18 @@ var App = {
             } else {
                 cb(null, {success:true});
             }
+        });
+    },
+    savefile: function(params, cb){
+        var path = params.path,
+            text = params.text,
+            apps = userCfg.get('apps'),
+            use = userCfg.get('use'),
+            encoding = apps[use]['encoding'] || 'gbk';
+
+        fs.writeFile(path, text, charset, function(err){
+            if (err) throw err;
+            console.log('It\'s saved!');
         });
     }
 };

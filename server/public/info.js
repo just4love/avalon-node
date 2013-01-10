@@ -180,9 +180,57 @@ $(function () {
         checkable: true
     }, $.parseJSON(data));
 
+    $('#myTab a').click(function (e) {
+        e.preventDefault();
+        $(this).tab('show');
+        location.hash = $(this).attr('href');
+    });
+
+    //active tab by hash
+    var hash = location.hash;
+    hash && $('#myTab a[href=' + hash + ']').tab('show');
+
     var editor = ace.edit("J_Editor");
 //    editor.setTheme("ace/theme/monokai");
     editor.getSession().setMode("ace/mode/json");
     editor.setReadOnly(true);
 
+    if($('#J_StaticEditor').html() != '"NOT_EXIST_FILE"') {
+        $('#J_AddStatic').hide();
+        var staticEditor = ace.edit("J_StaticEditor");
+        staticEditor.getSession().setMode("ace/mode/json");
+
+        $('#J_SaveStatic').click(function(ev){
+            ev.preventDefault();
+            staticEditor.setReadOnly(true);
+            loadingButton(this);
+        });
+
+    } else {
+        $('#J_SaveStatic').hide();
+        $('#J_StaticEditor').html('');
+        $('#J_AddStatic').click(function(ev){
+            ev.preventDefault();
+            loadingButton(this);
+        });
+    }
+
+    if($('#J_DynamicEditor').html() != 'NOT_EXIST_FILE') {
+        $('#J_AddDynamic').hide();
+        var dynamicEditor = ace.edit("J_DynamicEditor");
+        dynamicEditor.getSession().setMode("ace/mode/javascript");
+
+        $('#J_SaveDynamic').click(function(ev){
+            ev.preventDefault();
+            dynamicEditor.setReadOnly(true);
+            loadingButton(this);
+        });
+    } else {
+        $('#J_SaveDynamic').hide();
+        $('#J_DynamicEditor').html('');
+        $('#J_AddDynamic').click(function(ev){
+            ev.preventDefault();
+            loadingButton(this);
+        });
+    }
 });

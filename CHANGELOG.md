@@ -2,10 +2,11 @@
 
 ###0.2.8###
 
+* bugfix 修复b2b查找common模块不存在的错误
 * optimize 各个页面的title完善
 * optimize 增加从应用详情到模板详情的链接
 
-###0.2.7###
+###0.2.7(mac支持有误)###
 
 * bugfix 修复b2b的部分layout查找失败的bug
 * bugfix 不存在json文件时，*.js文件不会生效的bug
