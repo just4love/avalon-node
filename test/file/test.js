@@ -8,8 +8,8 @@ var assert = require("assert"),
     walk = require('walkdir'),
     path = require('path'),
     fs = require('fs'),
-    async = require('async'),
-    xml2js = require('xml2js');
+    async = require('async');
+//    xml2js = require('xml2js');
 
 describe('fileUtil test', function() {
     it('find in dir', function(done) {
@@ -104,5 +104,9 @@ describe('fileUtil test', function() {
         );
 
         done();
+    });
+
+    it.only('test write and back', function() {
+        fileUtil.writeFileSync('D:\\test\\test\\test\\test.txt', 'test 你好', 'gbk', true)
     });
 });

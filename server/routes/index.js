@@ -10,6 +10,7 @@ var webx = require('../../lib/webx/webx'),
     userCfg = require('../../lib/config/userConfig'),
     snapCfg = require('../../lib/config/snapConfig'),
     render = require('../../lib/render'),
+    fileUtil = require('../../lib/util/fileUtil'),
     querystring = require('querystring'),
     innerData = require('../../lib/webx/innerData'),
     request = require('request');
@@ -387,12 +388,20 @@ var App = {
             text = params.text,
             apps = userCfg.get('apps'),
             use = userCfg.get('use'),
-            encoding = apps[use]['encoding'] || 'gbk';
+            encoding = apps[use]['encoding'] || 'gbk',
+            err;
 
-        fs.writeFile(path, text, charset, function(err){
-            if (err) throw err;
-            console.log('It\'s saved!');
-        });
+        try {
+            fileUtil.writeFileSync(path, text, encoding, true);
+        } catch(ex) {
+            err = ex;
+        }
+
+        if(err) {
+            cb(null, {success:false,msg:err});
+        } else {
+            cb(null, {success:true});
+        }
     }
 };
 

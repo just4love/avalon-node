@@ -212,6 +212,19 @@ $(function () {
         $('#J_AddStatic').click(function(ev){
             ev.preventDefault();
             loadingButton(this);
+
+            $.post('/app/savefile', {
+                path: $('#J_StaticPath').val(),
+                text: '{}'
+            }, function(data){
+                if(data.success) {
+                    //TODO
+                    resetButton(ev.target)
+                } else {
+                    alert(data.error);
+                    resetButton(ev.target);
+                }
+            });
         });
     }
 
@@ -231,6 +244,18 @@ $(function () {
         $('#J_AddDynamic').click(function(ev){
             ev.preventDefault();
             loadingButton(this);
+
+            $.post('/app/savefile', {
+                path: $('#J_DynamicPath').val(),
+                text: ''
+            }, function(data){
+                if(data.success) {
+                    //TODO
+                } else {
+                    alert(data.error);
+                    resetButton(ev.target);
+                }
+            });
         });
     }
 });

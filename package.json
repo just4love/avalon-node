@@ -47,6 +47,7 @@
         "consolidate":">=0.4.0",
         "jazz":">=0.0.18",
         "combo-url-parser":">=0.0.2",
-        "easyconf": ">=0.0.3"
+        "easyconf": ">=0.0.3",
+        "fileutil": ">=1.1.0"
     }
 }
