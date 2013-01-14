@@ -183,32 +183,28 @@ $(function () {
     $('#myTab a').click(function (e) {
         e.preventDefault();
         $(this).tab('show');
-        location.hash = $(this).attr('href');
+//        location.hash = $(this).attr('href');
     });
 
     //active tab by hash
-    var hash = location.hash;
-    hash && $('#myTab a[href=' + hash + ']').tab('show');
+//    var hash = location.hash;
+//    hash && $('#myTab a[href=' + hash + ']').tab('show');
 
     var editor = ace.edit("J_Editor");
 //    editor.setTheme("ace/theme/monokai");
     editor.getSession().setMode("ace/mode/json");
     editor.setReadOnly(true);
 
-    if($('#J_StaticEditor').html() != '"NOT_EXIST_FILE"') {
+    var staticEditor = ace.edit("J_StaticEditor");
+    staticEditor.getSession().setMode("ace/mode/json");
+
+    if(staticEditor.getValue() != 'NOT_EXIST_FILE') {
         $('#J_AddStatic').hide();
-        var staticEditor = ace.edit("J_StaticEditor");
-        staticEditor.getSession().setMode("ace/mode/json");
-
-        $('#J_SaveStatic').click(function(ev){
-            ev.preventDefault();
-            staticEditor.setReadOnly(true);
-            loadingButton(this);
-        });
-
     } else {
         $('#J_SaveStatic').hide();
-        $('#J_StaticEditor').html('');
+        staticEditor.setValue("{}");
+        staticEditor.setReadOnly(true);
+
         $('#J_AddStatic').click(function(ev){
             ev.preventDefault();
             loadingButton(this);
@@ -219,14 +215,38 @@ $(function () {
             }, function(data){
                 if(data.success) {
                     //TODO
-                    resetButton(ev.target)
+                    resetButton(ev.target);
+                    $('#J_AddStatic').hide();
+                    $('#J_SaveStatic').show();
+                    staticEditor.setReadOnly(false);
                 } else {
                     alert(data.error);
-                    resetButton(ev.target);
                 }
+                resetButton(ev.target);
             });
         });
     }
+
+    $('#J_SaveStatic').click(function(ev){
+        ev.preventDefault();
+        staticEditor.setReadOnly(true);
+        loadingButton(this);
+
+        $.post('/app/savefile', {
+            path: $('#J_StaticPath').val(),
+            text: staticEditor.getValue()
+        }, function(data){
+            if(data.success) {
+                resetButton(ev.target);
+                $('#J_AddStatic').hide();
+                $('#J_SaveStatic').show();
+                staticEditor.setReadOnly(false);
+            } else {
+                alert(data.error);
+            }
+            resetButton(ev.target);
+        });
+    });
 
     if($('#J_DynamicEditor').html() != 'NOT_EXIST_FILE') {
         $('#J_AddDynamic').hide();
