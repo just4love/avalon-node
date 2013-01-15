@@ -2,6 +2,8 @@
 
 ###0.2.8###
 
+* new 支持静态和动态数据web编辑的功能，模板详情界面调整
+* new 支持b2b pageCache的处理
 * bugfix 修复b2b查找common模块不存在的错误
 * optimize 各个页面的title完善
 * optimize 增加从应用详情到模板详情的链接
