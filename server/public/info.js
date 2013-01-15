@@ -248,29 +248,42 @@ $(function () {
         });
     });
 
-    if($('#J_DynamicEditor').html() != 'NOT_EXIST_FILE') {
-        $('#J_AddDynamic').hide();
-        var dynamicEditor = ace.edit("J_DynamicEditor");
-        dynamicEditor.getSession().setMode("ace/mode/javascript");
+    var dynamicEditor = ace.edit("J_DynamicEditor");
+    dynamicEditor.getSession().setMode("ace/mode/javascript");
 
-        $('#J_SaveDynamic').click(function(ev){
-            ev.preventDefault();
-            dynamicEditor.setReadOnly(true);
-            loadingButton(this);
-        });
+    var defaultText = [
+        '/*\n',
+        ' * @fileoverview dynamic data\n',
+        " * @author xxx\n",
+        " * @example\n",
+        " *      data.hello = {\n",
+        " *          name: 'vmarket';\n",
+        " *      }\n",
+        " *      console.log(data.hello.name); // 'vmarket'\n",
+        " */\n"
+].join('');
+
+    if(dynamicEditor.getValue() != 'NOT_EXIST_FILE') {
+        $('#J_AddDynamic').hide();
     } else {
         $('#J_SaveDynamic').hide();
-        $('#J_DynamicEditor').html('');
+        dynamicEditor.setValue('');
+        dynamicEditor.setReadOnly(true);
+
         $('#J_AddDynamic').click(function(ev){
             ev.preventDefault();
             loadingButton(this);
 
             $.post('/app/savefile', {
                 path: $('#J_DynamicPath').val(),
-                text: ''
+                text: defaultText
             }, function(data){
                 if(data.success) {
-                    //TODO
+                    dynamicEditor.setReadOnly(false);
+                    dynamicEditor.setValue(defaultText, 1);
+                    resetButton(ev.target);
+                    $('#J_AddDynamic').hide();
+                    $('#J_SaveDynamic').show();
                 } else {
                     alert(data.error);
                     resetButton(ev.target);
@@ -278,4 +291,25 @@ $(function () {
             });
         });
     }
+
+    $('#J_SaveDynamic').click(function(ev){
+        ev.preventDefault();
+        dynamicEditor.setReadOnly(true);
+        loadingButton(this);
+
+        $.post('/app/savefile', {
+            path: $('#J_DynamicPath').val(),
+            text: dynamicEditor.getValue()
+        }, function(data){
+            if(data.success) {
+                resetButton(ev.target);
+                $('#J_AddDynamic').hide();
+                $('#J_SaveDynamic').show();
+                dynamicEditor.setReadOnly(false);
+            } else {
+                alert(data.error);
+            }
+            resetButton(ev.target);
+        });
+    });
 });
