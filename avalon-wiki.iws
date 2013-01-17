@@ -62,22 +62,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="index.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/quickstart/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="43" selection-start="0" selection-end="13551" vertical-scroll-proportion="-10.769231">
+            <state line="22" column="43" selection-start="0" selection-end="13551" vertical-scroll-proportion="0.47945204">
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="mac.html" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/quickstart/mac.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="15" column="20" selection-start="516" selection-end="516" vertical-scroll-proportion="0.37671232">
-              <folding>
-                <element signature="n#style#0;n#img#0;n#h2#0;n#section#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -304,19 +293,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/quickstart/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="43" selection-start="0" selection-end="13551" vertical-scroll-proportion="-10.769231">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/quickstart/mac.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="20" selection-start="516" selection-end="516" vertical-scroll-proportion="0.37671232">
+        <state line="14" column="53" selection-start="495" selection-end="495" vertical-scroll-proportion="0.34246576">
           <folding>
             <element signature="n#style#0;n#img#0;n#h2#0;n#section#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/quickstart/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="22" column="43" selection-start="0" selection-end="13551" vertical-scroll-proportion="0.47945204">
+          <folding />
         </state>
       </provider>
     </entry>
