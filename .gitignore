@@ -1,12 +1,10 @@
+# Mac crap
+.DS_Store
 
+*.ipr
+*.iml
 *.iws
-
-*.ipr
-
-*.ipr
-
-*.iws
-
-*.ipr
-
-avalon-wiki.iws
+target/
+node_modules
+/*.iws~
+*.vm
