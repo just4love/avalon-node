@@ -36,7 +36,7 @@ var App = {
             apps:_.keys(userCfg.get('apps')),
             use:userCfg.get('use'),
             common:userCfg.get('common'),   //vmcommon这类公共资源
-            commonValues: innerData.data.companys[userCfg.get('type')].common,
+            commonValues: !userCfg.get('type') ? []:innerData.data.companys[userCfg.get('type')].common,
             open: userCfg.get('open'),
             type: userCfg.get('type'),
             companys: _.keys(innerData.data.companys),
