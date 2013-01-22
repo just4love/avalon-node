@@ -199,7 +199,8 @@ var contentType = {
 };
 
 app.get('(*??*|*.(css|js|ico|png|jpg|swf|less|gif|woff))', function(req, res, next){
-    var host = req.headers.host;
+    var host = req.headers.host,
+        debug = userCfg.get('debug');
 
     if(host.indexOf('127.0.0.1') == -1 && host.indexOf('localhost') == -1
         && (/\.(css|js|ico|png|jpg|swf|less|gif|woff)/.test(req.url) || req.url.indexOf("??") != -1)) {
@@ -216,7 +217,7 @@ app.get('(*??*|*.(css|js|ico|png|jpg|swf|less|gif|woff))', function(req, res, ne
 
         async.forEachSeries(paths, function(p, callback){
             processUrl(p, req.headers.host, function(uri, rule){
-                if(util.isLocalFile(uri)) {
+                if(util.isLocalFile(uri, debug)) {
                     uri = uri.replace(/\?.*/, '');
 
                     if(fs.existsSync(uri)) {
@@ -282,6 +283,6 @@ http.createServer(app).listen(app.get('port'), function () {
     }
 }).on('error', function(err){
     console.log('Status:', 'Fail'.bold.red);
-    console.log('Error:', err.message.toString().bold.red, '可能是端口被占用');
+    console.log('Error:', err.message.toString().bold.red, '可能是端口被占用或者权限不足');
     console.log('请使用 '+ 'Control+C'.bold +  ' 来关闭控制台');
 });
