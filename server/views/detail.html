@@ -92,11 +92,11 @@
                     {foreach Url in module.value}
                     <li>
                         {if module.key eq 'noModule'}
-                        <a href="/{Url.url}.htm" target="_blank" {if not Url.hasData}class="muted"{end}>{{domain:port}}/{Url.url}.htm</a>
-                        <a href="/{Url.url}.vm" style="display: none" class="J_ScreenPopup" target="_blank" title="模板详情"><i class="icon-list-alt"></i></a>
+                        <a href="/{Url.hrefPath}" target="_blank" {if not Url.hasData}class="muted"{end}>{{domain:port}}/{Url.showPath}</a>
+                        <a href="/{Url.detailPath}" style="display: none" class="J_ScreenPopup" target="_blank" title="模板详情"><i class="icon-list-alt"></i></a>
                         {else}
-                        <a href="/{module.key}/{Url.url}.htm" target="_blank" {if not Url.hasData}class="muted"{end}>{{domain:port}}/{module.key}/{Url.url}.htm</a>
-                        <a href="/{module.key}/{Url.url}.vm" style="display: none" class="J_ScreenPopup" target="_blank" title="模板详情"><i class="icon-list-alt"></i></a>
+                        <a href="/{module.key}/{Url.hrefPath}" target="_blank" {if not Url.hasData}class="muted"{end}>{{domain:port}}/{module.key}/{Url.showPath}</a>
+                        <a href="/{module.key}/{Url.detailPath}" style="display: none" class="J_ScreenPopup" target="_blank" title="模板详情"><i class="icon-list-alt"></i></a>
                         {end}
                     </li>
                     {end}
