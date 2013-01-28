@@ -1,5 +1,10 @@
 新版本修复了旧bug，新增了不少功能，也可能会有稳定性风险，请酌情升级，[升级指南](https://github.com/czy88840616/avalon-node/wiki/安装及使用
 
+###0.3.0###
+
+* optimize 优化了吊顶的链接
+* optimize 优化了screen的url展示，支持*.do的展示
+
 ###0.2.9###
 
 * bugfix 修复一个初始化如果非80端口配置页面无法加载的情况
