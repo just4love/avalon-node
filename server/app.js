@@ -199,7 +199,7 @@ var contentType = {
 };
 
 app.get('(*??*|*.(css|js|ico|png|jpg|swf|less|gif|woff))', function(req, res, next){
-    var host = req.headers.host,
+    var host = req.headers.host || '',
         debug = userCfg.get('debug');
 
     if(host.indexOf('127.0.0.1') == -1 && host.indexOf('localhost') == -1

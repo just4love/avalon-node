@@ -4,6 +4,8 @@
 
 * optimize 优化了吊顶的链接
 * optimize 优化了screen的url展示，支持*.do的展示
+* bugfix vmcommon配置文件路径错误导致500的bug
+* bugfix 解决升级提示由于https的安全问题提示失败的bug
 
 ###0.2.9###
 
