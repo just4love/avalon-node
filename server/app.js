@@ -200,7 +200,8 @@ var contentType = {
 };
 
 app.get('(*??*|*.(css|js|ico|png|jpg|swf|less|gif|woff))', function(req, res, next){
-    var host = req.headers.host || '',
+    //反向代理bugfix
+    var host = req.headers['x-forwarded-host'] || req.headers['X-Forwarded-For']|| req.headers.host || '',
         debug = userCfg.get('debug');
 
     if(host.indexOf('127.0.0.1') == -1 && host.indexOf('localhost') == -1
@@ -217,7 +218,7 @@ app.get('(*??*|*.(css|js|ico|png|jpg|swf|less|gif|woff))', function(req, res, ne
         res.setHeader('Content-type', contentType[path.extname(paths[0].replace(/\?.*/, ''))]);
 
         async.forEachSeries(paths, function(p, callback){
-            processUrl(p, req.headers.host, function(uri, rule){
+            processUrl(p, host, function(uri, rule){
                 if(util.isLocalFile(uri, debug)) {
                     uri = uri.replace(/\?.*/, '');
 
