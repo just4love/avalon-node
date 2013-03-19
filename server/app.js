@@ -22,6 +22,7 @@ var express = require('express')
     , request = require('request')
     , iconv = require('iconv-lite')
     , colors = require('colors')
+    , Env = require('../lib/env')
     , async = require('async');
 
 var checkConfig = function(req, res, next){
@@ -36,7 +37,7 @@ var checkConfig = function(req, res, next){
 var app = express();
 
 app.configure(function () {
-    app.set('port', argv.port || 3000);
+    app.set('port', argv.port || Env.port);
     app.set('views', __dirname + '/views');
     app.set('view engine', 'html');
     app.engine('html', cons.jazz);
@@ -228,7 +229,10 @@ app.get('(*??*|*.(css|js|ico|png|jpg|swf|less|gif|woff))', function(req, res, ne
                         stream.on('error', callback);
                     } else {
                         res.statusCode = 404;
-                        res.write('get 404 ' + uri);
+                        res.setHeader('Content-type', 'text/html');
+                        res.write('<h1>这个文件真的不存在，404了哦</h1>查找的文件是：' +
+                            uri +
+                            '<hr>Powered by Vmarket');
                         res.end();
                     }
                 } else {
@@ -243,9 +247,14 @@ app.get('(*??*|*.(css|js|ico|png|jpg|swf|less|gif|woff))', function(req, res, ne
                         if(!response) {
                             console.log('connect fail: ' + uri);
                         } else if(response.statusCode == 200) {
-                            res.write(error ? error.toString(): body);
+                            res.write(body);
                         } else if(response.statusCode == 404) {
-                            res.write(error ? error.toString(): body);
+                            res.statusCode = 404;
+                            res.setHeader('Content-type', 'text/html');
+                            console.log(error);
+                            res.write('<h1>这个文件真的不存在，404了哦</h1>给你看看错误信息<div><textarea style="width:600px;height:400px">' +
+                                (error ? error.toString(): body) +
+                                '</textarea></div><hr>Powered by Vmarket');
                         }
                         callback(error);
                     });
@@ -265,11 +274,11 @@ app.post('/proxy/:operate', routes.proxyOperate);
 
 http.createServer(app).listen(app.get('port'), function () {
     userCfg.init({
-        cfg:argv.cfg
+        cfg:argv.cfg || Env.cfg
     });
 
     snapCfg.init({
-        cfg:argv.snapCfg
+        cfg:argv.snapCfg || Env.snapCfg
     });
     console.log('Status:', 'Success'.bold.green);
     console.log("Listen Port： " + app.get('port').toString().cyan);

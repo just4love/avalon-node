@@ -3,28 +3,37 @@
  * @author Harry <czy88840616@gmail.com>
  *
  */
-var velocity = require('velocity.js'),
+var velocity = require('velocityjs'),
     helper = velocity.Helper,
     Parser = velocity.Parser,
     fs = require('fs'),
+    request = require('request'),
+    fu = require('fileutil'),
+    assert = require("assert"),
     _ = require('underscore');
 
+function parseVM(vm){
+    return new helper.Jsonify(Parser.parse(vm)).toVTL();
+}
+
+function removeWhite(text){
+    return text && text.replace(/\s*/g, '')
+}
+
 describe('test velocity', function() {
-    var vm = fs.readFileSync('../myCartBeta.vm').toString(),
-        asts = Parser.parse(vm);
+    it.only('test Jsonify', function(done) {
 
-    it('test structure', function() {
-        var Structure = new helper.Structure(asts);
-        console.log(JSON.stringify(Structure.context));
-    });
+        request.get('https://api.github.com/gists/5096438', function (error, response, body) {
+            var data = JSON.parse(body);
+            _.each(data.files, function(file, name){
+                if(/\.vm/.test(name)) {
+                    var json = data.files[name.replace(/\.vm/g, '') + '.json'];
 
-    it('test BackStep', function() {
-        var BackStep = new helper.BackStep(asts);
-        console.log(BackStep.context);
-    });
+                    assert.equal(removeWhite(parseVM(file.content)), removeWhite(json.content));
+                }
+            });
+            done();
+        });
 
-    it.only('test Jsonify', function() {
-        var Jsonify = new helper.Jsonify(asts);
-        console.log(JSON.stringify(Jsonify.context.strings));
     });
 });

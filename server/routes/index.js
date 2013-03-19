@@ -188,7 +188,7 @@ var App = {
     },
     getlastest: function(params, cb){
         var pjson = require('../../package.json');
-        request.get('http://registry.npmjs.org/avalon-node', function (error, response, body) {
+        request.get('http://registry.npmjs.org/vmarket', function (error, response, body) {
             var r;
             try {
                 r = JSON.parse(body);

@@ -1,17 +1,18 @@
-# Avalon-node(VMarket Client for NodeJs)
+# VMarket Client
 
-阿瓦隆的名字来自凯尔特语 abal，意思是“苹果”（apple）。在不列颠传说中，该岛以漂亮的苹果而闻名。就像虽然我们无法控制webx使用velocity，但是我们可以基于velocity，用我们自己熟悉的语言去写demo，希望使用avalon的前端们开创一个新的demo时代。
+这是Vmarket基于nodejs的新版本，希望大家喜欢。
+虽然我们无法控制webx使用velocity，但是我们可以基于velocity，用我们自己熟悉的语言去写demo，希望使用avalon的前端们开创一个新的demo时代。
 
 ## 安装
 **node version >= 0.8.0**
 
 windows:
 ```
-npm install -g avalon-node
+npm install -g vmarket
 ```
 linux/mac:
 ```bash
-$ sudo npm install -g avalon-node
+$ sudo npm install -g vmarket
 ```
 
 ## 使用
