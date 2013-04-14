@@ -193,6 +193,7 @@ $(function () {
     var editor = ace.edit("J_Editor");
 //    editor.setTheme("ace/theme/monokai");
     editor.getSession().setMode("ace/mode/json");
+    editor.getSession().setUseWorker(false);
     editor.setReadOnly(true);
 
     var staticEditor = ace.edit("J_StaticEditor");

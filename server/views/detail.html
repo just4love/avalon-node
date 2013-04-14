@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="/bootstrap/cosmo/docs.css">
     <link rel="stylesheet" href="/ztree/css/zTreeStyle/zTreeStyle.css">
     <script type="text/javascript" src="/jquery/jquery-1.8.1.min.js"></script>
+    <style type="text/css">
+        .tooltip-inner {{
+            white-space:pre-wrap;
+            max-width:none;
+        }}
+    </style>
 </head>
 <body>
 <div class="navbar navbar-inverse navbar-fixed-top">
@@ -89,14 +95,14 @@
                 {foreach module in urls}
                 <h3>Module: {if module.key eq 'noModule'}/{else}{module.key}{end}</h3>
                 <ul>
-                    {foreach Url in module.value}
+                    {foreach Url in module.value.detail}
                     <li>
                         {if module.key eq 'noModule'}
-                        <a href="/{Url.hrefPath}" target="_blank" {if not Url.hasData}class="muted"{end}>{{domain:port}}/{Url.showPath}</a>
-                        <a href="/{Url.detailPath}" style="display: none" class="J_ScreenPopup" target="_blank" title="模板详情"><i class="icon-list-alt"></i></a>
+                        <a href="/{Url.hrefPath}" title="位置：{module.value.screenRoot}/{Url.detailPath}" target="_blank" class="{if not Url.hasData}muted {end}J_Tooltip">{{domain:port}}/{Url.showPath}</a>
+                        <a href="/{Url.detailPath}" style="display: none" class="J_ScreenPopup J_Tooltip" target="_blank" title="模板详情"><i class="icon-list-alt"></i></a>
                         {else}
-                        <a href="/{module.key}/{Url.hrefPath}" target="_blank" {if not Url.hasData}class="muted"{end}>{{domain:port}}/{module.key}/{Url.showPath}</a>
-                        <a href="/{module.key}/{Url.detailPath}" style="display: none" class="J_ScreenPopup" target="_blank" title="模板详情"><i class="icon-list-alt"></i></a>
+                        <a href="/{module.key}/{Url.hrefPath}" title="位置：{module.value.screenRoot}/{Url.detailPath}" target="_blank" class="{if not Url.hasData}muted {end}J_Tooltip">{{domain:port}}/{module.key}/{Url.showPath}</a>
+                        <a href="/{module.key}/{Url.detailPath}" style="display: none" class="J_ScreenPopup J_Tooltip" target="_blank" title="模板详情"><i class="icon-list-alt"></i></a>
                         {end}
                     </li>
                     {end}
