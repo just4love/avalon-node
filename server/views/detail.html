@@ -98,11 +98,11 @@
                     {foreach Url in module.value.detail}
                     <li>
                         {if module.key eq 'noModule'}
-                        <a href="/{Url.hrefPath}" title="位置：{module.value.screenRoot}/{Url.detailPath}" target="_blank" class="{if not Url.hasData}muted {end}J_Tooltip">{{domain:port}}/{Url.showPath}</a>
-                        <a href="/{Url.detailPath}" style="display: none" class="J_ScreenPopup J_Tooltip" target="_blank" title="模板详情"><i class="icon-list-alt"></i></a>
+                        <a href="/{Url.hrefPath}" title="位置：{Url.realPath}" target="_blank" class="{if not Url.hasData}muted {end}J_Tooltip">{{domain:port}}/{Url.showPath}</a>
+                        <a href="/{Url.detailPath}" style="display: none" class="J_ScreenPopup J_Tooltip" target="_blank" title="模板详情"><i class="icon-list-alt"></i>查看详情</a>
                         {else}
-                        <a href="/{module.key}/{Url.hrefPath}" title="位置：{module.value.screenRoot}/{Url.detailPath}" target="_blank" class="{if not Url.hasData}muted {end}J_Tooltip">{{domain:port}}/{module.key}/{Url.showPath}</a>
-                        <a href="/{module.key}/{Url.detailPath}" style="display: none" class="J_ScreenPopup J_Tooltip" target="_blank" title="模板详情"><i class="icon-list-alt"></i></a>
+                        <a href="/{module.key}/{Url.hrefPath}" title="位置：{Url.realPath}" target="_blank" class="{if not Url.hasData}muted {end}J_Tooltip">{{domain:port}}/{module.key}/{Url.showPath}</a>
+                        <a href="/{module.key}/{Url.detailPath}" style="display: none" class="J_ScreenPopup J_Tooltip" target="_blank" title="模板详情"><i class="icon-list-alt"></i>查看详情</a>
                         {end}
                     </li>
                     {end}

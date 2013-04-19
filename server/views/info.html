@@ -47,6 +47,7 @@
         <li><a href="#dynamic">动态数据文件</a></li>
         <li><a href="#tree">模板依赖树</a></li>
         <li><a href="#snapshot">快照</a></li>
+        <li><a href="#other">其他</a></li>
     </ul>
 
     <div class="tab-content" style="min-height: 600px">
@@ -112,6 +113,41 @@
                 <ul class="nav nav-list" id="J_SnapShotsContainer" style="display: none">
                 </ul>
             </div>
+        </div>
+        <div class="tab-pane" id="other">
+            <h3>Layout切换</h3>
+            {if isJsonData}
+            <div class="form-horizontal">
+                <label class="control-label">当前layout：</label>
+                <div class="controls">
+                    <div class="input-prepend input-append">
+                        <span class="add-on">layout/</span>
+                        <input class="span3" id="appendedPrependedInput" size="16" type="text">
+                        <button class="btn btn-primary" type="button">编辑</button>
+                    </div>
+                </div>
+                <div class="controls">
+                    <div class="input-prepend input-append">
+                        <span class="add-on">layout/</span>
+                        <select class="input-xlarge">
+                            {foreach layout in layouts}
+                            <option value="{layout}">{layout}</option>
+                            {end}
+                        </select>
+                        <button class="btn btn-primary" type="button">完成</button>
+                    </div>
+                </div>
+            </div>
+            {else}
+
+            {end}
+            <code>
+                {{
+                    GLOBAL:{{
+                        layout:"layout/default.vm"
+                    }}
+                }}
+            </code>
         </div>
     </div>
 </div>

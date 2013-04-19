@@ -138,8 +138,8 @@ app.get('*.vm', checkConfig, function(req, res, next){
         app: useApp,
         config: config,
         path: req.params[0]
-    }, function(obj) {
-        if(_.isEmpty(obj)) {
+    }, function(err, obj) {
+        if(err || _.isEmpty(obj)) {
             res.render('404', {
                 app: useApp
             });
