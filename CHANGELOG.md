@@ -4,6 +4,8 @@
 
 * new 分离velocity-parser模块，专职负责模板的json输出，更加准确高效
 * bugfix 修复当有多个module时模板列表重复的问题
+* 界面上的一些小优化
+* bugfix #issue28
 
 ###0.0.2###
 

@@ -196,16 +196,17 @@ var contentType = {
     '.gif': 'image/gif;',
     '.jpg': 'image/jpeg;',
     '.ico': 'image/x-icon;',
-    '.less': 'text/css;'
+    '.less': 'text/css;',
+    '.scss': 'text/css;'
 };
 
-app.get('(*??*|*.(css|js|ico|png|jpg|swf|less|gif|woff))', function(req, res, next){
+app.get('(*??*|*.(css|js|ico|png|jpg|swf|less|gif|woff|scss))', function(req, res, next){
     //反向代理bugfix
     var host = req.headers['x-forwarded-host'] || req.headers['X-Forwarded-For']|| req.headers.host || '',
         debug = userCfg.get('debug');
 
     if(host.indexOf('127.0.0.1') == -1 && host.indexOf('localhost') == -1
-        && (/\.(css|js|ico|png|jpg|swf|less|gif|woff)/.test(req.url) || req.url.indexOf("??") != -1)) {
+        && (/\.(css|js|ico|png|jpg|swf|less|gif|woff|scss)/.test(req.url) || req.url.indexOf("??") != -1)) {
         var paths;
         //combo
         if(req.url.indexOf('??') != -1) {
@@ -251,8 +252,8 @@ app.get('(*??*|*.(css|js|ico|png|jpg|swf|less|gif|woff))', function(req, res, ne
                             res.write(body);
                         } else if(response.statusCode == 404) {
                             res.statusCode = 404;
-                            res.setHeader('Content-type', 'text/html');
-                            console.log(error);
+//                            res.setHeader('Content-type', 'text/html');
+                            error && console.log(error);
                             res.write('<h1>这个文件真的不存在，404了哦</h1>给你看看错误信息<div><textarea style="width:600px;height:400px">' +
                                 (error ? error.toString(): body) +
                                 '</textarea></div><hr>Powered by Vmarket');
